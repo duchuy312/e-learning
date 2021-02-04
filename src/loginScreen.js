@@ -25,6 +25,7 @@ const LoginScreen = () => {
         // console.log(response);
         if (response.status === 200) {
           console.log('Login Success');
+          navigation.navigate('BottomTabNavigations');
         } else {
           console.log(
             'Đăng nhập thất bại, vui lòng kiểm tra lại tên tài khoản hoặc mật khẩu !!!',
