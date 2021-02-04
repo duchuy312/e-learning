@@ -16,15 +16,15 @@ const LoginScreen = () => {
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
   const navigation = useNavigation();
-  const storeToken = async (value) => {
-    try {
-      await AsyncStorage.setItem('@MyToken', value);
-      console.log(value);
-    } catch (err) {
-      console.log('Saving error');
-    }
-  };
   const LoginConfirm = () => {
+    const storeToken = async (value) => {
+      try {
+        await AsyncStorage.setItem('@MyToken', value);
+        console.log(value);
+      } catch (err) {
+        console.log('Saving error');
+      }
+    };
     axios
       .post('http://elearning-uat.vnpost.vn/api/authentication', {
         username: name,
@@ -33,6 +33,9 @@ const LoginScreen = () => {
       .then(function (response) {
         // console.log(response);
         if (response.status === 200) {
+          storeToken(response.data.data.token);
+          console.log('Login Success');
+          navigation.navigate('BottomTabNavigations');
         } else {
           console.log(
             'Đăng nhập thất bại, vui lòng kiểm tra lại tên tài khoản hoặc mật khẩu !!!',
@@ -43,7 +46,7 @@ const LoginScreen = () => {
         console.log(error);
       })
       .then(function () {
-        navigation.navigate('News');
+        // navigation.navigate('News');
       });
   };
   return (
