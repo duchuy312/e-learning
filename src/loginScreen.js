@@ -16,7 +16,6 @@ const LoginScreen = () => {
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
   const navigation = useNavigation();
-  const [loginToken, setLoginToken] = useState('');
   const storeToken = async (value) => {
     try {
       await AsyncStorage.setItem('@MyToken', value);
@@ -34,8 +33,6 @@ const LoginScreen = () => {
       .then(function (response) {
         // console.log(response);
         if (response.status === 200) {
-          storeToken(response.data.data.token);
-          console.log(response.data.data.token);
         } else {
           console.log(
             'Đăng nhập thất bại, vui lòng kiểm tra lại tên tài khoản hoặc mật khẩu !!!',
