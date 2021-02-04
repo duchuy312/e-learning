@@ -2,8 +2,10 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import Swiper from 'react-native-swiper';
 import {scale} from 'react-native-size-matters';
+import {useNavigation} from '@react-navigation/native';
 
 const BeginScreen = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.swiper}>
@@ -56,10 +58,14 @@ const BeginScreen = () => {
         </Swiper>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonBack}>
+        <TouchableOpacity
+          style={styles.buttonBack}
+          onPress={() => navigation.navigate('LoginScreen')}>
           <Text style={styles.buttonBackText}>Bỏ qua</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonNext}>
+        <TouchableOpacity
+          style={styles.buttonNext}
+          onPress={() => navigation.navigate('LoginScreen')}>
           <Text style={styles.buttonNextText}>Tiếp</Text>
         </TouchableOpacity>
       </View>
@@ -152,24 +158,6 @@ const styles = StyleSheet.create({
   buttonNextText: {
     fontSize: scale(14),
     color: 'white',
-  },
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
   },
   text: {
     color: '#fff',
