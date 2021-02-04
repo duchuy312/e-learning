@@ -34,8 +34,8 @@ const LoginScreen = () => {
       .then(function (response) {
         // console.log(response);
         if (response.status === 200) {
-          storeToken(response.data.data.token);
-          console.log(response.data.data.token);
+          console.log('Login Success');
+          navigation.navigate('BottomTabNavigations');
         } else {
           console.log(
             'Đăng nhập thất bại, vui lòng kiểm tra lại tên tài khoản hoặc mật khẩu !!!',
