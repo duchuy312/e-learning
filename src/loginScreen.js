@@ -10,11 +10,21 @@ import {
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
   const navigation = useNavigation();
+  const [loginToken, setLoginToken] = useState('');
+  const storeToken = async (value) => {
+    try {
+      await AsyncStorage.setItem('@MyToken', value);
+      console.log(value);
+    } catch (err) {
+      console.log('Saving error');
+    }
+  };
   const LoginConfirm = () => {
     axios
       .post('http://elearning-uat.vnpost.vn/api/authentication', {
@@ -36,7 +46,7 @@ const LoginScreen = () => {
         console.log(error);
       })
       .then(function () {
-        // always executed
+        navigation.navigate('News');
       });
   };
   return (
