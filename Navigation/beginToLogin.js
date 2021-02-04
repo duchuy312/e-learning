@@ -5,6 +5,8 @@ import BeginScreen from '../src/beginScreen';
 import LoginScreen from '../src/loginScreen';
 import RegisterScreen from '../src/registerScreen';
 import ForgotPassScreen from '../src/forgotPassScreen';
+import News from '../src/news';
+
 const Stack = createStackNavigator();
 
 function BeginNavigation() {
@@ -15,6 +17,7 @@ function BeginNavigation() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="ForgotPassScreen" component={ForgotPassScreen} />
+        <Stack.Screen name="News" component={News} />
       </Stack.Navigator>
     </NavigationContainer>
   );
