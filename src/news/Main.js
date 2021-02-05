@@ -33,6 +33,14 @@ const MainNews = () => {
     }
     console.log('Done.');
   };
+  const storeID = async (value) => {
+    try {
+      await AsyncStorage.setItem('@NewID', JSON.stringify(value));
+      console.log(value);
+    } catch (err) {
+      console.log('Saving error');
+    }
+  };
   const getNews = async () => {
     await getToken();
     await axios
@@ -65,7 +73,11 @@ const MainNews = () => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
-      <TouchableOpacity style={[styles.itemNew, {backgroundColor}]}>
+      <TouchableOpacity
+        style={[styles.itemNew, {backgroundColor}]}
+        onPress={() =>
+          navigation.navigate('NewsDetail', {newid: item.id, newtoken: token})
+        }>
         <Image
           style={styles.imageNew}
           source={{uri: 'http://elearning-uat.vnpost.vn' + item.images}}
