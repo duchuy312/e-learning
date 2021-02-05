@@ -65,7 +65,14 @@ const MainEvents = () => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
-      <TouchableOpacity style={[styles.itemNew, {backgroundColor}]}>
+      <TouchableOpacity
+        style={[styles.itemNew, {backgroundColor}]}
+        onPress={() =>
+          navigation.navigate('EventsDetail', {
+            eventid: item.id,
+            eventtoken: token,
+          })
+        }>
         <Image
           style={styles.imageNew}
           source={{uri: 'http://elearning-uat.vnpost.vn' + item.image}}

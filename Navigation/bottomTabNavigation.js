@@ -1,11 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import StackCourse from './stackCourse';
 import StackExam from './stackExam';
 import StackNews from './stackNews';
 import StackIndividual from './stackIndividual';
+import {CourseIcon, UserIcon, TestIcon, NewsIcon} from '../svg/icon';
+import {View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,27 +14,44 @@ const BottomTabNavigations = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({focused}) => {
           let iconName;
-
           if (route.name === 'Khóa học') {
-            iconName = focused ? 'bulb-outline' : 'bulb-outline';
+            iconName = focused ? (
+              <CourseIcon color="orange" />
+            ) : (
+              <CourseIcon color="black" />
+            );
           } else if (route.name === 'Kỳ thi') {
-            iconName = focused
-              ? 'document-text-outline'
-              : 'document-text-outline';
+            iconName = focused ? (
+              <TestIcon color="orange" />
+            ) : (
+              <TestIcon color="black" />
+            );
           } else if (route.name === 'Tin tức') {
-            iconName = focused ? 'newspaper-outline' : 'newspaper-outline';
+            iconName = focused ? (
+              <NewsIcon color="orange" />
+            ) : (
+              <NewsIcon color="black" />
+            );
           } else if (route.name === 'Cá nhân') {
-            iconName = focused ? 'person-outline' : 'person-outline';
+            iconName = focused ? (
+              <UserIcon color="orange" />
+            ) : (
+              <UserIcon color="black" />
+            );
           }
-          // You can return any component that you like here!
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <View>{iconName}</View>;
         },
+        // tabBarVisible: false,
       })}
       tabBarOptions={{
+        labelStyle: {fontSize: 18},
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
+        style: {
+          height: 75,
+        },
       }}>
       <Tab.Screen name="Khóa học" component={StackCourse} />
       <Tab.Screen name="Kỳ thi" component={StackExam} />
