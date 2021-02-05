@@ -3,6 +3,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import MainNews from '../src/news/Main';
 import MainEvents from '../src/news/Events';
+import StackNewsDetail from '../Navigation/stackNewsDetail';
+import StackEventsDetail from './stackEventsDetail';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,8 +17,8 @@ function StackNews() {
         labelStyle: {fontSize: 20},
         style: {height: 60},
       }}>
-      <Tab.Screen name="News" component={MainNews} />
-      <Tab.Screen name="Events" component={MainEvents} />
+      <Tab.Screen name="News" component={StackNewsDetail} />
+      <Tab.Screen name="Events" component={StackEventsDetail} />
     </Tab.Navigator>
   );
 }
