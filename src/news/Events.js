@@ -78,9 +78,10 @@ const MainEvents = () => {
           source={{uri: 'http://elearning-uat.vnpost.vn' + item.image}}
         />
         <View style={styles.viewNew}>
-          <Text style={styles.titleNew} numberOfLines={3}>
+          <Text style={styles.titleNew} numberOfLines={2}>
             {item.title}
           </Text>
+          <Text style={styles.authorText}>Author: {item.createdBy}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -129,8 +130,11 @@ const styles = StyleSheet.create({
     width: scale(145),
   },
   titleNew: {
+    marginTop: scale(5),
     fontSize: scale(14),
-    marginLeft: scale(5),
     fontWeight: 'bold',
+  },
+  authorText: {
+    marginTop: scale(5),
   },
 });

@@ -14,7 +14,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import HTMLView from 'react-native-htmlview';
+import HTML from 'react-native-render-html';
 
 const NewsDetail = () => {
   const [newID, setNewID] = useState();
@@ -51,6 +51,7 @@ const NewsDetail = () => {
     getNews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const contentWidth = (useWindowDimensions().width * 90) / 100;
   return (
     <View style={styles.container}>
       <Backbar title={'News'} />
@@ -61,7 +62,14 @@ const NewsDetail = () => {
           style={styles.imageNew}
           source={{uri: 'http://elearning-uat.vnpost.vn' + dataNew.images}}
         />
-        <Text style={styles.text}>{dataNew.content}</Text>
+        <View style={styles.contentContainer}>
+          <HTML
+            defaultTextProps={styles.text}
+            source={{html: dataNew.content}}
+            contentWidth={contentWidth}
+            baseFontStyle={styles.text}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -101,16 +109,11 @@ const styles = StyleSheet.create({
     height: scale(160),
     width: scale(330),
   },
-  textInputContainer1: {
-    height: scale(160),
-    width: scale(350),
-    alignItems: 'center',
-    marginTop: scale(50),
-  },
-  textContainer: {
-    height: scale(260),
-    width: scale(320),
-    alignSelf: 'center',
+  contentContainer: {
+    flex: 1,
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    alignContent: 'center',
   },
   textTitle: {
     fontSize: scale(20),
@@ -119,6 +122,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(14),
+    lineHeight: scale(20),
     marginLeft: scale(8),
     marginRight: scale(8),
     lineHeight: scale(20),
