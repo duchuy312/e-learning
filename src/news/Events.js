@@ -12,7 +12,7 @@ import {scale} from 'react-native-size-matters';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const News = () => {
+const MainEvents = () => {
   const navigation = useNavigation();
   const [newsID, setNewsID] = useState('');
   const [dataNew, setDataNew] = useState([]);
@@ -21,10 +21,12 @@ const News = () => {
   const [ImageURL, setImageURL] = useState([]);
   const getToken = async () => {
     try {
-      const value = await AsyncStorage.getItem('MyToken');
+      const value = await AsyncStorage.getItem('@MyToken');
       if (value !== null) {
         console.log('We have Token');
         setToken(value);
+      } else {
+        console.log('Dont have Token');
       }
     } catch (err) {
       console.log('Read data error');
@@ -35,7 +37,7 @@ const News = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/news/all?size=8',
+        'http://elearning-uat.vnpost.vn/api/v2/event/all?size=10',
         {title: null, categoryId: null},
         {
           headers: {
@@ -63,15 +65,23 @@ const News = () => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
-      <TouchableOpacity style={[styles.itemNew, {backgroundColor}]}>
+      <TouchableOpacity
+        style={[styles.itemNew, {backgroundColor}]}
+        onPress={() =>
+          navigation.navigate('EventsDetail', {
+            eventid: item.id,
+            eventtoken: token,
+          })
+        }>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + item.images}}
+          source={{uri: 'http://elearning-uat.vnpost.vn' + item.image}}
         />
         <View style={styles.viewNew}>
-          <Text style={styles.titleNew} numberOfLines={3}>
+          <Text style={styles.titleNew} numberOfLines={2}>
             {item.title}
           </Text>
+          <Text style={styles.authorText}>Author: {item.createdBy}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -91,7 +101,7 @@ const News = () => {
     </View>
   );
 };
-export default News;
+export default MainEvents;
 
 const styles = StyleSheet.create({
   container: {
@@ -120,8 +130,11 @@ const styles = StyleSheet.create({
     width: scale(145),
   },
   titleNew: {
+    marginTop: scale(5),
     fontSize: scale(14),
-    marginLeft: scale(5),
     fontWeight: 'bold',
+  },
+  authorText: {
+    marginTop: scale(5),
   },
 });
