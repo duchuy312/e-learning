@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,20 +6,79 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  ScrollView
 } from 'react-native';
+import BarView from './BarView';
+import styles from './Styles';
+import Test from './Test';
 
-import {scale} from 'react-native-size-matters';
+const MainExam = ({ navigation }) => {
+  const [lesson, setLesson] = useState([
+    {
+      id: '1',
+      name: 'Bài thi đánh giá năng lực số 1',
 
-const MainExam = ({navigation}) => {
+
+    },
+    {
+      id: '2',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '3',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '4',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '5',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '6',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '7',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    },
+    {
+      id: '8',
+      name: 'Bài thi đánh giá năng lực số 1',
+
+    }
+  ])
   return (
     <View style={styles.container}>
-      <Text>Exam</Text>
+      <View style={styles.slider}>
+        <BarView />
+      </View>
+      <View style={styles.body}>
+
+        <FlatList
+          data={lesson}
+          renderItem={({ item }) => <Test setLesson={item} />}
+          keyExtractor={item => item.id}
+          numColumns={2}
+        >
+
+        </FlatList>
+      </View>
     </View>
+
   );
 };
 
 export default MainExam;
 
-const styles = StyleSheet.create({
-  container: {flex: 1},
-});
+// const styles = StyleSheet.create({
+//   container: {flex: 1},
+// });
