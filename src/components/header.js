@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 
-export function Header(props) {
+export function Header(props, {navigation}) {
   const [valueTextInput, setValueTextInput] = useState('');
   const {
     header,
