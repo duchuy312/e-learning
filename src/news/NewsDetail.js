@@ -123,6 +123,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(14),
     lineHeight: scale(20),
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    lineHeight: scale(20),
+    textAlign: 'justify',
   },
   content: {
     fontWeight: '400',
