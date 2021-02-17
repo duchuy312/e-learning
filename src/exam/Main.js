@@ -8,12 +8,13 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
+import { Header } from '../components/header';
 import BarView from './BarView';
 import styles from './Styles';
 import Test from './Test';
 
 const MainExam = ({ navigation }) => {
-  const [lesson, setLesson] = useState([
+  const lesson = [
     {
       id: '1',
       name: 'Bài thi đánh giá năng lực số 1',
@@ -55,19 +56,25 @@ const MainExam = ({ navigation }) => {
       name: 'Bài thi đánh giá năng lực số 1',
 
     }
-  ])
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.slider}>
         <BarView />
+        {/* <Header /> */}
       </View>
       <View style={styles.body}>
 
         <FlatList
           data={lesson}
-          renderItem={({ item }) => <Test setLesson={item} />}
+          renderItem={({ item }) =>
+            <Test
+              setLesson={item}
+              />}
           keyExtractor={item => item.id}
           numColumns={2}
+        // contentContainerStyle = {{paddingLeft: 10, paddingRight: 10}}
         >
 
         </FlatList>

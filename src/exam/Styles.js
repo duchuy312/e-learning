@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     imageMenu: {
-        width: 25,
-        height: 25,
+        width: 35,
+        height: 35,
         padding: 5,
         alignSelf: 'center',
         marginLeft: 15

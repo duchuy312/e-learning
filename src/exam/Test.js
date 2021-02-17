@@ -6,10 +6,13 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native'
 export default function Test(props) {
     const { setLesson } = props;
+    const navigation = useNavigation();
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('TestDetail')}
+        >
             <View style={styles.container}>
                 <Image
                     style={styles.imageLogo}

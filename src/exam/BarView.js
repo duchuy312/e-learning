@@ -11,7 +11,8 @@ export default function BarView() {
         <View style={styles.slider}>
             <Image
                 style={styles.imageMenu}
-                source={require('../../assets/menubar.png')}
+                source={require('../../assets/menu.png')}
+                
             />
             <View style={styles.searchContainer}>
                 <Image
