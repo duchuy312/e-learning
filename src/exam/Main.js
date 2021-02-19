@@ -16,7 +16,10 @@ import ViewBar from './ViewBar';
 const MainExam = ( { navigation }) => {
 
 // const {setLesson} = props;
-
+  const onPress = ({ item }) =>
+  <Test
+    setLesson={item}
+    />
   const lesson = [
     {
       id: '1',
@@ -68,10 +71,7 @@ const MainExam = ( { navigation }) => {
       <View style={styles.body}>
         <FlatList
            data={lesson}
-           renderItem={({ item }) =>
-             <Test
-               setLesson={item}
-               />}
+           renderItem={onPress}
           keyExtractor={(item) => item.id}
           numColumns={2}
 

@@ -1,5 +1,5 @@
-import {useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -7,21 +7,21 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {scale} from 'react-native-size-matters';
-import {useNavigation} from '@react-navigation/native';
-import {BackIcon, NewsIcon} from '../../svg/icon';
+import { scale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
+import { BackIcon, NewsIcon } from '../../svg/icon';
 
 export const Backbar = (props) => {
   const navigation = useNavigation();
-  const {title, title1} = props;
+  const { title, title1 } = props;
   return (
     <View style={styles.searchBar}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.iconPosition}>
         <BackIcon />
-        <Text style={styles.topTittle}>{title}</Text>
       </TouchableOpacity>
+      <Text style={styles.topTittle}>{title}</Text>
       <Text style={styles.topTittle1}>{title1}</Text>
     </View>
   );
@@ -34,16 +34,17 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#144E8C'
   },
   iconPosition: {
-    marginLeft: scale(8),
+    marginLeft: scale(15),
     marginRight: scale(8),
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center'
   },
   topTittle: {
-    fontSize: scale(20),
-    marginLeft: scale(5),
-    color: 'black',
+    fontSize: scale(17),
+    marginLeft: scale(10),
+    color: 'white',
+    alignSelf: 'center'
   },
 });
