@@ -20,10 +20,10 @@ export default function Test(props) {
             <View style={styles.calendar}>
                 <Image 
                     style={styles.imageCalendar}
-                    soucre={require('../../img/Vector.png')}
+                    soucre={require('../../img/calendar.png')}
                 />
                 <Text >
-
+                    {setLesson.time}
                 </Text>
             </View>
 
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     imageCalendar:{
-        width: scale(10),
-        height: scale(10)
+        width: scale(20),
+        height: scale(20)
     }
 
 }
