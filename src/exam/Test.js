@@ -20,9 +20,9 @@ export default function Test(props) {
             <View style={styles.calendar}>
                 <Image 
                     style={styles.imageCalendar}
-                    soucre={require('../../img/calendar.png')}
+                    source={require('../../img/calendar.png')}
                 />
-                <Text >
+                <Text style={{fontSize:scale(11), marginLeft: scale(5)}}>
                     {setLesson.time}
                 </Text>
             </View>
@@ -55,8 +55,9 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     imageCalendar:{
-        width: scale(20),
-        height: scale(20)
+        width: scale(13),
+        height: scale(13),
+        marginLeft: scale(5),
     }
 
 }
