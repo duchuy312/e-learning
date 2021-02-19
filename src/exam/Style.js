@@ -15,18 +15,42 @@ const styles=StyleSheet.create({
 
     },
     imageMenu: {
-        width: 20,
-        height: 20,
-        alignItems: 'center',
+        width: scale(20),
+        height: scale(20),
+        alignSelf: 'center',
+        marginLeft: scale(10)
     },
     searchContainer: {
         flexDirection: 'row',
-        height: 45,
-        width: 260,
-        borderRadius: 25,
+        height: scale(43),
+        width: scale(250),
+        borderRadius: scale(15),
         backgroundColor: '#F6F4F5',
         alignSelf: 'center',
         marginLeft: 20
     },
+    imageBell: {
+        width: scale(23),
+        height: scale(23),
+        alignSelf: 'center',
+        marginLeft: scale(17)
+    }, 
+    imageSearch:{
+        width: scale(20),
+        height: scale(20),
+        alignSelf: 'center',
+        marginLeft: scale(10)
+    },
+    textInput:{
+        width: scale(190),
+        height: scale(40),
+        fontSize: scale(15),
+        alignSelf: 'center'
+    },
+    imageDelete:{
+        width:scale(18),
+        height: scale(18),
+        alignSelf: 'center'
+    }
 });
 export default styles;
