@@ -14,8 +14,8 @@ function StackNews() {
       tabBarOptions={{
         inactiveTintColor: '#9D9D9D',
         activeTintColor: 'orange',
-        labelStyle: {fontSize: 20},
-        style: {height: 60},
+        labelStyle: {fontSize: 18},
+        style: {height: 50},
       }}>
       <Tab.Screen name="News" component={StackNewsDetail} />
       <Tab.Screen name="Events" component={StackEventsDetail} />

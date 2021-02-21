@@ -20,7 +20,6 @@ const LoginScreen = () => {
     const storeToken = async (value) => {
       try {
         await AsyncStorage.setItem('@MyToken', value);
-        console.log(value);
       } catch (err) {
         console.log('Saving error');
       }

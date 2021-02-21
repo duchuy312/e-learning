@@ -46,11 +46,11 @@ const BottomTabNavigations = () => {
         // tabBarVisible: false,
       })}
       tabBarOptions={{
-        labelStyle: {fontSize: 18},
+        labelStyle: {fontSize: 15},
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
         style: {
-          height: 75,
+          height: 65,
         },
       }}>
       <Tab.Screen name="Khóa học" component={StackCourse} />

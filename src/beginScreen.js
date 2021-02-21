@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Image,
+  StatusBar,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
@@ -7,69 +14,72 @@ import {useNavigation} from '@react-navigation/native';
 const BeginScreen = () => {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <View style={styles.swiper}>
-        <Swiper style={styles.wrapper} dotStyle={styles.swiperdot}>
-          <View>
-            <View style={styles.imagecontainer}>
-              <Image
-                style={styles.image}
-                source={require('../img/asset1.png')}
-              />
+    <>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.container}>
+        <View style={styles.swiper}>
+          <Swiper style={styles.wrapper} dotStyle={styles.swiperdot}>
+            <View>
+              <View style={styles.imagecontainer}>
+                <Image
+                  style={styles.image}
+                  source={require('../img/asset1.png')}
+                />
+              </View>
+              <View style={styles.textcontainer}>
+                <Text style={styles.title}>Học tập mọi lúc, mọi nơi</Text>
+                <Text style={styles.textBegin}>
+                  Bạn có thể học mọi lúc mọi nơi dễ dàng chỉ với thiết bị có kết
+                  nối internet
+                </Text>
+              </View>
             </View>
-            <View style={styles.textcontainer}>
-              <Text style={styles.title}>Học tập mọi lúc, mọi nơi</Text>
-              <Text style={styles.textBegin}>
-                Bạn có thể học mọi lúc mọi nơi dễ dàng chỉ với thiết bị có kết
-                nối internet
-              </Text>
+            <View>
+              <View style={styles.imagecontainer}>
+                <Image
+                  style={styles.image}
+                  source={require('../img/Onboarding/asset2.png')}
+                />
+              </View>
+              <View style={styles.textcontainer}>
+                <Text style={styles.title}>
+                  Tìm kiếm bài học, bài thi dễ dàng
+                </Text>
+                <Text style={styles.textBegin}>
+                  Dễ dàng tìm kiếm bài học, bài thi theo tên
+                </Text>
+              </View>
             </View>
-          </View>
-          <View>
-            <View style={styles.imagecontainer}>
-              <Image
-                style={styles.image}
-                source={require('../img/Onboarding/asset2.png')}
-              />
+            <View>
+              <View style={styles.imagecontainer}>
+                <Image
+                  style={styles.image}
+                  source={require('../img/Onboarding/asset3.png')}
+                />
+              </View>
+              <View style={styles.textcontainer}>
+                <Text style={styles.title}>Thư viện tài liệu đa dạng</Text>
+                <Text style={styles.textBegin}>
+                  Thư viện bài giảng, tài liệu đồ sộ với hơn 50.000 học liệu
+                </Text>
+              </View>
             </View>
-            <View style={styles.textcontainer}>
-              <Text style={styles.title}>
-                Tìm kiếm bài học, bài thi dễ dàng
-              </Text>
-              <Text style={styles.textBegin}>
-                Dễ dàng tìm kiếm bài học, bài thi theo tên
-              </Text>
-            </View>
-          </View>
-          <View>
-            <View style={styles.imagecontainer}>
-              <Image
-                style={styles.image}
-                source={require('../img/Onboarding/asset3.png')}
-              />
-            </View>
-            <View style={styles.textcontainer}>
-              <Text style={styles.title}>Thư viện tài liệu đa dạng</Text>
-              <Text style={styles.textBegin}>
-                Thư viện bài giảng, tài liệu đồ sộ với hơn 50.000 học liệu
-              </Text>
-            </View>
-          </View>
-        </Swiper>
+          </Swiper>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.buttonBack}
+            onPress={() => navigation.navigate('LoginScreen')}>
+            <Text style={styles.buttonBackText}>Bỏ qua</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonNext}
+            onPress={() => navigation.navigate('LoginScreen')}>
+            <Text style={styles.buttonNextText}>Tiếp</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.buttonBack}
-          onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.buttonBackText}>Bỏ qua</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonNext}
-          onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.buttonNextText}>Tiếp</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </>
   );
 };
 export default BeginScreen;

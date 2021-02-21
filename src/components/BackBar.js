@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#144E8C',
   },
   iconPosition: {
     marginLeft: scale(8),
@@ -44,6 +45,6 @@ const styles = StyleSheet.create({
   topTittle: {
     fontSize: scale(20),
     marginLeft: scale(5),
-    color: 'black',
+    color: 'white',
   },
 });
