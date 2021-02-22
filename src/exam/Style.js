@@ -51,6 +51,20 @@ const styles=StyleSheet.create({
         width:scale(18),
         height: scale(18),
         alignSelf: 'center'
+    }, 
+    imageDetailTest: {
+        width: '100%',
+        height: scale(200)
+    },
+    buttonDetail: {
+        width: scale(300),
+        height: scale(45),
+        borderRadius: scale(20),
+        backgroundColor: '#FCB71E',
+        marginTop: scale(60),
+        alignSelf: 'center',
+        justifyContent:'center',
+        alignItems:'center'
     }
 });
 export default styles;

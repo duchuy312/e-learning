@@ -10,11 +10,11 @@ import { scale } from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native'
 export default function Test(props) {
     const navigation = useNavigation();
-    const { setLesson } = props;
+    const { setLesson, onPress } = props;
    
     return (
         <View style={styles.container}>
-        <TouchableOpacity onPress = {() => navigation.navigate('TestDetail')}>
+        <TouchableOpacity onPress = {onPress}>
 
          
                 <Image
@@ -29,7 +29,7 @@ export default function Test(props) {
                         style={styles.imageCalendar}
                         source={require('../../img/calendar.png')}
                     />
-                    <Text style={{ fontSize: scale(11), marginLeft: scale(5) }}>
+                    <Text style={{ fontSize: scale(11), marginLeft: scale(5), fontWeight: '400' }}>
                         {setLesson.time}
                     </Text>
                 </View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: scale(15),
         marginLeft: scale(5),
-        fontWeight: 'bold'
+        fontWeight: '700'
     },
     calendar: {
         flexDirection: 'row'

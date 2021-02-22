@@ -13,13 +13,10 @@ import styles from './Style';
 import Test from './Test';
 import ViewBar from './ViewBar';
 
-const MainExam = ( { navigation }) => {
+const MainExam = ({ navigation }) => {
 
-// const {setLesson} = props;
-  const onPress = ({ item }) =>
-  <Test
-    setLesson={item}
-    />
+  // const {setLesson} = props;
+
   const lesson = [
     {
       id: '1',
@@ -29,37 +26,37 @@ const MainExam = ( { navigation }) => {
     },
     {
       id: '2',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 2',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '3',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 3',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '4',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 4',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '5',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 5',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '6',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 6',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '7',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 7',
       time: '28/12/2019 - 30/12/2020',
     },
     {
       id: '8',
-      name: 'Bài thi đánh giá năng lực số 1',
+      name: 'Bài thi đánh giá năng lực số 8',
       time: '28/12/2019 - 30/12/2020',
     }
   ];
@@ -70,8 +67,14 @@ const MainExam = ( { navigation }) => {
       </View>
       <View style={styles.body}>
         <FlatList
-           data={lesson}
-           renderItem={onPress}
+          data={lesson}
+          renderItem={({ item }) =>
+          <Test
+            setLesson={item}
+            onPress = {() => navigation.navigate('TestDetail', {
+              timeTest: item.time
+            }) }
+          />}
           keyExtractor={(item) => item.id}
           numColumns={2}
 

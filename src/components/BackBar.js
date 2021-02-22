@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     fontSize: scale(17),
     marginLeft: scale(10),
     color: 'white',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    paddingLeft: scale(70),
   },
 });
