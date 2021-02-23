@@ -20,15 +20,15 @@ const LoginScreen = () => {
     const storeToken = async (value) => {
       try {
         await AsyncStorage.setItem('@MyToken', value);
-        console.log(value);
+        //  console.log(value);
       } catch (err) {
         console.log('Saving error');
       }
     };
     axios
       .post('http://elearning-uat.vnpost.vn/api/authentication', {
-        username: name,
-        password: pass,
+        username: 'admin',
+        password: 'Abc12345',
       })
       .then(function (response) {
         // console.log(response);

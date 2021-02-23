@@ -5,53 +5,35 @@ import StackCourse from './stackCourse';
 import StackExam from './stackExam';
 import StackNews from './stackNews';
 import StackIndividual from './stackIndividual';
-import {CourseIcon, UserIcon, TestIcon, NewsIcon} from '../svg/icon';
-import {View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigations = () => {
   return (
     <Tab.Navigator
+      headerMode="none"
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused}) => {
+        tabBarIcon: ({focused, color}) => {
           let iconName;
+
           if (route.name === 'Khóa học') {
-            iconName = focused ? (
-              <CourseIcon color="orange" />
-            ) : (
-              <CourseIcon color="black" />
-            );
+            iconName = focused ? 'bulb-outline' : 'bulb-outline';
           } else if (route.name === 'Kỳ thi') {
-            iconName = focused ? (
-              <TestIcon color="orange" />
-            ) : (
-              <TestIcon color="black" />
-            );
+            iconName = focused
+              ? 'document-text-outline'
+              : 'document-text-outline';
           } else if (route.name === 'Tin tức') {
-            iconName = focused ? (
-              <NewsIcon color="orange" />
-            ) : (
-              <NewsIcon color="black" />
-            );
+            iconName = focused ? 'newspaper-outline' : 'newspaper-outline';
           } else if (route.name === 'Cá nhân') {
-            iconName = focused ? (
-              <UserIcon color="orange" />
-            ) : (
-              <UserIcon color="black" />
-            );
+            iconName = focused ? 'person-outline' : 'person-outline';
           }
-          return <View>{iconName}</View>;
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={28} color={color} />;
         },
-        // tabBarVisible: false,
       })}
       tabBarOptions={{
-        labelStyle: {fontSize: 18},
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
-        style: {
-          height: 75,
-        },
       }}>
       <Tab.Screen name="Khóa học" component={StackCourse} />
       <Tab.Screen name="Kỳ thi" component={StackExam} />

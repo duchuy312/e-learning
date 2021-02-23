@@ -16,8 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import HTML from 'react-native-render-html';
 
-
-
 const EventsDetail = () => {
   const [newID, setNewID] = useState();
   const [dataEvent, setDataEvent] = useState([]);
