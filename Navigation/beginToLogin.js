@@ -6,7 +6,7 @@ import LoginScreen from '../src/loginScreen';
 import RegisterScreen from '../src/registerScreen';
 import ForgotPassScreen from '../src/forgotPassScreen';
 import BottomTabNavigations from './bottomTabNavigation';
-
+import StackIndividual from './stackIndividual';
 const Stack = createStackNavigator();
 
 function BeginNavigation() {
@@ -20,6 +20,7 @@ function BeginNavigation() {
         name="BottomTabNavigations"
         component={BottomTabNavigations}
       />
+      <Stack.Screen name="StackIndividual" component={StackIndividual} />
     </Stack.Navigator>
   );
 }

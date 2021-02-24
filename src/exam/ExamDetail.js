@@ -124,7 +124,14 @@ const ExamDetail = () => {
             <TouchableOpacity
               style={styles.button}
               onPress={() =>
-                navigation.navigate('ExamResult', {token: route.params.examTK})
+                navigation.navigate('ExamResult', {
+                  token: route.params.examTK,
+                  name: item.nameRound,
+                  namePS: route.params.examPS,
+                  timeExam: item.timeRound / 60,
+                  doAgain: item.maxWork,
+                  idRound: item.id,
+                })
               }>
               <Text style={styles.text}>Xem kết quả thi</Text>
             </TouchableOpacity>

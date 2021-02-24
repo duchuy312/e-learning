@@ -3,6 +3,7 @@ import Svg, {G, Path} from 'react-native-svg';
 import {scale} from 'react-native-size-matters';
 
 export function BackIcon(props) {
+  const {color} = props;
   return (
     <Svg
       width={scale(12)}
@@ -13,7 +14,7 @@ export function BackIcon(props) {
       {...props}>
       <Path
         d="M11.542 2.595a1.53 1.53 0 00.05-2.128A1.446 1.446 0 009.516.415S.445 9.401.42 9.427c-.58.62-.558 1.605.048 2.199l9.046 8.957a1.445 1.445 0 002.078-.048c.56-.601.54-1.554-.047-2.128l-7.499-7.554a.5.5 0 010-.704l7.495-7.554z"
-        fill="white"
+        fill={color}
       />
     </Svg>
   );

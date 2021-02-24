@@ -20,25 +20,25 @@ const BottomTabNavigations = () => {
             iconName = focused ? (
               <CourseIcon color="orange" />
             ) : (
-              <CourseIcon color="black" />
+              <CourseIcon color="#C7C7C7" />
             );
           } else if (route.name === 'Kỳ thi') {
             iconName = focused ? (
               <TestIcon color="orange" />
             ) : (
-              <TestIcon color="black" />
+              <TestIcon color="#C7C7C7" />
             );
           } else if (route.name === 'Tin tức') {
             iconName = focused ? (
               <NewsIcon color="orange" />
             ) : (
-              <NewsIcon color="black" />
+              <NewsIcon color="#C7C7C7" />
             );
           } else if (route.name === 'Cá nhân') {
             iconName = focused ? (
               <UserIcon color="orange" />
             ) : (
-              <UserIcon color="black" />
+              <UserIcon color="#C7C7C7" />
             );
           }
           return <View>{iconName}</View>;

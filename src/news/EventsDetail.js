@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import Backbar from '../components/BackBar';
+import BackbarWhite from '../components/BackBarWhite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import HTML from 'react-native-render-html';
@@ -53,7 +53,7 @@ const EventsDetail = () => {
   const contentWidth = (useWindowDimensions().width * 90) / 100;
   return (
     <View style={styles.container}>
-      <Backbar title={'Events'} />
+      <BackbarWhite title={'Events'} />
       <ScrollView style={styles.scrollArea}>
         <Text style={styles.textTitle}>{dataEvent.title}</Text>
         <Text>Author: {dataEvent.createdBy}</Text>

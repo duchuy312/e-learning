@@ -11,7 +11,7 @@ import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import {BackIcon, NewsIcon} from '../../svg/icon';
 
-export const Backbar = (props) => {
+export const BackbarWhite = (props) => {
   const navigation = useNavigation();
   const {title, title1} = props;
   return (
@@ -19,14 +19,14 @@ export const Backbar = (props) => {
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.iconPosition}>
-        <BackIcon color={'white'}/>
+        <BackIcon color={'black'}/>
         <Text style={styles.topTittle}>{title}</Text>
       </TouchableOpacity>
       <Text style={styles.topTittle1}>{title1}</Text>
     </View>
   );
 };
-export default Backbar;
+export default BackbarWhite;
 
 const styles = StyleSheet.create({
   searchBar: {
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#144E8C',
   },
   iconPosition: {
     marginLeft: scale(8),
@@ -45,6 +44,5 @@ const styles = StyleSheet.create({
   topTittle: {
     fontSize: scale(20),
     marginLeft: scale(5),
-    color: 'white',
   },
 });

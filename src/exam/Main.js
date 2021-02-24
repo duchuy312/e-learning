@@ -12,7 +12,7 @@ import {scale} from 'react-native-size-matters';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BuildingIcon, ClockIcon} from '../../svg/icon';
-import AnimatedBar from 'react-native-animated-bar';
+import TitleBar from '../components/TitleBar';
 
 const MainNews = () => {
   const navigation = useNavigation();
@@ -87,7 +87,7 @@ const MainNews = () => {
           }}
         />
         <View style={styles.viewNew}>
-          <Text style={styles.titleNew} numberOfLines={2}>
+          <Text style={styles.titleNew} numberOfLines={1}>
             {item.nameCompetition}
           </Text>
           <View style={styles.iconAndText}>
@@ -104,6 +104,7 @@ const MainNews = () => {
   };
   return (
     <View style={styles.container}>
+      <TitleBar title1={'Cuộc thi'}/>
       <FlatList
         style={{marginTop: scale(20)}}
         data={dataExam}

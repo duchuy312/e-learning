@@ -1,63 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  FlatList,
-  Modal,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
 import {scale} from 'react-native-size-matters';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
-import {
-  BuildingIcon,
-  CalendarIcon,
-  FlagTickIcon,
-  ClockIcon,
-  CircleCheckIcon,
-} from '../../svg/icon';
-import {TextInput} from 'react-native-gesture-handler';
+import {BuildingIcon, ClockIcon} from '../../svg/icon';
+import ProgressCircle from 'react-native-progress-circle';
 
 const ExamResult = () => {
-  const navigation = useNavigation();
   const route = useRoute();
-  const [ExamID, setExamID] = useState('');
+  const [ExamID] = useState('');
   const [dataExam, setDataExam] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisible2, setModalVisible2] = useState(false);
   const [getting, setGetting] = useState(false);
-  const [sendID, setSendID] = useState('');
   // /api/roundtest/{id_round}/request
-  const sendRequest = async (id) => {
-    await axios
-      .post(
-        `http://elearning-uat.vnpost.vn/api/roundtest/${id}/request`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${route.params.examTK}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(() => {
-        console.log('finally');
-      });
-  };
   const getExams = async () => {
     await axios
       .get(
-        'http://elearning-uat.vnpost.vn/api/competition/roundtest/history/list/151',
+        `http://elearning-uat.vnpost.vn/api/competition/roundtest/history/list/${route.params.idRound}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.token}`,
@@ -66,7 +25,6 @@ const ExamResult = () => {
       )
       .then((response) => {
         setGetting(true);
-        console.log(response);
         console.log(response.data.data);
         setDataExam(response.data.data);
       })
@@ -76,12 +34,51 @@ const ExamResult = () => {
       })
       .finally(() => {
         setGetting(false);
+        console.log(dataExam.length);
       });
   };
   useEffect(() => {
     getExams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const renderItem = ({item}) => {
+    return (
+      <View style={styles.itemExam}>
+        <View style={styles.circleProgressContainer}>
+          <ProgressCircle
+            percent={(item.point / item.sumPoint) * 100}
+            radius={45}
+            borderWidth={8}
+            color="#FCB71E"
+            shadowColor="#f7ecdb"
+            bgColor="#fff">
+            <Text style={{fontSize: 18}}>
+              {(item.point / item.sumPoint).toFixed(3) * 100} %
+            </Text>
+          </ProgressCircle>
+        </View>
+        <View>
+          <Text>Lần Thi: {item.counttest}</Text>
+          <Text>
+            Làm bài lúc :{' '}
+            {new Date(item.timestart).toLocaleString('en-GB', {
+              timeZone: 'UTC',
+            })}
+          </Text>
+          <Text>
+            Nộp bài lúc :{' '}
+            {new Date(item.timeend).toLocaleString('en-GB', {
+              timeZone: 'UTC',
+            })}
+          </Text>
+          <Text>Trạng Thái: {item.status === 1 ? 'Chưa Đạt' : 'Đạt'}</Text>
+          <Text>
+            Tỉ lệ Điểm : {item.point} / {item.sumPoint}
+          </Text>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <Backbar title={'ExamDetail'} />
@@ -96,14 +93,35 @@ const ExamResult = () => {
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.textTitle}>asdasdasd</Text>
+          <Text style={styles.textTitle}>{route.params.name}</Text>
         </View>
         <View style={styles.iconAndTextTop}>
-          <Text style={styles.authorText}>Đơn vị tạo cuộc thi: </Text>
+          <Text style={styles.authorText}>Đơn vị tạo cuộc thi:</Text>
           <BuildingIcon color="#17a2b8" />
-          <Text style={styles.text}>asdasdadad</Text>
+          <Text style={styles.text}>{route.params.namePS}</Text>
         </View>
+        <View style={styles.iconAndText}>
+          <ClockIcon clockheight={scale(15)} clockwidth={scale(14)} />
+          <Text style={styles.text}>{route.params.timeExam} phút</Text>
+        </View>
+        <Text>Bạn đã làm bài thi này {dataExam.length} lần</Text>
+        {route.params.doAgain === 0 ? (
+          <Text>Vòng thi không giới hạn số lần làm bài</Text>
+        ) : (
+          <Text>
+            Vòng thi này bạn chỉ có thể làm {route.params.doAgain} lần
+          </Text>
+        )}
       </View>
+      <FlatList
+        style={{marginTop: scale(20)}}
+        data={dataExam}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        extraData={ExamID}
+        refreshing={getting}
+        onRefresh={() => getExams()}
+      />
     </View>
   );
 };
@@ -135,7 +153,7 @@ const styles = StyleSheet.create({
     marginRight: scale(8),
     alignItems: 'center',
     backgroundColor: 'white',
-    height: scale(90),
+    height: scale(130),
   },
   titleContainer: {
     width: '98%',
@@ -144,6 +162,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: scale(25),
     textAlign: 'center',
+    color: 'black',
   },
   text: {
     marginLeft: scale(5),
@@ -171,10 +190,45 @@ const styles = StyleSheet.create({
   iconAndText: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: scale(5),
   },
   iconAndTextTop: {
     marginTop: scale(10),
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  authorText: {
+    color: '#f6821f',
+    fontSize: scale(14),
+  },
+  resultContainer: {
+    marginTop: scale(10),
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    backgroundColor: 'white',
+  },
+  tableTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  itemExam: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    marginHorizontal: scale(8),
+    borderRadius: scale(10),
+    marginBottom: scale(8),
+    height: scale(90),
+    width: '96%',
+    elevation: scale(2),
+    overflow: 'hidden',
+    alignItems: 'center',
+  },
+  circleProgressContainer: {
+    width: scale(90),
+    height: scale(100),
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginLeft: scale(8),
+    borderRadius: scale(5),
   },
 });
