@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -7,6 +8,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+
 import { scale } from 'react-native-size-matters';
 import axios from 'axios';
 
@@ -85,6 +87,7 @@ function DetailCourse({ route, navigation }) {
 export default DetailCourse;
 
 const styles = StyleSheet.create({
+
   container: { flex: 1, backgroundColor: '#fff' },
   /**---------------Body------------------ */
   btnLine: { flexDirection: 'row', justifyContent: 'space-around' },
@@ -94,18 +97,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   txtButton: { color: '#144e8c', fontSize: 14 },
   img: { width: '100%', height: 200, marginTop: 10, borderRadius: 20 },
   content: { marginHorizontal: 20 },
   title: { fontWeight: 'bold', fontSize: scale(20) },
   starIcon: { width: 15, height: 15 },
   blurText: { color: '#aaa', marginRight: 50 },
+
   link: {
     textDecorationLine: 'underline',
     color: '#144e8c',
     width: 500,
   },
+
   overBtn: { alignItems: 'center' },
+
   buttonDK: {
     width: 300,
     height: 50,
@@ -115,7 +122,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+
   txtBtnDK: { color: '#fff' },
   text: { marginTop: 20 },
   normalText: { fontSize: 15 },
 });
+h

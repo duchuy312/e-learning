@@ -141,6 +141,7 @@ export default function RegisterCourse({navigation}) {
         //   )}
         // </View>
       }
+
     </View>
   );
 }

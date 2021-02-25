@@ -9,6 +9,7 @@ const MiddleStartCourse = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
+
       {
         //   <Header
         //     header={styles.header}

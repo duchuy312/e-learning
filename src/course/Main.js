@@ -1,3 +1,4 @@
+
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import {
@@ -44,6 +45,7 @@ const MainCourse = ({ navigation }) => {
   const doST = () => {
     setModalVisible(true);
   };
+
 
   const getCourse = async () => {
     await axios.post('http://elearning-uat.vnpost.vn/api/course',
@@ -114,8 +116,10 @@ const MainCourse = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header
+
         getValueSearch={getValueSearch}
         doST={doST}
+
         textInputHolder="Tìm kiếm"
       />
       <View style={styles.body}>
@@ -134,6 +138,7 @@ const MainCourse = ({ navigation }) => {
           //   </View>
           //   :
         }
+
       </View>
     </View>
   );
@@ -142,6 +147,7 @@ const MainCourse = ({ navigation }) => {
 export default MainCourse;
 
 const styles = StyleSheet.create({
+
   container: { flex: 1, backgroundColor: '#ddd' },
   /*------------------- */
   body: { flex: 9 },
@@ -179,4 +185,5 @@ const styles = StyleSheet.create({
   txtErr: { fontSize: scale(20), color: 'red' },
   /*------------------- */
   modalStyles: {},
+
 });

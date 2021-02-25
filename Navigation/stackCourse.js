@@ -2,10 +2,12 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import MainCourse from '../src/course/Main';
+
 import TopTabCourse from './topTabCourse';
 import MiddleStartCourse from '../src/course/MiddleStart';
 import Course from '../src/course/Course';
 import RegisterCourse from '../src/course/Register';
+
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,7 @@ function StackCourse() {
         component={Course}
         options={{headerShown: false}}
       />
+
     </Stack.Navigator>
   );
 }

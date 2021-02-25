@@ -37,7 +37,7 @@ const LoginScreen = () => {
           console.log('Login Success');
           navigation.navigate('BottomTabNavigations');
         } else {
-          console.log(
+          alert(
             'Đăng nhập thất bại, vui lòng kiểm tra lại tên tài khoản hoặc mật khẩu !!!',
           );
         }

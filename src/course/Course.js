@@ -107,9 +107,6 @@ const Course = ({navigation}) => {
         //     </TouchableOpacity>
         //   </View>
       }
-    </View>
-  );
-};
 
 export default Course;
 
