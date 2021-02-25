@@ -84,30 +84,29 @@ const Course = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <Header
-        header={styles.header}
-        styleButtonLeft={styles.btnback}
-        doST={doST}
-        title="Khóa học phát triển kĩ năng"
-        styleTitle={styles.titleHeader}
-        styleImgLeft={styles.imgBack}
-        sourceImgLeft={require('../../img/Back.png')}
-      />
-      <View style={styles.body}>
-        <View style={styles.imgBlack} />
-        <FlatList
-          style={styles.FlatList}
-          data={DATA}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-        />
-        <TouchableOpacity style={styles.btnExamination}>
-          <Text>{'Thi cuối khóa'}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+      {
+        //   <Header
+        //     header={styles.header}
+        //     styleButtonLeft={styles.btnback}
+        //     doST={doST}
+        //     title="Khóa học phát triển kĩ năng"
+        //     styleTitle={styles.titleHeader}
+        //     styleImgLeft={styles.imgBack}
+        //     sourceImgLeft={require('../../img/Back.png')}
+        //   />
+        //   <View style={styles.body}>
+        //     <View style={styles.imgBlack} />
+        //     <FlatList
+        //       style={styles.FlatList}
+        //       data={DATA}
+        //       keyExtractor={(item) => item.id}
+        //       renderItem={renderItem}
+        //     />
+        //     <TouchableOpacity style={styles.btnExamination}>
+        //       <Text>{'Thi cuối khóa'}</Text>
+        //     </TouchableOpacity>
+        //   </View>
+      }
 
 export default Course;
 

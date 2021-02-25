@@ -1,5 +1,6 @@
-import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+
+/* eslint-disable prettier/prettier */
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,42 +8,118 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  Modal,
+  Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { scale } from 'react-native-size-matters';
+import axiosRetry from 'axios-retry';
+import axios from 'axios';
 
-import {scale} from 'react-native-size-matters';
-import {Header} from '../components/header';
+import { Header } from '../components/header';
+//import DetailScreen from '../components/modal';
+import { Clock } from '../../svg/icon';
 
-const MainCourse = ({navigation}) => {
+const MainCourse = ({ navigation }) => {
+  axiosRetry(axios, { retries: 15 });
+
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [valueTextInput, setValueTextInput] = useState('');
+  const [token, setToken] = useState('');
+  const [dataModal, setDataModal] = useState([]);
+  const [valueSearch, setValueSearch] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [getting, setGetting] = useState(false);
+
+  const getValueSearch = (value) => {
+    setValueSearch(value);
+  };
+
+  const getToken = async () => {
+    const value = await AsyncStorage.getItem('@MyToken');
+    if (value !== null) {
+      setToken(value);
+    }
+  };
 
   const doST = () => {
     setModalVisible(true);
   };
 
-  const renderItem = () => {};
+
+  const getCourse = async () => {
+    await axios.post('http://elearning-uat.vnpost.vn/api/course',
+      { categoryId: null, name: valueSearch },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setGetting(true);
+        setData(res.data.data);
+      }).catch(function (err) {})
+      .finally(() => {
+        setGetting(false);
+      });
+  };
+
+  useEffect(() => {
+    getToken();
+  });
+
+  useEffect(() => {
+    if (token.length > 0) {
+      getCourse();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueSearch, token]);
+
+  const renderItem = ({ item }) => {
+    const start = item.courseConfig.start.slice(0, 11);
+    const end = item.courseConfig.end.slice(0, 11);
+    return (
+      <View style={styles.contaiView}>
+        <TouchableOpacity
+          style={styles.inline}
+          onPress={() => {
+            navigation.navigate('Chi tiết khóa học', { courseID: item.id, token: token });
+          }}>
+          <Image
+            style={styles.image}
+            source={{
+              uri:
+                'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+            }}
+            resizeMode="contain"
+          />
+          <View style={styles.content}>
+            <Text style={styles.titleContent}>{item.name}</Text>
+            <Text>{`Create by: ${item.createdBy}`}</Text>
+            <View style={styles.time}>
+              <Clock style={styles.clockIcon} />
+              <Text>
+                {start} – {end}
+              </Text>
+            </View>
+            <View style={styles.linesq} />
+            {
+              (item.price === null || item.price === 0) ? <Text style={styles.priceText}>Miễn Phí</Text>
+                : <Text style={styles.priceText}>{`Giá: ${item.price}`}</Text>
+            }
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <Header
-        header={styles.header}
-        styleButtonLeft={styles.iconMenu}
+
+        getValueSearch={getValueSearch}
         doST={doST}
-        styleImgLeft={styles.imgMenu}
-        sourceImgLeft={require('../../img/menu.png')}
-        searchBarStyle={styles.containerSearch}
-        sourceIconSearch={require('../../img/searchIcon.png')}
-        imgSearchStyle={styles.searchImg}
-        iconSearch={styles.searchIcon}
-        textInputStyle={styles.textInput}
-        iconCloseStyle={styles.circleClose}
-        sourceImgClose={require('../../img/close.png')}
-        imgCloseStyle={styles.imgClose}
-        styleButtonRight={styles.btnBell}
-        styleImgRight={styles.bellIcon}
-        sourceImgRight={require('../../img/bell.png')}
+
         textInputHolder="Tìm kiếm"
       />
       <View style={styles.body}>
@@ -51,7 +128,17 @@ const MainCourse = ({navigation}) => {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          refreshing={getting}
+          onRefresh={() => getCourse()}
         />
+        {
+          // (loading > 15) ?
+          //   <View style={styles.viewErr}>
+          //     <Text style={styles.txtErr}>{'Đã xảy ra lỗi, vui lòng tải lại'}</Text>
+          //   </View>
+          //   :
+        }
+
       </View>
     </View>
   );
@@ -60,105 +147,43 @@ const MainCourse = ({navigation}) => {
 export default MainCourse;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  header: {
-    backgroundColor: '#144e8c',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  imgMenu: {width: scale(20), height: scale(20)},
-  iconMenu: {
-    width: scale(20),
-    height: scale(20),
-    marginHorizontal: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  containerSearch: {
-    width: scale(250),
-    height: scale(40),
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchIcon: {
-    width: scale(20),
-    height: scale(20),
-    marginHorizontal: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  searchImg: {width: scale(20), height: scale(20)},
-  textInput: {width: scale(180)},
-  circleClose: {
-    width: scale(20),
-    height: scale(20),
-    borderRadius: scale(10),
-    backgroundColor: '#aaa',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: scale(1),
-    marginHorizontal: scale(10),
-  },
-  imgClose: {width: scale(12), height: scale(12)},
-  btnBell: {marginHorizontal: scale(15)},
-  bellIcon: {width: scale(20), height: scale(20)},
+
+  container: { flex: 1, backgroundColor: '#ddd' },
   /*------------------- */
-  body: {flex: 9},
-  list: {flex: 1, marginTop: scale(20)},
+  body: { flex: 9 },
+  list: { flex: 1, marginTop: scale(20) },
   contaiView: {
     flex: 1,
     flexDirection: 'row',
     marginBottom: scale(10),
     marginLeft: scale(10),
     backgroundColor: '#fff',
-    borderRadius: 5,
+    borderRadius: scale(10),
+    marginHorizontal: scale(10),
   },
+  inline: { flexDirection: 'row' },
   image: {
     width: scale(120),
-    height: scale(120),
+    height: scale(130),
     margin: scale(5),
     borderRadius: 60,
-    flex: 1,
   },
-  content: {flex: 2},
-  titleContent: {fontWeight: 'bold', fontSize: 15, width: '100%'},
-  time: {marginHorizontal: 2, flexDirection: 'row'},
-  clockIcon: {width: scale(20), height: scale(20), marginRight: scale(5)},
-  line: {flexDirection: 'row', alignItems: 'center'},
-  backLine: {
-    width: scale(100),
-    height: scale(5),
-    backgroundColor: '#ddd',
-    marginTop: scale(5),
-    marginRight: scale(5),
+  content: {
+    flexDirection: 'column',
+    width: scale(200),
   },
-  frontLine: {width: scale(70), height: scale(5), backgroundColor: 'orange'},
-  txtLine: {color: 'orange'},
-  starLine: {flexDirection: 'row'},
-  star: {width: scale(15), height: scale(15)},
-  bottomView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: scale(500),
-    width: '100%',
-  },
-  modalView: {
-    width: '100%',
-    height: scale(300),
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    justifyContent: 'center',
-  },
-  categoryMain: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    marginLeft: scale(50),
-  },
-  category: {alignContent: 'center', marginLeft: scale(100)},
-  btnDown: {width: scale(15), height: scale(15)},
-  txtCat: {marginRight: scale(50)},
+  titleContent: { fontWeight: 'bold', fontSize: 15, width: '100%', marginVertical: scale(7) },
+  time: { marginHorizontal: 2, flexDirection: 'row', marginVertical: scale(7) },
+  clockIcon: { width: scale(20), height: scale(20), marginRight: scale(5) },
+  txtLine: { color: 'orange' },
+  starLine: { flexDirection: 'row' },
+  star: { width: scale(15), height: scale(15) },
+  loading: { justifyContent: 'center', alignItems: 'center', marginTop: scale(12) },
+  linesq: { width: '90%', height: scale(1), backgroundColor: 'orange', marginHorizontal: scale(10) },
+  priceText: { fontSize: scale(20), marginHorizontal: scale(30), color: '#14bdee' },
+  viewErr: { backgroundColor: 'pink', height: scale(70), justifyContent: 'center', alignItems: 'center' },
+  txtErr: { fontSize: scale(20), color: 'red' },
+  /*------------------- */
+  modalStyles: {},
+
 });

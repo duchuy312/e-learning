@@ -9,87 +9,90 @@ const MiddleStartCourse = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <Header
-        header={styles.header}
-        styleButtonLeft={styles.btnback}
-        styleImgLeft={styles.imgBack}
-        doST={doST}
-        title="Khóa học phát triển kĩ năng"
-        styleTitle={styles.titleHeader}
-        sourceImgLeft={require('../../img/Back.png')}
-      />
-      <View style={styles.body}>
-        <View style={styles.btnLine}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.txtButton}>{'Nội dung'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text>{'Tài liệu'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text>{'Thảo luận'}</Text>
-          </TouchableOpacity>
-        </View>
-        <Image source={require('../../img/image15.png')} style={styles.img} />
-        <View style={styles.content}>
-          <Text style={styles.title}>{'Khóa học phát triển hệ thống'}</Text>
-          <Text>{'Giảng viên: Nguyễn Bích Ngọc'}</Text>
-          <View style={styles.inLine}>
-            <View style={styles.process}>
-              <View style={styles.inProcess} />
-            </View>
-            <Text style={styles.txtPercent}>{'70%'}</Text>
-          </View>
-          <View style={styles.inLine}>
-            <Image
-              style={styles.starIcon}
-              source={require('../../img/Star.png')}
-            />
-            <Image
-              style={styles.starIcon}
-              source={require('../../img/Star.png')}
-            />
-            <Image
-              style={styles.starIcon}
-              source={require('../../img/Star.png')}
-            />
-            <Image
-              style={styles.starIcon}
-              source={require('../../img/nonStar.png')}
-            />
-            <Image
-              style={styles.starIcon}
-              source={require('../../img/nonStar.png')}
-            />
-          </View>
-          <Text style={styles.blurText}>{'Số lượng học viên: 90'}</Text>
-          <View style={styles.inLine}>
-            <Text style={styles.blurText}>{'Bắt đầu: 28/12/2021'}</Text>
-            <Text style={styles.blurText}>{'Kết thúc: 28/12/2021'}</Text>
-          </View>
-          <Text style={styles.normalText}>
-            {
-              'Sợ nói sai chính là nỗi sợ thường gặp nhất của người Việt khi học Tiếng Anh. Từ việc sợ bị chê cười vì nói sai sẽ dẫn đến việc ngại nói , lâu ngày người học sẽ bị cứng miệng - tức là dù nghe hiểu nhưng không hiểu nói sao.... '
-            }
-            <Text style={styles.link}>{'Xem thêm'}</Text>
-          </Text>
-          <View style={styles.overBtn}>
-            <TouchableOpacity
-              style={styles.buttonDK}
-              onPress={() => {
-                navigation.navigate('Course');
-              }}>
-              <Text style={styles.txtBtnDK}>{'Vào học ngay'}</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.normalText}>
-            {'- Chương 2:Đào tạo phát triển kĩ năng cho nhân viên'}
-          </Text>
-          <Text style={styles.normalText}>
-            {'- Chương 3:Xây dựng, phát triển nhân sự '}
-          </Text>
-        </View>
-      </View>
+
+      {
+        //   <Header
+        //     header={styles.header}
+        //     styleButtonLeft={styles.btnback}
+        //     styleImgLeft={styles.imgBack}
+        //     doST={doST}
+        //     title="Khóa học phát triển kĩ năng"
+        //     styleTitle={styles.titleHeader}
+        //     sourceImgLeft={require('../../img/Back.png')}
+        //   />
+        //   <View style={styles.body}>
+        //     <View style={styles.btnLine}>
+        //       <TouchableOpacity style={styles.button}>
+        //         <Text style={styles.txtButton}>{'Nội dung'}</Text>
+        //       </TouchableOpacity>
+        //       <TouchableOpacity style={styles.button}>
+        //         <Text>{'Tài liệu'}</Text>
+        //       </TouchableOpacity>
+        //       <TouchableOpacity style={styles.button}>
+        //         <Text>{'Thảo luận'}</Text>
+        //       </TouchableOpacity>
+        //     </View>
+        //     <Image source={require('../../img/image15.png')} style={styles.img} />
+        //     <View style={styles.content}>
+        //       <Text style={styles.title}>{'Khóa học phát triển hệ thống'}</Text>
+        //       <Text>{'Giảng viên: Nguyễn Bích Ngọc'}</Text>
+        //       <View style={styles.inLine}>
+        //         <View style={styles.process}>
+        //           <View style={styles.inProcess} />
+        //         </View>
+        //         <Text style={styles.txtPercent}>{'70%'}</Text>
+        //       </View>
+        //       <View style={styles.inLine}>
+        //         <Image
+        //           style={styles.starIcon}
+        //           source={require('../../img/Star.png')}
+        //         />
+        //         <Image
+        //           style={styles.starIcon}
+        //           source={require('../../img/Star.png')}
+        //         />
+        //         <Image
+        //           style={styles.starIcon}
+        //           source={require('../../img/Star.png')}
+        //         />
+        //         <Image
+        //           style={styles.starIcon}
+        //           source={require('../../img/nonStar.png')}
+        //         />
+        //         <Image
+        //           style={styles.starIcon}
+        //           source={require('../../img/nonStar.png')}
+        //         />
+        //       </View>
+        //       <Text style={styles.blurText}>{'Số lượng học viên: 90'}</Text>
+        //       <View style={styles.inLine}>
+        //         <Text style={styles.blurText}>{'Bắt đầu: 28/12/2021'}</Text>
+        //         <Text style={styles.blurText}>{'Kết thúc: 28/12/2021'}</Text>
+        //       </View>
+        //       <Text style={styles.normalText}>
+        //         {
+        //           'Sợ nói sai chính là nỗi sợ thường gặp nhất của người Việt khi học Tiếng Anh. Từ việc sợ bị chê cười vì nói sai sẽ dẫn đến việc ngại nói , lâu ngày người học sẽ bị cứng miệng - tức là dù nghe hiểu nhưng không hiểu nói sao.... '
+        //         }
+        //         <Text style={styles.link}>{'Xem thêm'}</Text>
+        //       </Text>
+        //       <View style={styles.overBtn}>
+        //         <TouchableOpacity
+        //           style={styles.buttonDK}
+        //           onPress={() => {
+        //             navigation.navigate('Course');
+        //           }}>
+        //           <Text style={styles.txtBtnDK}>{'Vào học ngay'}</Text>
+        //         </TouchableOpacity>
+        //       </View>
+        //       <Text style={styles.normalText}>
+        //         {'- Chương 2:Đào tạo phát triển kĩ năng cho nhân viên'}
+        //       </Text>
+        //       <Text style={styles.normalText}>
+        //         {'- Chương 3:Xây dựng, phát triển nhân sự '}
+        //       </Text>
+        //     </View>
+        //   </View>
+      }
     </View>
   );
 };

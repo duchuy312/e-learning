@@ -34,111 +34,114 @@ export default function RegisterCourse({navigation}) {
   };
   return (
     <View style={styles.container}>
-      <Header
-        header={styles.header}
-        styleButtonLeft={styles.btnback}
-        styleImgLeft={styles.imgBack}
-        doST={doST}
-        title="Chi tiết khóa học"
-        styleTitle={styles.titleHeader}
-        sourceImgLeft={require('../../img/Back.png')}
-      />
-      <View style={styles.body}>
-        <Text style={styles.bold}>{'Chọn phương thức đăng kí học'}</Text>
-        <View style={styles.inline}>
-          <TouchableOpacity
-            style={styles.bigCircle}
-            onPress={() => pressByCode()}>
-            {byCode === true && <View style={styles.smallCircle} />}
-          </TouchableOpacity>
-          <Text>{'Đăng kí bằng mã code'}</Text>
-        </View>
-        <View style={styles.inline}>
-          <TouchableOpacity
-            style={styles.bigCircle}
-            onPress={() => pressByAccept()}>
-            {byAccept === true && <View style={styles.smallCircle} />}
-          </TouchableOpacity>
-          <Text>{'Đăng kí chờ phê duyệt'}</Text>
-        </View>
-        {/**-----------Check radio button -----------*/}
-        {byCode === true ? (
-          <View>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <TouchableOpacity
-                    style={styles.btnClose}
-                    onPress={() => {
-                      setModalVisible(false);
-                    }}>
-                    <Image
-                      source={require('../../img/close.png')}
-                      style={styles.imgClose}
-                    />
-                  </TouchableOpacity>
-                  <Text style={styles.titleModal}>{'Mã code của bạn là:'}</Text>
-                  <Text>{'123456'}</Text>
-                </View>
-              </View>
-            </Modal>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(t) => onChangeText(t)}
-              value={value}
-              placeholder="Nhập mã lớp học"
-              keyboardType="numeric"
-            />
-            <TouchableOpacity
-              style={styles.requestedBtn}
-              onPress={() => {
-                navigation.navigate('MiddleStartCourse');
-              }}>
-              <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
-            </TouchableOpacity>
-          </View>
-        ) : byAccept === true ? (
-          <View>
-            <TouchableOpacity
-              style={styles.requestedBtn}
-              onPress={() => {
-                setModalVisibleR(true);
-              }}>
-              <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
-            </TouchableOpacity>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisibleR}>
-              <View style={styles.modalOver}>
-                <View style={styles.modalContai}>
-                  <TouchableOpacity style={styles.btnClose} onPress={() => {}}>
-                    <Image
-                      source={require('../../img/close.png')}
-                      style={styles.imgClose}
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.circleTick}>
-                    <Image
-                      source={require('../../img/Tick.png')}
-                      style={styles.imgTick}
-                    />
-                  </View>
-                  <Text>{'Gửi đăng kí thành công'}</Text>
-                  <Text>{'Hãy chờ được phê duyệt để vào học'}</Text>
-                </View>
-              </View>
-            </Modal>
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.requestBtn}>
-            <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {
+        //   <Header
+        //   header={styles.header}
+        //   styleButtonLeft={styles.btnback}
+        //   styleImgLeft={styles.imgBack}
+        //   doST={doST}
+        //   title="Chi tiết khóa học"
+        //   styleTitle={styles.titleHeader}
+        //   sourceImgLeft={require('../../img/Back.png')}
+        // />
+        // <View style={styles.body}>
+        //   <Text style={styles.bold}>{'Chọn phương thức đăng kí học'}</Text>
+        //   <View style={styles.inline}>
+        //     <TouchableOpacity
+        //       style={styles.bigCircle}
+        //       onPress={() => pressByCode()}>
+        //       {byCode === true && <View style={styles.smallCircle} />}
+        //     </TouchableOpacity>
+        //     <Text>{'Đăng kí bằng mã code'}</Text>
+        //   </View>
+        //   <View style={styles.inline}>
+        //     <TouchableOpacity
+        //       style={styles.bigCircle}
+        //       onPress={() => pressByAccept()}>
+        //       {byAccept === true && <View style={styles.smallCircle} />}
+        //     </TouchableOpacity>
+        //     <Text>{'Đăng kí chờ phê duyệt'}</Text>
+        //   </View>
+        //   {/**-----------Check radio button -----------*/}
+        //   {byCode === true ? (
+        //     <View>
+        //       <Modal
+        //         animationType="slide"
+        //         transparent={true}
+        //         visible={modalVisible}>
+        //         <View style={styles.centeredView}>
+        //           <View style={styles.modalView}>
+        //             <TouchableOpacity
+        //               style={styles.btnClose}
+        //               onPress={() => {
+        //                 setModalVisible(false);
+        //               }}>
+        //               <Image
+        //                 source={require('../../img/close.png')}
+        //                 style={styles.imgClose}
+        //               />
+        //             </TouchableOpacity>
+        //             <Text style={styles.titleModal}>{'Mã code của bạn là:'}</Text>
+        //             <Text>{'123456'}</Text>
+        //           </View>
+        //         </View>
+        //       </Modal>
+        //       <TextInput
+        //         style={styles.textInput}
+        //         onChangeText={(t) => onChangeText(t)}
+        //         value={value}
+        //         placeholder="Nhập mã lớp học"
+        //         keyboardType="numeric"
+        //       />
+        //       <TouchableOpacity
+        //         style={styles.requestedBtn}
+        //         onPress={() => {
+        //           navigation.navigate('MiddleStartCourse');
+        //         }}>
+        //         <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
+        //       </TouchableOpacity>
+        //     </View>
+        //   ) : byAccept === true ? (
+        //     <View>
+        //       <TouchableOpacity
+        //         style={styles.requestedBtn}
+        //         onPress={() => {
+        //           setModalVisibleR(true);
+        //         }}>
+        //         <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
+        //       </TouchableOpacity>
+        //       <Modal
+        //         animationType="slide"
+        //         transparent={true}
+        //         visible={modalVisibleR}>
+        //         <View style={styles.modalOver}>
+        //           <View style={styles.modalContai}>
+        //             <TouchableOpacity style={styles.btnClose} onPress={() => {}}>
+        //               <Image
+        //                 source={require('../../img/close.png')}
+        //                 style={styles.imgClose}
+        //               />
+        //             </TouchableOpacity>
+        //             <View style={styles.circleTick}>
+        //               <Image
+        //                 source={require('../../img/Tick.png')}
+        //                 style={styles.imgTick}
+        //               />
+        //             </View>
+        //             <Text>{'Gửi đăng kí thành công'}</Text>
+        //             <Text>{'Hãy chờ được phê duyệt để vào học'}</Text>
+        //           </View>
+        //         </View>
+        //       </Modal>
+        //     </View>
+        //   ) : (
+        //     <TouchableOpacity style={styles.requestBtn}>
+        //       <Text style={styles.txtRequest}>{'Gửi yêu cầu'}</Text>
+        //     </TouchableOpacity>
+        //   )}
+        // </View>
+      }
+
     </View>
   );
 }

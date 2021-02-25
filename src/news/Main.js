@@ -23,22 +23,22 @@ const MainNews = () => {
     try {
       const value = await AsyncStorage.getItem('@MyToken');
       if (value !== null) {
-        console.log('We have Token');
+        //  console.log('We have Token');
         setToken(value);
       } else {
-        console.log('Dont have Token');
+        //  console.log('Dont have Token');
       }
     } catch (err) {
-      console.log('Read data error');
+      //  console.log('Read data error');
     }
-    console.log('Done.');
+    //console.log('Done.');
   };
   const storeID = async (value) => {
     try {
       await AsyncStorage.setItem('@NewID', JSON.stringify(value));
-      console.log(value);
+      // console.log(value);
     } catch (err) {
-      console.log('Saving error');
+      // console.log('Saving error');
     }
   };
   const getNews = async () => {
@@ -55,12 +55,12 @@ const MainNews = () => {
       )
       .then((response) => {
         setGetting(true);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setDataNew(response.data.data);
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => {
         setGetting(false);
