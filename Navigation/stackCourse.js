@@ -11,13 +11,14 @@ const Stack = createStackNavigator();
 
 function StackCourse() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{headerStyle: {backgroundColor: '#144E8C'}}}>
       <Stack.Screen
         name="MainCourse"
         component={MainCourse}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="TopTabCourse" component={TopTabCourse} />
+      <Stack.Screen name="Chi tiết khóa học" component={TopTabCourse} />
       <Stack.Screen
         name="RegisterCourse"
         component={RegisterCourse}

@@ -6,56 +6,35 @@ import {scale} from 'react-native-size-matters';
 
 import DetailCourse from '../src/course/Detail';
 import Documents from '../src/course/Documents';
-import Menu from '../src/course/Menu';
+import Chat from '../src/course/Chat';
 
 const Tab = createMaterialTopTabNavigator();
 
-// function TabBar({navigation}) {
-//   const doST = () => {
-//     navigation.navigate('MainCourse');
-//   };
-//   return (
-//     <View>
-//       <Header
-//         header={styles.header}
-//         styleButtonLeft={styles.btnback}
-//         styleImgLeft={styles.imgBack}
-//         doST={doST}
-//         title="Chi tiết khóa học"
-//         styleTitle={styles.titleHeader}
-//         sourceImgLeft={require('../img/Back.png')}
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   header: {
-//     flex: 1,
-//     backgroundColor: '#144E8C',
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   btnback: {
-//     width: scale(15),
-//     height: scale(15),
-//     position: 'absolute',
-//     left: scale(2),
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   imgBack: {width: scale(15), height: scale(15)},
-//   titleHeader: {color: '#fff', fontSize: scale(18)},
-// });
-
-export default function TopTabCourse() {
-  //tabBar={() => TabBar()
+export default function TopTabCourse({route}) {
+  const {courseID, token} = route.params;
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Nội dung" component={DetailCourse} />
-      <Tab.Screen name="Đề cương" component={Menu} />
-      <Tab.Screen name="Tài liệu" component={Documents} />
+    <Tab.Navigator
+      options={{
+        title: 'Chi tiết khóa học',
+        labelStyle: {fontSize: scale(20)},
+        tabBarColor: '#FF6347',
+        tabBarIcon: {color: '#fff'},
+      }}>
+      <Tab.Screen
+        name="Nội dung"
+        component={DetailCourse}
+        initialParams={{courseID: courseID, token: token}}
+      />
+      <Tab.Screen
+        name="Tài liệu"
+        component={Documents}
+        initialParams={{courseID: courseID, token: token}}
+      />
+      <Tab.Screen
+        name="Thảo luận"
+        component={Chat}
+        initialParams={{courseID: courseID, token: token}}
+      />
     </Tab.Navigator>
   );
 }

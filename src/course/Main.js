@@ -8,6 +8,7 @@ import {
   FlatList,
   StyleSheet,
   Modal,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { scale } from 'react-native-size-matters';
@@ -15,7 +16,6 @@ import axiosRetry from 'axios-retry';
 import axios from 'axios';
 
 import { Header } from '../components/header';
-import StarRating from '../components/Star';
 //import DetailScreen from '../components/modal';
 import { Clock } from '../../svg/icon';
 
@@ -28,28 +28,17 @@ const MainCourse = ({ navigation }) => {
   const [dataModal, setDataModal] = useState([]);
   const [valueSearch, setValueSearch] = useState(null);
   const [rating, setRating] = useState(0);
-  const [loading, setLoading] = useState(0);
-  const [courseID, setCourseID] = useState('');
   const [getting, setGetting] = useState(false);
 
   const getValueSearch = (value) => {
-    //console.log(value);
     setValueSearch(value);
   };
 
   const getToken = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@MyToken');
-      if (value !== null) {
-       // console.log('We have Token');
-        setToken(value);
-      } else {
-        //console.log('Dont have Token');
-      }
-    } catch (err) {
-     // console.log('Read data error');
+    const value = await AsyncStorage.getItem('@MyToken');
+    if (value !== null) {
+      setToken(value);
     }
-   // console.log('Done.');
   };
 
   const doST = () => {
@@ -58,26 +47,17 @@ const MainCourse = ({ navigation }) => {
 
   const getCourse = async () => {
     await axios.post('http://elearning-uat.vnpost.vn/api/course',
-      {categoryId: null, name: valueSearch },
+      { categoryId: null, name: valueSearch },
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        //console.log(res.json);
         setGetting(true);
         setData(res.data.data);
-        // console.log('hello');
-        res.data.data.length === null ? setLoading(loading + 1) : null;
-        console.log(data);
-      }).catch(function (err) {
-        // handle error
-        setLoading(loading + 1);
-        //console.log(error);
-      })
+      }).catch(function (err) {})
       .finally(() => {
-       // console.log(data);
         setGetting(false);
       });
   };
@@ -90,25 +70,25 @@ const MainCourse = ({ navigation }) => {
     if (token.length > 0) {
       getCourse();
     }
-  }, [valueSearch, token, loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueSearch, token]);
 
   const renderItem = ({ item }) => {
-    //console.log(item.id);
     const start = item.courseConfig.start.slice(0, 11);
     const end = item.courseConfig.end.slice(0, 11);
-    setCourseID(item.id);
     return (
       <View style={styles.contaiView}>
         <TouchableOpacity
           style={styles.inline}
           onPress={() => {
-            navigation.navigate('TopTabCourse', {
-              courseID: item.id,
-            });
+            navigation.navigate('Chi tiết khóa học', { courseID: item.id, token: token });
           }}>
           <Image
             style={styles.image}
-            source={require('../../img/image11.png')}
+            source={{
+              uri:
+                'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+            }}
             resizeMode="contain"
           />
           <View style={styles.content}>
@@ -120,14 +100,10 @@ const MainCourse = ({ navigation }) => {
                 {start} – {end}
               </Text>
             </View>
+            <View style={styles.linesq} />
             {
-              // <View style={styles.line}>
-              //   <View style={styles.backLine}>
-              //     <View style={styles.frontLine} />
-              //   </View>
-              //   <Text style={styles.txtLine}>{'70%'}</Text>
-              // </View>
-              // <StarRating ratings={rating} />
+              (item.price === null || item.price === 0) ? <Text style={styles.priceText}>Miễn Phí</Text>
+                : <Text style={styles.priceText}>{`Giá: ${item.price}`}</Text>
             }
           </View>
         </TouchableOpacity>
@@ -148,10 +124,16 @@ const MainCourse = ({ navigation }) => {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
-          extraData={courseID}
           refreshing={getting}
           onRefresh={() => getCourse()}
         />
+        {
+          // (loading > 15) ?
+          //   <View style={styles.viewErr}>
+          //     <Text style={styles.txtErr}>{'Đã xảy ra lỗi, vui lòng tải lại'}</Text>
+          //   </View>
+          //   :
+        }
       </View>
     </View>
   );
@@ -161,7 +143,6 @@ export default MainCourse;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#ddd' },
-
   /*------------------- */
   body: { flex: 9 },
   list: { flex: 1, marginTop: scale(20) },
@@ -176,8 +157,8 @@ const styles = StyleSheet.create({
   },
   inline: { flexDirection: 'row' },
   image: {
-    width: scale(110),
-    height: scale(120),
+    width: scale(120),
+    height: scale(130),
     margin: scale(5),
     borderRadius: 60,
   },
@@ -185,21 +166,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: scale(200),
   },
-  titleContent: { fontWeight: 'bold', fontSize: 15, width: '100%' , marginVertical: scale(7)},
-  time: { marginHorizontal: 2, flexDirection: 'row', marginVertical: scale(7)},
+  titleContent: { fontWeight: 'bold', fontSize: 15, width: '100%', marginVertical: scale(7) },
+  time: { marginHorizontal: 2, flexDirection: 'row', marginVertical: scale(7) },
   clockIcon: { width: scale(20), height: scale(20), marginRight: scale(5) },
-  line: { flexDirection: 'row', alignItems: 'center' },
-  backLine: {
-    width: scale(100),
-    height: scale(5),
-    backgroundColor: '#ddd',
-    marginTop: scale(5),
-    marginRight: scale(5),
-  },
-  frontLine: { width: scale(70), height: scale(5), backgroundColor: 'orange' },
   txtLine: { color: 'orange' },
   starLine: { flexDirection: 'row' },
   star: { width: scale(15), height: scale(15) },
   loading: { justifyContent: 'center', alignItems: 'center', marginTop: scale(12) },
+  linesq: { width: '90%', height: scale(1), backgroundColor: 'orange', marginHorizontal: scale(10) },
+  priceText: { fontSize: scale(20), marginHorizontal: scale(30), color: '#14bdee' },
+  viewErr: { backgroundColor: 'pink', height: scale(70), justifyContent: 'center', alignItems: 'center' },
+  txtErr: { fontSize: scale(20), color: 'red' },
+  /*------------------- */
   modalStyles: {},
 });
