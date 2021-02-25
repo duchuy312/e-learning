@@ -24,7 +24,7 @@ export default function TestDetail({ route }) {
                     style={styles.imageDetailTest}
                 />
                 <Text
-                    style={{ paddingLeft: scale(20), paddingTop: scale(30), fontWeight: '600', fontSize: scale(20) }}
+                    style={{ paddingLeft: scale(20), paddingTop: scale(30), fontWeight: '700', fontSize: scale(20) }}
                 >
                     Kỳ thi đánh giá nhân viên
                 </Text>
@@ -41,9 +41,8 @@ export default function TestDetail({ route }) {
                     />
                     <Text>60 phút</Text>
                 </View>
-                <TouchableOpacity
-                    style={styles.buttonDetail}
-                >
+                <TouchableOpacity style={styles.buttonDetail} onPress={() => navigation.navigate('TestChoice')}>
+                    
                     <Text style={{color: '#FFF', fontSize: scale(15)}}>Vào thi</Text>
                 </TouchableOpacity>
             </View>

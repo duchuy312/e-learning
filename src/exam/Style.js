@@ -61,7 +61,7 @@ const styles=StyleSheet.create({
         height: scale(45),
         borderRadius: scale(20),
         backgroundColor: '#FCB71E',
-        marginTop: scale(60),
+        marginTop: scale(40),
         alignSelf: 'center',
         justifyContent:'center',
         alignItems:'center'

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainExam from '../src/exam/Main';
 
 import TestDetail from '../src/exam/TestDetail';
+import TestChoice from '../src/exam/TestChoice';
 const Stack = createStackNavigator();
 
 function StackExam() {
@@ -12,6 +13,7 @@ function StackExam() {
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="MainExam" component={MainExam} />
       <Stack.Screen name="TestDetail" component={TestDetail} />
+      <Stack.Screen name="TestChoice" component={TestChoice} />
     </Stack.Navigator>
   );
 }
