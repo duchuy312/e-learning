@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,36 +11,123 @@ import {
   ImageBackground,
   TextInput,
 } from 'react-native';
-
+import Backbar from '../individual/backBar';
 import {scale} from 'react-native-size-matters';
-
-const MainIndividual = ({navigation}) => {
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+const MainIndividual = () => {
+  const [dataHistory, setDataHistory] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
+  const [token, setToken] = useState('');
+  const [count, setCount] = useState(0);
+  const getToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MyToken');
+      if (value !== null) {
+        console.log('We have Token');
+        setToken(value);
+      } else {
+        console.log('Dont have Token');
+      }
+    } catch (err) {
+      console.log('Read data error');
+    }
+    console.log('Done.');
+  };
+  const getdata = async () => {
+    await getToken();
+    await axios
+      .get(
+        'http://elearning-uat.vnpost.vn/api/competition/my-competition/statistical',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((response) => {
+        setDataHistory(response.data.data);
+      })
+      .catch(function (error) {
+        // handle error
+        setCount(count + 1);
+        console.log(error);
+      })
+      .finally(() => {
+        console.log(dataHistory);
+        dataHistory.length === 0 ? setCount(count + 1) : null;
+      });
+    await axios
+      .get('http://elearning-uat.vnpost.vn/api/profile/detail', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDataUser(response.data.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log(dataUser);
+        dataUser.length === 0 ? setCount(count + 1) : null;
+      });
+  };
+  useEffect(() => {
+    getdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count]);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <Backbar title={'     Trang cá nhân'} />
       <View style={styles.logocontainer}>
-        <ImageBackground
-          style={styles.logo}
-          source={require('../../img/logo.png')}
-        />
+        <View style={styles.circle}>
+          <ImageBackground
+            style={styles.logo}
+            source={require('../../img/logo.png')}
+          />
+        </View>
       </View>
       <View>
-        <Text style={styles.user}>Người dùng</Text>
+        <Text style={styles.user}>Admin</Text>
       </View>
       <View style={styles.view}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('UserInfor')}>
-          <Text style={styles.text}>Thông tin cá nhân</Text>
+          onPress={() =>
+            navigation.navigate('UserInfor', {
+              name: dataUser.fullName,
+              title: dataUser.title,
+              email: dataUser.email,
+              gender: dataUser.gender,
+              place: dataUser.place,
+              company: dataUser.poscodeName,
+              phone: dataUser.phoneNumber,
+              birth: dataUser.birthday,
+              avatar: dataUser.imageUsers,
+              UserTK: token,
+            })
+          }>
+          <Text style={styles.text}>Thông tin tài khoản</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('LoginScreen')}>
+          onPress={() => navigation.navigate('History')}>
           <Text style={styles.text}>Xem lịch sử thi</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button2}
           onPress={() => navigation.navigate('LoginScreen')}>
           <Text style={styles.text2}>Đăng Xuất</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button3}
+          onPress={() => navigation.navigate('ResetPass')}>
+          <Text style={styles.text2}>Đổi mật khẩu</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -50,32 +137,42 @@ const MainIndividual = ({navigation}) => {
 export default MainIndividual;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   logocontainer: {
-    flex: 2,
-    marginTop: scale(80),
-    height: scale(80),
-    width: '100%',
+    marginTop: scale(20),
+    height: scale(150),
+    width: scale(350),
     justifyContent: 'center',
     alignItems: 'center',
   },
   user: {
+    marginTop: 20,
     fontSize: 20,
-    fontStyle: 'italic',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'center',
   },
   view: {
     flex: 5,
     marginTop: 30,
   },
+  circle: {
+    height: scale(150),
+    width: scale(150),
+    borderRadius: scale(100),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: scale(3),
+    borderColor: '#f4f2f2',
+  },
   logo: {
     flex: 1,
+    marginTop: scale(30),
     height: scale(80),
     width: scale(120),
     alignSelf: 'center',
-    borderRadius: scale(80),
-    backgroundColor: 'orange',
+    overflow: 'hidden',
   },
   button: {
     backgroundColor: 'orange',
@@ -95,6 +192,20 @@ const styles = StyleSheet.create({
   button2: {
     backgroundColor: '#E5E5E5',
     marginTop: 30,
+    width: scale(290),
+    height: scale(50),
+    alignSelf: 'center',
+    borderRadius: scale(25),
+    borderWidth: 1,
+    borderColor: '#FCB71E',
+    marginBottom: scale(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+  },
+  button3: {
+    backgroundColor: '#E5E5E5',
+    marginTop: 10,
     width: scale(290),
     height: scale(50),
     alignSelf: 'center',
