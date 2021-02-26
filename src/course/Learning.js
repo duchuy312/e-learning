@@ -20,7 +20,6 @@ import CourseBar from '../components/CourseBar';
 const WareCourse = () => {
   const navigation = useNavigation();
   const [dataWare, setDataWare] = useState([]);
-  const [dataRate, setDataRate] = useState([]);
   const [wareDetail, setWareDetail] = useState([]);
   const WareID = useState('');
   const route = useRoute('');
@@ -36,22 +35,31 @@ const WareCourse = () => {
         },
       )
       .then((response) => {
-        console.log(response.data.data[0].chapterCourseWares[0].courseWare);
-        setWareDetail(response.data.data[0].chapterCourseWares[0].courseWare);
+        var Detail = [];
+        for (var i = 0; i < response.data.data.length; i++) {
+          Detail[i] = response.data.data[0].chapterCourseWares[i];
+        }
+        setWareDetail(Detail);
         setDataWare(response.data.data);
       })
       .catch(function (error) {
         console.log(error);
       })
       .finally(() => {
-        console.log(wareDetail);
+        if (dataWare.length === 0) {
+          setCount(count + 1);
+        } else {
+          console.log(dataWare);
+          console.log(wareDetail[0]);
+        }
       });
   };
   useEffect(() => {
     getWare();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const renderItem = ({item}) => {
+  }, [count]);
+  const renderItem = ({item, index}) => {
+    console.log(wareDetail[index]);
     return (
       <View style={styles.WareContainer}>
         <Text>{item.name}</Text>
@@ -72,7 +80,9 @@ const WareCourse = () => {
       <FlatList
         data={dataWare}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => {
+          return index.toString();
+        }}
         extraData={WareID}
       />
     </View>
