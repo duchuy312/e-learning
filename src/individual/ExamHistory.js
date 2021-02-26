@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
-import Backbar from './BackBar';
+import Backbar from '../individual/backBar';
 import ProgressCircle from 'react-native-progress-circle';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -16,7 +16,7 @@ const ExamHistory = () => {
   const route = useRoute();
   return (
     <View style={styles.container}>
-      <Backbar title={'Lịch sử thi'} />
+      <Backbar title={'lịch sử thi'} />
       <View style={styles.avatarContainer}>
         <ProgressCircle
           percent={route.params.percentPoint}
