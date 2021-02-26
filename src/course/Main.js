@@ -49,6 +49,7 @@ const MainCourse = () => {
       )
       .then((response) => {
         setGetting(true);
+        console.log(response);
         setDataCourse(response.data.data);
         response.data.data.length === null ? setCount(count + 1) : null;
       })
@@ -58,7 +59,6 @@ const MainCourse = () => {
         console.log(error);
       })
       .finally(() => {
-        console.log(dataCourse);
         setGetting(false);
       });
   };
@@ -69,7 +69,14 @@ const MainCourse = () => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
-      <TouchableOpacity style={[styles.itemNew, {backgroundColor}]}>
+      <TouchableOpacity
+        style={[styles.itemNew, {backgroundColor}]}
+        onPress={() =>
+          navigation.navigate('TopCourse', {
+            CourseID: item.id,
+            CourseTK: token,
+          })
+        }>
         <Image
           style={styles.imageNew}
           source={{

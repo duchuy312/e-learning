@@ -149,9 +149,7 @@ const EditProfile = () => {
                 style={styles.DateBox}
                 onPress={() => showDatepicker()}>
                 <Text style={styles.textInput}>
-                  {new Date(birthday)
-                    .toLocaleString('en-GB')
-                    .replace(', 08:00:00', '')}
+                  {new Date(birthday).toLocaleString('en-GB').substring(0, 10)}
                 </Text>
               </TouchableOpacity>
             </View>

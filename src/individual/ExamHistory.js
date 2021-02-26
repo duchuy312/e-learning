@@ -20,7 +20,7 @@ const ExamHistory = () => {
       <View style={styles.avatarContainer}>
         <ProgressCircle
           percent={route.params.percentPoint}
-          radius={45}
+          radius={80}
           borderWidth={8}
           color="#FCB71E"
           shadowColor="#f7ecdb"
@@ -29,10 +29,12 @@ const ExamHistory = () => {
             {route.params.percentPoint.toFixed(2)} %
           </Text>
         </ProgressCircle>
-        <Text>Tỉ lệ điểm trung bình trên mỗi đề thi đã làm</Text>
+        <Text style={styles.text}>
+          Tỉ lệ điểm trung bình trên mỗi đề thi đã làm
+        </Text>
         <ProgressCircle
           percent={route.params.percentTrue * 100}
-          radius={45}
+          radius={80}
           borderWidth={8}
           color="#FCB71E"
           shadowColor="#f7ecdb"
@@ -41,15 +43,17 @@ const ExamHistory = () => {
             {route.params.percentTrue.toFixed(4) * 100} %
           </Text>
         </ProgressCircle>
-        <Text>Trung bình số câu trả lời đúng trên mỗi đề thi đã làm</Text>
+        <Text style={styles.text}>
+          Trung bình số câu trả lời đúng trên mỗi đề thi đã làm
+        </Text>
         <ProgressCircle
           percent={
             (route.params.testDone /
               (route.params.testWait + route.params.testDone)) *
             100
           }
-          radius={45}
-          borderWidth={45}
+          radius={80}
+          borderWidth={80}
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
@@ -61,7 +65,7 @@ const ExamHistory = () => {
             %
           </Text>
         </ProgressCircle>
-        <Text>
+        <Text style={styles.text}>
           Đã làm {route.params.testDone} trên tổng số{' '}
           {route.params.testWait + route.params.testDone} bài
         </Text>
@@ -75,8 +79,13 @@ export default ExamHistory;
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white', alignItems: 'center'},
   avatarContainer: {
-    marginTop: scale(60),
+    alignItems: 'center',
+    marginTop: scale(10),
     height: scale(160),
-    width: scale(160),
+    width: scale(250),
+  },
+  text: {
+    fontSize: scale(18),
+    textAlign: 'center',
   },
 });

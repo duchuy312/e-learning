@@ -104,7 +104,7 @@ const MainNews = () => {
   };
   return (
     <View style={styles.container}>
-      <TitleBar title1={'Cuộc thi'}/>
+      <TitleBar title1={'Cuộc thi'} />
       <FlatList
         style={{marginTop: scale(20)}}
         data={dataExam}
