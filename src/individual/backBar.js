@@ -12,7 +12,8 @@ export const Backbar = (props) => {
     <View style={styles.backBar}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={styles.iconPosition}></TouchableOpacity>
+        style={styles.iconPosition}
+      />
       <Text style={styles.topTittle1}>{title1}</Text>
       <Text style={styles.topTittle}>{title}</Text>
     </View>
