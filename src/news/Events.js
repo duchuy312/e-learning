@@ -65,15 +65,23 @@ const MainEvents = () => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
-      <TouchableOpacity style={[styles.itemNew, {backgroundColor}]}>
+      <TouchableOpacity
+        style={[styles.itemNew, {backgroundColor}]}
+        onPress={() =>
+          navigation.navigate('EventsDetail', {
+            eventid: item.id,
+            eventtoken: token,
+          })
+        }>
         <Image
           style={styles.imageNew}
           source={{uri: 'http://elearning-uat.vnpost.vn' + item.image}}
         />
         <View style={styles.viewNew}>
-          <Text style={styles.titleNew} numberOfLines={3}>
+          <Text style={styles.titleNew} numberOfLines={2}>
             {item.title}
           </Text>
+          <Text style={styles.authorText}>Author: {item.createdBy}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -122,8 +130,11 @@ const styles = StyleSheet.create({
     width: scale(145),
   },
   titleNew: {
+    marginTop: scale(5),
     fontSize: scale(14),
-    marginLeft: scale(5),
     fontWeight: 'bold',
+  },
+  authorText: {
+    marginTop: scale(5),
   },
 });
