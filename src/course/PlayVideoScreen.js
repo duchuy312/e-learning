@@ -17,60 +17,18 @@ import {StarIcon} from '../../svg/icon';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import CourseBar from '../components/CourseBar';
 
-const WareCourse = () => {
+const VideoPlayer = () => {
   const navigation = useNavigation();
   const [dataWare, setDataWare] = useState([]);
   const [wareDetail, setWareDetail] = useState([]);
   const WareID = useState('');
   const route = useRoute('');
   const [count, setCount] = useState(0);
-  const getWare = async () => {
-    await axios
-      .get(
-        `http://elearning-uat.vnpost.vn/api/course-ware/course/${route.params.CourseID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${route.params.CourseTK}`,
-          },
-        },
-      )
-      .then((response) => {
-        var Detail = [];
-        for (var i = 0; i < response.data.data.length; i++) {
-          Detail[i] = response.data.data[0].chapterCourseWares[i];
-        }
-        console.log(Detail);
-        setWareDetail(Detail);
-        setDataWare(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => {
-        if (dataWare.length === 0) {
-          setCount(count + 1);
-        } else {
-          console.log('Got it');
-        }
-      });
-  };
-  useEffect(() => {
-    getWare();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const renderItem = ({item, index}) => {
+    console.log(wareDetail[index]);
     return (
       <View style={styles.WareContainer}>
-        <Text style={styles.title}>Chương {index + 1}:</Text>
-        {wareDetail[index] === undefined ? (
-          <Text>Chưa có học liệu cho chương mục này !</Text>
-        ) : (
-          <TouchableOpacity>
-            <Text>
-              {index + 1}. {wareDetail[0].courseWare.name}
-            </Text>
-          </TouchableOpacity>
-        )}
+        <Text>{item.name}</Text>
       </View>
     );
   };
@@ -85,18 +43,10 @@ const WareCourse = () => {
           }}
         />
       </View>
-      <FlatList
-        data={dataWare}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => {
-          return index.toString();
-        }}
-        extraData={WareID}
-      />
     </View>
   );
 };
-export default WareCourse;
+export default VideoPlayer;
 
 const styles = StyleSheet.create({
   container: {
@@ -121,10 +71,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: scale(100),
     borderBottomWidth: scale(1 / 2),
-    padding: scale(10),
-  },
-  title: {
-    fontSize: scale(14),
-    fontWeight: 'bold',
+    flexDirection: 'row',
   },
 });
