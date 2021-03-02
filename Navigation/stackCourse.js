@@ -6,6 +6,7 @@ import {scale} from 'react-native-size-matters';
 import TopCourse from './topCourse';
 import {BackIcon} from '../svg/icon';
 import WareCourse from '../src/course/Learning';
+import VideoPlayer from '../src/course/PlayVideoScreen';
 const Stack = createStackNavigator();
 
 function StackCourse() {
@@ -41,6 +42,14 @@ function StackCourse() {
       <Stack.Screen
         name="WareCourse"
         component={WareCourse}
+        options={{
+          headerTitle: (props) => <LogoTitle {...props} />,
+          headerBackImage: () => <BackIcon color={'white'} />,
+        }}
+      />
+      <Stack.Screen
+        name="VideoPlayer"
+        component={VideoPlayer}
         options={{
           headerTitle: (props) => <LogoTitle {...props} />,
           headerBackImage: () => <BackIcon color={'white'} />,

@@ -31,7 +31,30 @@ const ExamDetail = () => {
   const [modalVisible2, setModalVisible2] = useState(false);
   const [getting, setGetting] = useState(false);
   const [sendID, setSendID] = useState('');
-  // /api/roundtest/{id_round}/request
+  const [code, setCode] = useState('');
+  // /api/roundtest/{id_round}/
+  const JoinWithCode = async (id) => {
+    await axios
+      .post(
+        `http://elearning-uat.vnpost.vn/api/roundtest/${id}/inputCode/${code}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.examTK}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log('finally');
+      });
+  };
   const sendRequest = async (id) => {
     await axios
       .post(
@@ -196,12 +219,15 @@ const ExamDetail = () => {
               <Text style={styles.modalTextInside}>Nhập mã vòng thi</Text>
               <TextInput
                 fontSize={16}
+                value={code}
+                onChangeText={(input) => setCode(input)}
                 style={styles.TextInputView}
                 placeholder={'Mã Vòng Thi'}
               />
               <TouchableOpacity
                 style={styles.openButton}
                 onPress={() => {
+                  JoinWithCode(sendID);
                   setModalVisible(!modalVisible);
                 }}>
                 <Text>Xác Nhận</Text>

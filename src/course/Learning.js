@@ -37,9 +37,8 @@ const WareCourse = () => {
       .then((response) => {
         var Detail = [];
         for (var i = 0; i < response.data.data.length; i++) {
-          Detail[i] = response.data.data[0].chapterCourseWares[i];
+          Detail[i] = response.data.data[i].chapterCourseWares[0];
         }
-        console.log(Detail);
         setWareDetail(Detail);
         setDataWare(response.data.data);
       })
@@ -47,27 +46,31 @@ const WareCourse = () => {
         console.log(error);
       })
       .finally(() => {
-        if (dataWare.length === 0) {
-          setCount(count + 1);
-        } else {
-          console.log('Got it');
-        }
+        console.log(dataWare);
       });
   };
   useEffect(() => {
     getWare();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(wareDetail);
   const renderItem = ({item, index}) => {
+    console.log(wareDetail[index].courseWare.files);
     return (
       <View style={styles.WareContainer}>
         <Text style={styles.title}>Chương {index + 1}:</Text>
+        <Text>{item.name}</Text>
         {wareDetail[index] === undefined ? (
           <Text>Chưa có học liệu cho chương mục này !</Text>
         ) : (
-          <TouchableOpacity>
-            <Text>
-              {index + 1}. {wareDetail[0].courseWare.name}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('VideoPlayer', {
+                urlFile: wareDetail[index].courseWare.name,
+              })
+            }>
+            <Text style={styles.linkText}>
+              {index + 1}. {wareDetail[index].courseWare.name}
             </Text>
           </TouchableOpacity>
         )}
@@ -126,5 +129,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(14),
     fontWeight: 'bold',
+  },
+  linkText: {
+    color: 'blue',
   },
 });

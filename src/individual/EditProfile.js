@@ -16,6 +16,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
+import {CameraIcon} from '../../svg/icon';
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -89,12 +90,15 @@ const EditProfile = () => {
             }}>
             <View style={styles.avatarContainer}>
               <View style={styles.circle}>
-                <Image
+                <ImageBackground
                   style={styles.logo}
                   source={{
                     uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
-                  }}
-                />
+                  }}>
+                  <TouchableOpacity style={styles.changeAvatarBut}>
+                    <CameraIcon />
+                  </TouchableOpacity>
+                </ImageBackground>
               </View>
             </View>
             <View style={styles.nameInput}>
@@ -236,6 +240,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     resizeMode: 'stretch',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   button1: {
     marginTop: scale(20),
@@ -326,5 +332,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
+  },
+  changeAvatarBut: {
+    height: '20%',
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100, 54, 54, 0.3)',
+    justifyContent: 'center',
   },
 });

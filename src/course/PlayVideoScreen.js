@@ -1,46 +1,95 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
-  ImageBackground,
   TouchableOpacity,
-  ScrollView,
   StyleSheet,
   Image,
   FlatList,
+  Platform,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import Backbar from '../components/BackBar';
-import axios from 'axios';
-import {StarIcon} from '../../svg/icon';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import CourseBar from '../components/CourseBar';
+import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
+import Video from 'react-native-video';
 
 const VideoPlayer = () => {
-  const navigation = useNavigation();
-  const [dataWare, setDataWare] = useState([]);
-  const [wareDetail, setWareDetail] = useState([]);
-  const WareID = useState('');
-  const route = useRoute('');
-  const [count, setCount] = useState(0);
-  const renderItem = ({item, index}) => {
-    console.log(wareDetail[index]);
-    return (
-      <View style={styles.WareContainer}>
-        <Text>{item.name}</Text>
-      </View>
-    );
+  const route = useRoute();
+  const videoPlayer = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
+  const noop = () => {};
+  const onSeek = (seek) => {
+    videoPlayer?.current.seek(seek);
+  };
+  const onSeeking = (currentVideoTime) => setCurrentTime(currentVideoTime);
+  const onPaused = (newState) => {
+    setPaused(!paused);
+    setPlayerState(newState);
+  };
+  const onReplay = () => {
+    videoPlayer?.current.seek(0);
+    setCurrentTime(0);
+    if (Platform.OS === 'android') {
+      setPlayerState(PLAYER_STATES.PAUSED);
+      setPaused(true);
+    } else {
+      setPlayerState(PLAYER_STATES.PLAYING);
+      setPaused(false);
+    }
+  };
+
+  const onProgress = (data) => {
+    if (!isLoading) {
+      setCurrentTime(data.currentTime);
+    }
+  };
+
+  const onLoad = (data) => {
+    setDuration(Math.round(data.duration));
+    setIsLoading(false);
+  };
+
+  const onLoadStart = () => setIsLoading(true);
+
+  const onEnd = () => {
+    setPlayerState(PLAYER_STATES.ENDED);
+    setCurrentTime(duration);
   };
   return (
     <View style={styles.container}>
       <View style={styles.logocontainer}>
-        <Image
-          style={styles.imageNew}
+        <Video
+          onEnd={() => onEnd}
+          onLoad={onLoad}
+          onLoadStart={onLoadStart}
+          posterResizeMode={'cover'}
+          onProgress={onProgress}
+          paused={paused}
+          ref={(ref) => (videoPlayer.current = ref)}
+          resizeMode={'cover'}
           source={{
-            uri:
-              'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+            uri: `${route.params.urlFile}`,
           }}
+          style={styles.backgroundVideo}
+        />
+        <MediaControls
+          isFullScreen={isFullScreen}
+          onFullScreen={noop}
+          duration={duration}
+          isLoading={isLoading}
+          progress={currentTime}
+          onPaused={onPaused}
+          onReplay={onReplay}
+          onSeek={onSeek}
+          onSeeking={onSeeking}
+          mainColor={'red'}
+          playerState={playerState}
+          sliderStyle={{containerStyle: {}, thumbStyle: {}, trackStyle: {}}}
         />
       </View>
     </View>
@@ -52,7 +101,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'white',
   },
   logocontainer: {
     height: scale(200),
@@ -72,5 +120,14 @@ const styles = StyleSheet.create({
     height: scale(100),
     borderBottomWidth: scale(1 / 2),
     flexDirection: 'row',
+  },
+  backgroundVideo: {
+    height: '100%',
+    width: '100%',
+  },
+  mediaControls: {
+    height: '100%',
+    flex: 1,
+    alignSelf: 'center',
   },
 });

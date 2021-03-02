@@ -1,7 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {scale} from 'react-native-size-matters';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
 import {BuildingIcon, ClockIcon} from '../../svg/icon';
@@ -9,6 +16,7 @@ import ProgressCircle from 'react-native-progress-circle';
 
 const ExamResult = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const [ExamID] = useState('');
   const [dataExam, setDataExam] = useState([]);
   const [getting, setGetting] = useState(false);
@@ -106,7 +114,19 @@ const ExamResult = () => {
         </View>
         <Text>Bạn đã làm bài thi này {dataExam.length} lần</Text>
         {route.params.doAgain === 0 ? (
-          <Text>Vòng thi không giới hạn số lần làm bài</Text>
+          <View>
+            <Text>Vòng thi không giới hạn số lần làm bài</Text>
+            <TouchableOpacity
+              style={styles.littleButton}
+              onPress={() =>
+                navigation.navigate('DoingExam', {
+                  idRound: route.params.idRound,
+                  token: route.params.token,
+                })
+              }>
+              <Text>Làm bài</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           <Text>
             Vòng thi này bạn chỉ có thể làm {route.params.doAgain} lần
@@ -153,7 +173,7 @@ const styles = StyleSheet.create({
     marginRight: scale(8),
     alignItems: 'center',
     backgroundColor: 'white',
-    height: scale(130),
+    height: scale(148),
   },
   titleContainer: {
     width: '98%',
@@ -230,5 +250,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: scale(8),
     borderRadius: scale(5),
+  },
+  littleButton: {
+    backgroundColor: '#FCB71E',
+    height: scale(20),
+    width: scale(60),
+    alignSelf: 'center',
+    borderRadius: scale(10),
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: scale(3),
+    marginTop: scale(5),
   },
 });

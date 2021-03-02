@@ -2,19 +2,21 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  ImageBackground,
+  Modal,
+  Alert,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
   Image,
+  TextInput,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
 import {StarIcon} from '../../svg/icon';
-import {Rating, AirbnbRating} from 'react-native-ratings';
 import CourseBar from '../components/CourseBar';
+import {CircleCheckIcon} from '../../svg/icon';
 
 const CourseDetail = () => {
   const navigation = useNavigation();
@@ -24,6 +26,56 @@ const CourseDetail = () => {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [register, setRegister] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
+  console.log(route.params.CourseID);
+  const [code, setCode] = useState('');
+  const JoinWithCode = async () => {
+    await axios
+      .post(
+        'http://elearning-uat.vnpost.vn/api/course/request-code',
+        {
+          courseId: route.params.CourseID,
+          courseCode: code,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.examTK}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log('finally');
+      });
+  };
+  const sendRequest = async () => {
+    await axios
+      .get(
+        `http://elearning-uat.vnpost.vn/api/course/request/${route.params.CourseID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.examTK}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log('finally');
+      });
+  };
   const requestOne = axios.get(
     `http://elearning-uat.vnpost.vn/api/course/${route.params.CourseID}`,
     {
@@ -148,24 +200,97 @@ const CourseDetail = () => {
                   </View>
                 </View>
                 <Text style={styles.contentText}>{dataCourse.description}</Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    navigation.navigate('WareCourse', {
-                      CourseID: route.params.CourseID,
-                      CourseTK: route.params.CourseTK,
-                    })
-                  }>
-                  <Text style={styles.buttontext}>
-                    {register ? 'Vào học' : 'Đăng ký học'}
-                  </Text>
-                </TouchableOpacity>
+                {register ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() =>
+                      navigation.navigate('WareCourse', {
+                        CourseID: route.params.CourseID,
+                        CourseTK: route.params.CourseTK,
+                      })
+                    }>
+                    <Text style={styles.buttontext}>Vào học</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={styles.buttontext}>Đăng ký học</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           ) : null}
           <View style={styles.whiteSpace} />
         </View>
       </ScrollView>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Bạn chưa có trong danh sách học viên !
+            </Text>
+            <View style={styles.viewInsideModal}>
+              <Text style={styles.modalTextInside}>Nhập mã khóa học</Text>
+              <TextInput
+                fontSize={16}
+                value={code}
+                onChangeText={(input) => setCode(input)}
+                style={styles.TextInputView}
+                placeholder={'Mã Vòng Khóa Học'}
+              />
+              <TouchableOpacity
+                style={styles.openButton}
+                onPress={() => {
+                  JoinWithCode();
+                  setModalVisible(!modalVisible);
+                }}>
+                <Text>Xác Nhận</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.iconAndText}>
+              <Text>Bạn không có mã khóa học ? </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible2(true);
+                  sendRequest();
+                }}>
+                <Text style={styles.linkText}>Gửi yêu cầu đăng ký</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible2}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.smallCenteredView}>
+          <View style={styles.smallModalView}>
+            <CircleCheckIcon />
+            <Text style={styles.smallModalText}>
+              Xin chờ quản trị viên phê duyệt
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible2(!modalVisible2);
+              }}>
+              <View style={styles.blueButton}>
+                <Text style={{color: 'white'}}>OK</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -278,5 +403,89 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: scale(100),
     justifyContent: 'space-between',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  smallCenteredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100,100,100, 0.5)',
+  },
+  modalView: {
+    height: scale(220),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(10),
+  },
+  smallModalView: {
+    height: scale(180),
+    width: scale(200),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(8),
+  },
+  viewInsideModal: {
+    backgroundColor: '#e7ebee',
+    width: '96%',
+    height: scale(110),
+    alignItems: 'center',
+    borderRadius: scale(10),
+    justifyContent: 'space-around',
+  },
+  TextInputView: {
+    backgroundColor: 'white',
+    height: scale(40),
+    width: scale(200),
+    borderRadius: scale(10),
+  },
+  modalText: {
+    color: '#ff5900',
+    fontSize: scale(20),
+    textAlign: 'center',
+    marginBottom: scale(10),
+  },
+  modalTextInside: {
+    color: '#4C70AE',
+    fontSize: scale(14),
+  },
+  openButton: {
+    width: scale(60),
+    height: scale(30),
+    borderRadius: scale(10),
+    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'orange',
+  },
+  blueButton: {
+    width: scale(40),
+    height: scale(20),
+    borderRadius: scale(4),
+    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#209cf4',
+  },
+  linkText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+    textAlign: 'center',
   },
 });
