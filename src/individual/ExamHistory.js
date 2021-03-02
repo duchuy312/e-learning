@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
-import Backbar from '../individual/backBar';
+import Backbar from '../components/BackBar';
 import ProgressCircle from 'react-native-progress-circle';
 import {useNavigation, useRoute} from '@react-navigation/native';
 

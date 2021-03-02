@@ -14,13 +14,13 @@ import {
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import Backbar from './backBar';
+import Backbar from '../components/BackBar';
 const UserInfor = () => {
   const route = useRoute();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Backbar title={'     Trang cá nhân'} />
+      <Backbar title={'      Trang cá nhân'} />
       <View style={styles.avatarContainer}>
         <View style={styles.circle}>
           <Image

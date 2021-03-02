@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   iconPosition: {
     marginLeft: scale(8),

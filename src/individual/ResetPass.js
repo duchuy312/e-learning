@@ -1,6 +1,6 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable no-unused-vars */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,47 +18,89 @@ import {
   FilledTextField,
   OutlinedTextField,
 } from 'rn-material-ui-textfield';
-// import PasswordField from 'react-native-password-field';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import axios from 'axios';
 
-const ResetPass = ({navigation}) => {
-  const [password, setPassword] = React.useState('');
-  const [newpass, setNewpass] = React.useState('');
-  // const [password, setPassword] = React.useState('');
+const ResetPass = () => {
+  const [idenUser] = useState('route.params.id');
+  const [pass, setPass] = useState('');
+  const [pass1, setPass1] = useState('');
+  const [pass2, setPass2] = useState('');
+  const [token, setToken] = useState('');
+  const navigation = useNavigation();
+  const route = useRoute();
+  console.log(token);
+  useEffect(() => {
+    setToken(route.params.UserToken);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const ChangeConfirm = () => {
+    if (pass1 === pass2) {
+      ResetPassword();
+    } else {
+      console.log('Xin vui lòng kiểm tra lại mật khẩu vừa nhập');
+    }
+  };
+  const ResetPassword = () => {
+    axios
+      .put(
+        'http://elearning-uat.vnpost.vn/api/profile/password',
+        {
+          id: route.params.id,
+          password: pass1,
+          oldPassword: pass,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then(function (response) {
+        // console.log(response);
+        if (response.status === 200) {
+          console.log('Change Success');
+        } else {
+          console.log('Cannot change password');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {
+        navigation.navigate('LoginScreen');
+      });
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.text1}>Mật khẩu</Text>
-        {/* <PasswordField
-          placeholder={'Password'}
-          passwordValue={this.state.password}
-          backgroundColor={'white'}
-          textColor={'black'}
-          onChangeText={(password) => this.setState({password: password})}
-        /> */}
         <TextField
           containerStyle={styles.textInput}
           label="Mật Khẩu cũ"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-          }}
+          value={pass}
+          onChangeText={(passinput) => setPass(passinput)}
         />
         <TextField
           containerStyle={styles.textInput}
           label="Mật Khẩu mới"
-          value={newpass}
-          onChangeText={(text) => {
-            setNewpass(text);
-          }}
+          value={pass1}
+          onChangeText={(pass1input) => setPass1(pass1input)}
+          style={styles.textInput}
+          secureTextEntry={true}
         />
         <TextField
           containerStyle={styles.textInput}
           label="Nhập lại mật khẩu"
+          value={pass2}
+          onChangeText={(repassinput) => setPass2(repassinput)}
+          style={styles.textInput}
+          secureTextEntry={true}
         />
         <TouchableOpacity
           style={styles.button3}
-          onPress={() => navigation.navigate('ForgotPassScreen')}>
+          onPress={() => ChangeConfirm()}>
           <Text style={styles.linktext}>Cập nhật mật khẩu mới</Text>
         </TouchableOpacity>
       </ScrollView>

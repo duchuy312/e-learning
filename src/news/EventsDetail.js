@@ -16,8 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import HTML from 'react-native-render-html';
 
-
-
 const EventsDetail = () => {
   const [newID, setNewID] = useState();
   const [dataEvent, setDataEvent] = useState([]);
@@ -126,7 +124,6 @@ const styles = StyleSheet.create({
     lineHeight: scale(20),
     marginLeft: scale(8),
     marginRight: scale(8),
-    lineHeight: scale(20),
     textAlign: 'justify',
   },
   content: {

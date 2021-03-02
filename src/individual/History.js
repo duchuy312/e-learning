@@ -12,73 +12,30 @@ import {
   Button,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import Backbar from './backBar';
+import Backbar from '../components/BackBar';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const LessonList = [
-  {
-    id: '1',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-  {
-    id: '2',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-  {
-    id: '3',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-  {
-    id: '4',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-  {
-    id: '5',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-  {
-    id: '6',
-    name: 'Bài thi số 1',
-    image: require('../../img/image11.png'),
-    result: '90/100',
-    rating: 'Đạt',
-    time: '27/9/2020',
-  },
-];
 const History = ({navigation, item}) => {
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
-      <Backbar title={'       Lịch sử thi'} />
+      <Backbar title={'Lịch sử thi'}></Backbar>
       <TouchableOpacity onPress={() => navigation.navigate('ExamHistory')}>
         <View style={styles.view}>
           <View style={{alignItems: 'center'}}>
             <Image
-              source={require('../../img/image11.png')}
+              source={{
+                uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
+              }}
               style={styles.stretch}
               resizeMode="contain"
             />
           </View>
           <View style={{flex: 6}}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Bài thi số 1</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+              <Text>{route.params.name}</Text>
+            </Text>
             <View style={{marginTop: 5}}>
               <Text>Kết quả: 90/100</Text>
               <Text>Xếp loại: Đạt</Text>

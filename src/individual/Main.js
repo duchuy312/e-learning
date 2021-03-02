@@ -11,7 +11,7 @@ import {
   ImageBackground,
   TextInput,
 } from 'react-native';
-import Backbar from '../individual/backBar';
+import Backbar from '../components/BackBar';
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -39,9 +39,9 @@ const MainIndividual = () => {
     await getToken();
     await axios
       .get(
-        'http://elearning-uat.vnpost.vn/api/competition/my-competition/statistical',
+        'http://elearning-uat.vnpost.vn//api/competition/roundtest/history/list/{idRoundtest}',
         {
-          headers: {
+          header: {
             Authorization: `Bearer ${token}`,
           },
         },
@@ -83,7 +83,7 @@ const MainIndividual = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Backbar title={'     Trang cá nhân'} />
+      <Backbar title={'Trang cá nhân'} />
       <View style={styles.logocontainer}>
         <View style={styles.circle}>
           <ImageBackground
@@ -93,7 +93,7 @@ const MainIndividual = () => {
         </View>
       </View>
       <View>
-        <Text style={styles.user}>Admin</Text>
+        <Text style={styles.user}>{dataUser.fullName}</Text>
       </View>
       <View style={styles.view}>
         <TouchableOpacity
@@ -116,7 +116,18 @@ const MainIndividual = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('History')}>
+          onPress={() =>
+            navigation.navigate('History', {
+              email: dataUser.email,
+              avatar: dataUser.imageUsers,
+              name: dataUser.fullName,
+              // nameCompetition: dataHistory.nameCompetition,
+              // imageCompetition: dataHistory.imageCompetition,
+              // percentPoint: dataHistory.percentMediumPoint,
+              // percentTrue: dataHistory.percentMediumQuestion,
+              // pass: dataHistory.qualified,
+            })
+          }>
           <Text style={styles.text}>Xem lịch sử thi</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -126,7 +137,12 @@ const MainIndividual = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button3}
-          onPress={() => navigation.navigate('ResetPass')}>
+          onPress={() =>
+            navigation.navigate('ResetPass', {
+              UserToken: token,
+              id: dataUser.id,
+            })
+          }>
           <Text style={styles.text2}>Đổi mật khẩu</Text>
         </TouchableOpacity>
       </View>
