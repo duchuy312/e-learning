@@ -116,7 +116,7 @@ export default function Documents({route}) {
   );
 
   useEffect(() => {
-    if (token.length > 0 && loading <= 15) {
+    if (token.length > 0) {
       getDocuments();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

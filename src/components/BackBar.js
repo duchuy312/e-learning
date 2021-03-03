@@ -13,16 +13,15 @@ import {BackIcon, NewsIcon} from '../../svg/icon';
 
 export const Backbar = (props) => {
   const navigation = useNavigation();
-  const {title, title1} = props;
+  const {title} = props;
   return (
     <View style={styles.searchBar}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.iconPosition}>
-        <BackIcon />
-        <Text style={styles.topTittle}>{title}</Text>
+        <BackIcon color={'#fff'} />
       </TouchableOpacity>
-      <Text style={styles.topTittle1}>{title1}</Text>
+      <Text style={styles.topTittle}>{title}</Text>
     </View>
   );
 };
@@ -34,16 +33,22 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#144E8C',
   },
   iconPosition: {
     marginLeft: scale(8),
     marginRight: scale(8),
     flexDirection: 'row',
-    alignItems: 'center',
+    position: 'absolute',
+    left: scale(5),
   },
   topTittle: {
     fontSize: scale(20),
     marginLeft: scale(5),
-    color: 'black',
+    color: 'white',
+    width: scale(300),
+    position: 'absolute',
+    right: scale(0),
   },
 });

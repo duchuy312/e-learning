@@ -7,20 +7,23 @@ import {
   FlatList,
   StyleSheet,
   TextInput,
+  Modal,
 } from 'react-native';
+import axiosRetry from 'axios-retry';
 import axios from 'axios';
 import {scale} from 'react-native-size-matters';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
-const Chat = ({navigation, route}) => {
+const Chat = ({route}) => {
   const [data, setData] = useState([]);
   const [valueComment, setValueComment] = useState('');
   const [loading, setLoading] = useState(0);
-  const [linkImg, setLinkImg] = useState('');
   const [date, setDate] = useState('');
+  const [valueStar, setValueStar] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {courseID, token} = route.params;
-
-  //console.log(courseID);
+  axiosRetry(axios, {retries: 15});
   function postComment() {
     axios
       .post(
@@ -39,15 +42,32 @@ const Chat = ({navigation, route}) => {
       });
   }
 
+  function postCourseEvaluate() {
+    axios
+      .post(
+        'http://elearning-uat.vnpost.vn/api/course/rating',
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        },
+        {
+          body: {valuess: valueStar, courseId: courseID},
+        },
+      )
+      .then((res) => {})
+      .catch((err) => {
+        console.log('chat', err);
+      });
+  }
+
   function getComment() {
     axios
       .get(`http://elearning-uat.vnpost.vn/api/comment/course/${courseID}`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then((res) => {
+        //console.log(res);
         //console.log(res.data.data);
         setData(res.data.data);
-        setLinkImg(`http://elearning-uat.vnpost.vn/${data.urlImage}`);
         //console.log(linkImg);
       })
       .catch(function (err) {
@@ -70,16 +90,16 @@ const Chat = ({navigation, route}) => {
   }
 
   const renderItem = ({item}) => {
-    // setLinkImg()
-    //console.log(item.list.urlImage);
+    // console.log(item.urlImage);
     getDate(item.createdDate);
     return (
       <View>
         <View style={styles.viewInput}>
           <View style={styles.viewAvata}>
-            {
-              // <Image source={{uri: {linkImg}}} />
-            }
+            <Image
+              source={{uri: `http://elearning-uat.vnpost.vn${item.urlImage}`}}
+              style={styles.imgAva}
+            />
           </View>
           <View style={styles.contaiText}>
             <Text style={styles.createBy}>{item.createdBy}</Text>
@@ -129,9 +149,40 @@ const Chat = ({navigation, route}) => {
           keyExtractor={(item) => item.id.toString()}
         />
       )}
-      <TouchableOpacity style={styles.btnSendStar} onPress={postComment}>
+      <TouchableOpacity
+        style={styles.btnSendStar}
+        onPress={() => {
+          setModalVisible(true);
+        }}>
         <Text style={styles.whiteText}>Đánh giá bằng sao</Text>
       </TouchableOpacity>
+      {
+        //--------------------------MODAL---------------------------
+      }
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Đánh giá khóa học</Text>
+            <Rating
+              type="star"
+              ratingCount={5}
+              imageSize={30}
+              showRating
+              onFinishRating={(num) => {
+                setValueStar(num);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.btnSend}
+              onPress={() => {
+                setModalVisible(false);
+                postCourseEvaluate();
+              }}>
+              <Text style={styles.sendText}>Send</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -152,6 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  imgAva: {width: scale(65), height: scale(65), borderRadius: scale(35)},
   txtAva: {fontSize: scale(30)},
   contaiTextInput: {
     justifyContent: 'center',
@@ -206,6 +258,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   txtNonComment: {color: 'red'},
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: scale(20),
+    backgroundColor: '#aaa',
+  },
+  modalView: {
+    margin: scale(10),
+    backgroundColor: '#fff',
+    borderRadius: scale(10),
+    padding: scale(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scale(200),
+    height: scale(200),
+  },
+  btnSend: {
+    width: scale(100),
+    height: scale(40),
+    backgroundColor: 'orange',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(20),
+    marginVertical: scale(10),
+  },
+  sendText: {color: '#fff'},
+  modalText: {fontWeight: 'bold', fontSize: scale(16)},
 });
 
 export default Chat;
