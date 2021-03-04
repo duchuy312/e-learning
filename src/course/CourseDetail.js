@@ -19,16 +19,15 @@ import CourseBar from '../components/CourseBar';
 import {CircleCheckIcon} from '../../svg/icon';
 
 const CourseDetail = () => {
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [dataCourse, setDataCourse] = useState([]);
   const [dataRate, setDataRate] = useState([]);
   const route = useRoute();
-  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [register, setRegister] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
-  console.log(route.params.CourseID);
   const [code, setCode] = useState('');
   const JoinWithCode = async () => {
     await axios
@@ -110,17 +109,18 @@ const CourseDetail = () => {
           setRegister(response2.data.data);
         }),
       )
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(() => {
-        if (dataCourse.length === 0 || dataRate.length === 0) {
+      .then(() => {
+        if (dataCourse.length === 0) {
           setCount(count + 1);
         } else {
-          console.log(dataCourse);
           setLoading(true);
+          console.log(dataCourse);
         }
+      })
+      .catch(function (error) {
+        // handle error
+        setCount(count + 1);
+        console.log(error);
       });
   };
   useEffect(() => {

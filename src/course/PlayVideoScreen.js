@@ -60,6 +60,7 @@ const VideoPlayer = () => {
     setPlayerState(PLAYER_STATES.ENDED);
     setCurrentTime(duration);
   };
+  console.log(route.params.urlFile);
   return (
     <View style={styles.container}>
       <View style={styles.logocontainer}>
@@ -73,7 +74,7 @@ const VideoPlayer = () => {
           ref={(ref) => (videoPlayer.current = ref)}
           resizeMode={'cover'}
           source={{
-            uri: `${route.params.urlFile}`,
+            uri: `http://elearning-uat.vnpost.vn/${route.params.urlFile}`,
           }}
           style={styles.backgroundVideo}
         />
@@ -91,6 +92,9 @@ const VideoPlayer = () => {
           playerState={playerState}
           sliderStyle={{containerStyle: {}, thumbStyle: {}, trackStyle: {}}}
         />
+      </View>
+      <View style={styles.TitleContainer}>
+        <Text style={styles.title}>{route.params.name}</Text>
       </View>
     </View>
   );
@@ -129,5 +133,15 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
     alignSelf: 'center',
+  },
+  TitleContainer: {
+    width: '96%',
+    marginTop: scale(20),
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: scale(20),
+    fontWeight: 'bold',
   },
 });

@@ -49,7 +49,6 @@ const MainEvents = () => {
       )
       .then((response) => {
         setGetting(true);
-        console.log(response);
         setDataEvent(response.data.data);
         response.data.data.length === null
           ? setCountEvent(countEvent + 1)

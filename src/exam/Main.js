@@ -50,6 +50,7 @@ const MainNews = () => {
         },
       )
       .then((response) => {
+        console.log(response);
         setGetting(true);
         setDataExam(response.data.data);
       })

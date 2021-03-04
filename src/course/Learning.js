@@ -13,9 +13,6 @@ import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
-import {StarIcon} from '../../svg/icon';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import CourseBar from '../components/CourseBar';
 
 const WareCourse = () => {
   const navigation = useNavigation();
@@ -25,54 +22,68 @@ const WareCourse = () => {
   const route = useRoute('');
   const [count, setCount] = useState(0);
   const getWare = async () => {
-    await axios
-      .get(
-        `http://elearning-uat.vnpost.vn/api/course-ware/course/${route.params.CourseID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${route.params.CourseTK}`,
+    try {
+      await axios
+        .get(
+          `http://elearning-uat.vnpost.vn/api/course-ware/course/${route.params.CourseID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${route.params.CourseTK}`,
+            },
           },
-        },
-      )
-      .then((response) => {
-        var Detail = [];
-        for (var i = 0; i < response.data.data.length; i++) {
-          Detail[i] = response.data.data[i].chapterCourseWares[0];
-        }
-        setWareDetail(Detail);
-        setDataWare(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => {
-        console.log(dataWare);
-      });
+        )
+        .then((response) => {
+          const Detail = [];
+          for (var i = 0; i < response.data.data.length; i++) {
+            Detail[i] = response.data.data[i].chapterCourseWares;
+          }
+          setWareDetail(Detail);
+          setDataWare(response.data.data);
+        });
+    } catch (error) {
+      console.log(error);
+      setCount(count + 1);
+    }
   };
   useEffect(() => {
     getWare();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  console.log(wareDetail);
-  const renderItem = ({item, index}) => {
-    console.log(wareDetail[index].courseWare.files);
-    return (
-      <View style={styles.WareContainer}>
-        <Text style={styles.title}>Chương {index + 1}:</Text>
-        <Text>{item.name}</Text>
-        {wareDetail[index] === undefined ? (
-          <Text>Chưa có học liệu cho chương mục này !</Text>
-        ) : (
+  }, [count]);
+  var ArrView = [];
+  var ArrViewWithKey = [];
+  for (let i = 0; i < wareDetail.length; i++) {
+    for (let j = 0; j < wareDetail[i].length; j++) {
+      ArrView.push(
+        <View key={i}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('VideoPlayer', {
-                urlFile: wareDetail[index].courseWare.name,
+                urlFile: wareDetail[i][j].courseWare.files,
+                name: wareDetail[i][j].courseWare.name,
               })
             }>
             <Text style={styles.linkText}>
-              {index + 1}. {wareDetail[index].courseWare.name}
+              {wareDetail[i][j].courseWare.name}
             </Text>
           </TouchableOpacity>
+        </View>,
+      );
+    }
+  }
+  for (let i = 0; i < wareDetail.length; i++) {
+    ArrViewWithKey[i] = ArrView.filter((dataView) => {
+      return dataView.key === `${i}`;
+    });
+  }
+  console.log(wareDetail);
+  const renderItem = ({item, index}) => {
+    return (
+      <View style={styles.WareContainer}>
+        <Text style={styles.title}>{item.name}</Text>
+        {wareDetail[index] === undefined ? (
+          <Text>Chưa có học liệu cho chương mục này !</Text>
+        ) : (
+          <View>{ArrViewWithKey[index]}</View>
         )}
       </View>
     );

@@ -18,9 +18,32 @@ const DoingExam = () => {
   const [countEx, setCountEx] = useState(0);
   const [data, setData] = useState([]);
   const [answer, setAnswer] = useState([]);
-  const [choice, setChoice] = useState([]);
-  const [checked, setChecked] = useState(false);
-  const [yourAnswerID, setYourAnswerID] = useState([]);
+  const [choice, setChoice] = useState('');
+  const [dataSubmit, setDataSubmit] = useState([]);
+  const [yourAnswer, setYourAnswer] = useState([]);
+  const [yourAnswerID] = useState([]);
+  const submitAnswer = async () => {
+    await axios
+      .post(
+        `http://elearning-uat.vnpost.vn/api/roundtest/submit/${route.params.idRound}`,
+        dataSubmit,
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.examTK}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log(dataSubmit);
+      });
+  };
   const getExams = async () => {
     await axios
       .get(
@@ -33,6 +56,14 @@ const DoingExam = () => {
       )
       .then((response) => {
         var arr = [];
+        var submitArr = [
+          {
+            idQuestion: '',
+            answerChecked: [],
+            answerNotChecked: [],
+            typeQuestion: '',
+          },
+        ];
         console.log(response.data.data.questionRT);
         setData(response.data.data.questionRT);
         if (response.data.data.questionRT === undefined) {
@@ -40,8 +71,15 @@ const DoingExam = () => {
         } else {
           for (let i = 0; i < data.length; i++) {
             arr[i] = response.data.data.questionRT[i].answers;
+            submitArr[i] = {
+              idQuestion: response.data.data.questionRT[i].question.id,
+              answerChecked: [''],
+              answerNotChecked: [''],
+              typeQuestion: response.data.data.questionRT[i].typeQuestion,
+            };
           }
         }
+        setDataSubmit(submitArr);
         setAnswer(arr);
       })
       .catch(function (error) {
@@ -55,12 +93,15 @@ const DoingExam = () => {
       });
   };
   useEffect(() => {
-    getExams();
+    answer.length === 0 ? getExams() : null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countEx]);
-  function addAnswer(stt, ID) {
+  function addAnswer(stt, ID, answer) {
     yourAnswerID[stt] = ID;
-    console.log(yourAnswerID);
+    yourAnswer[stt] = answer;
+    dataSubmit[stt].answerChecked = [answer];
+    setChoice(ID);
+    console.log(yourAnswer);
   }
   const renderItem = ({item, index}) => {
     return (
@@ -80,10 +121,12 @@ const DoingExam = () => {
                     ? 'checked'
                     : 'unchecked'
                 }
-                onPress={() => addAnswer(index, answer[index][0].id)}
+                onPress={() =>
+                  addAnswer(index, answer[index][0].id, answer[index][0].answer)
+                }
               />
               <Text style={styles.answerText}>
-                {answer[index][0].answer}. {answer[index][0].contents}
+                A. {answer[index][0].contents}
               </Text>
             </View>
           ) : null}
@@ -98,10 +141,12 @@ const DoingExam = () => {
                     ? 'checked'
                     : 'unchecked'
                 }
-                onPress={() => addAnswer(index, answer[index][1].id)}
+                onPress={() =>
+                  addAnswer(index, answer[index][1].id, answer[index][1].answer)
+                }
               />
               <Text style={styles.answerText}>
-                {answer[index][1].answer}. {answer[index][1].contents}
+                B. {answer[index][1].contents}
               </Text>
             </View>
           ) : null}
@@ -116,10 +161,12 @@ const DoingExam = () => {
                     ? 'checked'
                     : 'unchecked'
                 }
-                onPress={() => addAnswer(index, answer[index][2].id)}
+                onPress={() =>
+                  addAnswer(index, answer[index][2].id, answer[index][2].answer)
+                }
               />
               <Text style={styles.answerText}>
-                {answer[index][2].answer}. {answer[index][2].contents}
+                C. {answer[index][2].contents}
               </Text>
             </View>
           ) : null}
@@ -134,10 +181,12 @@ const DoingExam = () => {
                     ? 'checked'
                     : 'unchecked'
                 }
-                onPress={() => addAnswer(index, answer[index][3].id)}
+                onPress={() =>
+                  addAnswer(index, answer[index][3].id, answer[index][3].answer)
+                }
               />
               <Text style={styles.answerText}>
-                {answer[index][3].answer}. {answer[index][3].contents}
+                D. {answer[index][3].contents}
               </Text>
             </View>
           ) : null}
@@ -154,8 +203,14 @@ const DoingExam = () => {
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
-      ) : null}
-      <TouchableOpacity style={styles.button}>
+      ) : (
+        <Text>Loading....</Text>
+      )}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          submitAnswer();
+        }}>
         <Text style={styles.buttontext}>Nộp Bài</Text>
       </TouchableOpacity>
     </View>
