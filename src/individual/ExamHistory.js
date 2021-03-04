@@ -20,7 +20,7 @@ const ExamHistory = () => {
       <View style={styles.avatarContainer}>
         <ProgressCircle
           percent={route.params.percentPoint}
-          radius={80}
+          radius={70}
           borderWidth={8}
           color="#FCB71E"
           shadowColor="#f7ecdb"
@@ -34,13 +34,13 @@ const ExamHistory = () => {
         </Text>
         <ProgressCircle
           percent={route.params.percentTrue * 100}
-          radius={80}
+          radius={70}
           borderWidth={8}
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
           <Text style={{fontSize: 18}}>
-            {route.params.percentTrue.toFixed(4) * 100} %
+            {route.params.percentTrue.toFixed(3) * 100} %
           </Text>
         </ProgressCircle>
         <Text style={styles.text}>
@@ -52,8 +52,8 @@ const ExamHistory = () => {
               (route.params.testWait + route.params.testDone)) *
             100
           }
-          radius={80}
-          borderWidth={80}
+          radius={70}
+          borderWidth={70}
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">

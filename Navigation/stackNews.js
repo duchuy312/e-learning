@@ -16,7 +16,7 @@ function StackNews() {
         inactiveTintColor: '#9D9D9D',
         activeTintColor: 'white',
         labelStyle: {fontSize: scale(18)},
-        style: {height: scale(50), backgroundColor: '#144E8C'},
+        style: {height: scale(56), backgroundColor: '#144E8C'},
       }}>
       <Tab.Screen name="News" component={StackNewsDetail} />
       <Tab.Screen name="Events" component={StackEventsDetail} />

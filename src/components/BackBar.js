@@ -30,7 +30,7 @@ export default Backbar;
 
 const styles = StyleSheet.create({
   searchBar: {
-    height: scale(50),
+    height: scale(56),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',

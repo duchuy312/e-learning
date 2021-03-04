@@ -85,10 +85,23 @@ const MainIndividual = () => {
       <TitleBar title1={'Trang cá nhân'} />
       <View style={styles.avatarContainer}>
         <View style={styles.circle}>
-          <Image style={styles.logo} source={require('../../img/logo.png')} />
+          {dataUser.length !== 0 ? (
+            <Image
+              style={styles.logo}
+              source={{
+                uri: 'http://elearning-uat.vnpost.vn' + dataUser.imageUsers,
+              }}
+            />
+          ) : (
+            <Image style={styles.logo} source={require('../../img/logo.png')} />
+          )}
         </View>
       </View>
-      <Text style={styles.NameText}>Admin</Text>
+      {dataUser.length !== 0 ? (
+        <Text style={styles.NameText}>{dataUser.username}</Text>
+      ) : (
+        <Text style={styles.NameText}>...</Text>
+      )}
       <View style={styles.ButtonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -159,8 +172,8 @@ const styles = StyleSheet.create({
     borderColor: 'white',
   },
   circle: {
-    height: scale(90),
-    width: scale(100),
+    height: scale(160),
+    width: scale(160),
   },
   logo: {
     flex: 1,

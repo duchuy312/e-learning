@@ -51,7 +51,7 @@ const ExamResult = () => {
   }, []);
   const renderItem = ({item}) => {
     return (
-      <View style={styles.itemExam}>
+      <TouchableOpacity style={styles.itemExam}>
         <View style={styles.circleProgressContainer}>
           <ProgressCircle
             percent={(item.point / item.sumPoint) * 100}
@@ -84,7 +84,7 @@ const ExamResult = () => {
             Tỉ lệ Điểm : {item.point} / {item.sumPoint}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

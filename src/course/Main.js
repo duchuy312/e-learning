@@ -6,13 +6,20 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {scale} from 'react-native-size-matters';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthorIcon, FlagTickIcon} from '../../svg/icon';
-import TitleBar from '../components/TitleBar';
+import {
+  AuthorIcon,
+  FlagTickIcon,
+  MenuIcon,
+  BellIcon,
+  SearchIcon,
+  CancelIcon,
+} from '../../svg/icon';
 
 const MainCourse = () => {
   const navigation = useNavigation();
@@ -21,6 +28,7 @@ const MainCourse = () => {
   const [getting, setGetting] = useState(false);
   const [token, setToken] = useState('');
   const [count, setCount] = useState(0);
+  const [searchValue, setSearchValue] = useState('');
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyToken');
@@ -40,7 +48,7 @@ const MainCourse = () => {
     await axios
       .post(
         'http://elearning-uat.vnpost.vn/api/course',
-        {categoryId: null},
+        {name: searchValue, categoryId: null},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,6 +74,9 @@ const MainCourse = () => {
     getCourse();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count]);
+  const clearInput = () => {
+    setSearchValue('');
+  };
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (
@@ -102,7 +113,41 @@ const MainCourse = () => {
   };
   return (
     <View style={styles.container}>
-      <TitleBar title1={'Khóa Học'} />
+      <View style={styles.searchBar}>
+        <TouchableOpacity>
+          <MenuIcon />
+        </TouchableOpacity>
+        <View style={styles.SearchArea}>
+          <View style={styles.SearchIconArea}>
+            <TouchableOpacity
+              onPress={() => {
+                setCount(count + 1);
+              }}>
+              <SearchIcon />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.TextInputArea}>
+            <TextInput
+              style={styles.inputText}
+              placeholder={'Tìm khóa học'}
+              value={searchValue}
+              onChangeText={(input) => setSearchValue(input)}
+            />
+          </View>
+          <View style={styles.CancelIconArea}>
+            <TouchableOpacity
+              onPress={() => {
+                clearInput();
+                setCount(count + 1);
+              }}>
+              <CancelIcon />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <TouchableOpacity>
+          <BellIcon />
+        </TouchableOpacity>
+      </View>
       <FlatList
         style={{marginTop: scale(20)}}
         data={dataCourse}
@@ -164,5 +209,46 @@ const styles = StyleSheet.create({
     color: 'black',
     marginLeft: scale(10),
     fontSize: scale(14),
+  },
+  searchBar: {
+    height: scale(56),
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: '#144E8C',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  iconPosition: {
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  topTittle: {
+    fontSize: scale(20),
+    marginLeft: scale(5),
+    color: 'black',
+  },
+  SearchArea: {
+    height: scale(36),
+    width: '75%',
+    backgroundColor: 'white',
+    borderRadius: scale(16),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  SearchIconArea: {
+    width: '10%',
+    alignItems: 'center',
+  },
+  CancelIconArea: {
+    width: '10%',
+  },
+  TextInputArea: {
+    width: '80%',
+    height: '100%',
+  },
+  inputText: {
+    fontSize: scale(15),
   },
 });
