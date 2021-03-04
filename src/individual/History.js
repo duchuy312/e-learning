@@ -21,7 +21,18 @@ const History = ({navigation, item}) => {
   return (
     <View style={styles.container}>
       <Backbar title={'Lịch sử thi'}></Backbar>
-      <TouchableOpacity onPress={() => navigation.navigate('ExamHistory')}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ExamHistory', {
+            percent: route.params.percentPoint,
+            nameCompetition: route.nameCompetition,
+            imageCompetition: route.imageCompetition,
+            percentPoint: route.percentMediumPoint,
+            percentTrue: route.percentMediumQuestion,
+            pass: route.qualified,
+            image: route.params.avatar,
+          })
+        }>
         <View style={styles.view}>
           <View style={{alignItems: 'center'}}>
             <Image
@@ -37,7 +48,7 @@ const History = ({navigation, item}) => {
               <Text>{route.params.name}</Text>
             </Text>
             <View style={{marginTop: 5}}>
-              <Text>Kết quả: 90/100</Text>
+              <Text>Kết quả: 90/100{route.params.percentMediumPoint}</Text>
               <Text>Xếp loại: Đạt</Text>
               <Text>27/9/2020</Text>
             </View>

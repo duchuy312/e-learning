@@ -20,8 +20,9 @@ export const Backbar = (props) => {
         onPress={() => navigation.goBack()}
         style={styles.iconPosition}>
         <BackIcon />
-        <Text style={styles.topTittle}>{title}</Text>
       </TouchableOpacity>
+      <Text style={styles.topTittle}>{title}</Text>
+
       <Text style={styles.topTittle1}>{title1}</Text>
     </View>
   );
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    backgroundColor: '#144E8C',
   },
   iconPosition: {
     marginLeft: scale(8),
@@ -46,6 +48,6 @@ const styles = StyleSheet.create({
   topTittle: {
     fontSize: scale(20),
     marginLeft: scale(5),
-    color: 'black',
+    color: '#FFFFFF',
   },
 });

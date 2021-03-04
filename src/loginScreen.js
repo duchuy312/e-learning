@@ -98,6 +98,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  textInputArea: {
+    backgroundColor: '#F6F4F5',
+    width: scale(290),
+    height: scale(50),
+    alignSelf: 'center',
+    borderRadius: scale(25),
+    marginBottom: scale(20),
+  },
   image: {
     flex: 1,
     height: scale(230),

@@ -39,9 +39,9 @@ const MainIndividual = () => {
     await getToken();
     await axios
       .get(
-        'http://elearning-uat.vnpost.vn//api/competition/roundtest/history/list/{idRoundtest}',
+        'http://elearning-uat.vnpost.vn/api/competition/my-competition/statistical',
         {
-          header: {
+          headers: {
             Authorization: `Bearer ${token}`,
           },
         },
@@ -94,6 +94,7 @@ const MainIndividual = () => {
       </View>
       <View>
         <Text style={styles.user}>{dataUser.fullName}</Text>
+        <Text style={styles.email}>Email: {dataUser.email}</Text>
       </View>
       <View style={styles.view}>
         <TouchableOpacity
@@ -110,6 +111,7 @@ const MainIndividual = () => {
               birth: dataUser.birthday,
               avatar: dataUser.imageUsers,
               UserTK: token,
+              percentPoint: dataHistory.percentMediumPoint,
             })
           }>
           <Text style={styles.text}>Thông tin tài khoản</Text>
@@ -121,22 +123,17 @@ const MainIndividual = () => {
               email: dataUser.email,
               avatar: dataUser.imageUsers,
               name: dataUser.fullName,
-              // nameCompetition: dataHistory.nameCompetition,
-              // imageCompetition: dataHistory.imageCompetition,
-              // percentPoint: dataHistory.percentMediumPoint,
-              // percentTrue: dataHistory.percentMediumQuestion,
-              // pass: dataHistory.qualified,
+              nameCompetition: dataHistory.nameCompetition,
+              imageCompetition: dataHistory.imageCompetition,
+              percentPoint: dataHistory.percentMediumPoint,
+              percentTrue: dataHistory.percentMediumQuestion,
+              pass: dataHistory.qualified,
             })
           }>
           <Text style={styles.text}>Xem lịch sử thi</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button2}
-          onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.text2}>Đăng Xuất</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button3}
           onPress={() =>
             navigation.navigate('ResetPass', {
               UserToken: token,
@@ -144,6 +141,11 @@ const MainIndividual = () => {
             })
           }>
           <Text style={styles.text2}>Đổi mật khẩu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button3}
+          onPress={() => navigation.navigate('LoginScreen')}>
+          <Text style={styles.text2}>Đăng Xuất</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -165,7 +167,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   user: {
-    marginTop: 20,
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  email: {
+    marginTop: 5,
     fontSize: 20,
     alignSelf: 'center',
   },
@@ -196,7 +204,7 @@ const styles = StyleSheet.create({
     height: scale(50),
     alignSelf: 'center',
     borderRadius: scale(25),
-    marginBottom: scale(20),
+    marginBottom: scale(10),
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
@@ -207,21 +215,21 @@ const styles = StyleSheet.create({
   },
   button2: {
     backgroundColor: '#E5E5E5',
-    marginTop: 30,
+    marginTop: 10,
     width: scale(290),
     height: scale(50),
     alignSelf: 'center',
     borderRadius: scale(25),
     borderWidth: 1,
     borderColor: '#FCB71E',
-    marginBottom: scale(20),
+    marginBottom: scale(10),
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
   },
   button3: {
     backgroundColor: '#E5E5E5',
-    marginTop: 10,
+    marginTop: 5,
     width: scale(290),
     height: scale(50),
     alignSelf: 'center',

@@ -10,6 +10,7 @@ import {
   StyleSheet,
   TextInput,
   Button,
+  Alert,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -20,6 +21,7 @@ import {
 } from 'rn-material-ui-textfield';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
+import Backbar from '../components/BackBar';
 
 const ResetPass = () => {
   const [idenUser] = useState('route.params.id');
@@ -35,10 +37,14 @@ const ResetPass = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const ChangeConfirm = () => {
-    if (pass1 === pass2) {
+    if (pass === null || pass1 === null || pass2 === null) {
+      Alert.alert('Không được để trống!');
+    } else if (pass === pass1) {
+      Alert.alert('Mật khẩu mới trùng với mật khẩu cũ');
+    } else if (pass1 === pass2) {
       ResetPassword();
     } else {
-      console.log('Xin vui lòng kiểm tra lại mật khẩu vừa nhập');
+      Alert.alert('Mật khẩu mới không khớp');
     }
   };
   const ResetPassword = () => {
@@ -75,33 +81,39 @@ const ResetPass = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.text1}>Mật khẩu</Text>
-        <TextField
-          containerStyle={styles.textInput}
-          label="Mật Khẩu cũ"
-          value={pass}
-          onChangeText={(passinput) => setPass(passinput)}
-        />
-        <TextField
-          containerStyle={styles.textInput}
-          label="Mật Khẩu mới"
-          value={pass1}
-          onChangeText={(pass1input) => setPass1(pass1input)}
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
-        <TextField
-          containerStyle={styles.textInput}
-          label="Nhập lại mật khẩu"
-          value={pass2}
-          onChangeText={(repassinput) => setPass2(repassinput)}
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
+        <Backbar title={'Đổi mật khẩu'}></Backbar>
+        <View style={{marginTop: 100}}>
+          <View style={styles.textInputArea}>
+            <TextInput
+              value={pass}
+              onChangeText={(passinput) => setPass(passinput)}
+              style={styles.textInput1}
+              placeholder={'Mật khẩu hiện tại'}
+            />
+          </View>
+          <View style={styles.textInputArea}>
+            <TextInput
+              value={pass1}
+              onChangeText={(pass1input) => setPass1(pass1input)}
+              style={styles.textInput1}
+              placeholder={'Mật khẩu mới'}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.textInputArea}>
+            <TextInput
+              value={pass2}
+              onChangeText={(repassinput) => setPass2(repassinput)}
+              style={styles.textInput1}
+              placeholder={'Nhập lại mật khẩu mới'}
+              secureTextEntry={true}
+            />
+          </View>
+        </View>
         <TouchableOpacity
           style={styles.button3}
           onPress={() => ChangeConfirm()}>
-          <Text style={styles.linktext}>Cập nhật mật khẩu mới</Text>
+          <Text style={styles.linktext}>Đổi mật khẩu</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -111,7 +123,7 @@ const ResetPass = () => {
 export default ResetPass;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, backgroundColor: '#FFFFFF'},
   textInput: {
     alignSelf: 'center',
     justifyContent: 'center',
@@ -119,20 +131,37 @@ const styles = StyleSheet.create({
     width: '90%',
     marginBottom: 20,
   },
-  linktext: {
-    fontSize: scale(18),
-    color: 'orange',
-  },
-  button3: {
+  textInputArea: {
     backgroundColor: '#E5E5E5',
-    marginTop: 10,
+    marginTop: 20,
     width: scale(290),
     height: scale(50),
     alignSelf: 'center',
     borderRadius: scale(25),
     borderWidth: 1,
-    borderColor: '#FCB71E',
-    marginBottom: scale(20),
+    borderColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+  },
+  textInput1: {
+    width: scale(290),
+    height: scale(50),
+    alignSelf: 'center',
+    fontSize: scale(18),
+    marginLeft: scale(30),
+  },
+  linktext: {
+    fontSize: scale(18),
+    color: 'white',
+  },
+  button3: {
+    backgroundColor: 'orange',
+    width: scale(290),
+    height: scale(50),
+    alignSelf: 'center',
+    borderRadius: scale(25),
+    marginTop: scale(40),
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,

@@ -12,6 +12,7 @@ import {
   Button,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import {
   TextField,
@@ -23,6 +24,7 @@ import {RadioButton} from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
+import Backbar from '../components/BackBar';
 const EditProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -70,6 +72,7 @@ const EditProfile = () => {
       .finally(() => {
         console.log('finally');
       });
+    Alert.alert('Cập nhật thông tin thành công!');
   };
   useEffect(() => {
     setBirthday(date.getTime());
@@ -95,7 +98,7 @@ const EditProfile = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.text1}>Cập nhật thông tin cá nhân</Text>
+        <Backbar title={'Cập nhật thông tin cá nhân'}></Backbar>
         <TextField
           containerStyle={styles.textInput}
           label="Họ và tên"
@@ -206,7 +209,7 @@ const EditProfile = () => {
 export default EditProfile;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, backgroundColor: '#FFFFFF'},
   textInput: {
     alignSelf: 'center',
     justifyContent: 'center',
