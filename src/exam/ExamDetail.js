@@ -103,7 +103,6 @@ const ExamDetail = () => {
   };
   useEffect(() => {
     getExams();
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const renderItem = ({item}) => {
@@ -200,7 +199,6 @@ const ExamDetail = () => {
         data={dataExam}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        extraData={ExamID}
         refreshing={getting}
         onRefresh={() => getExams()}
       />

@@ -8,6 +8,7 @@ import BeginNavigation from '../Navigation/beginToLogin';
 import UserInfo from '../src/individual/DetailUser';
 import EditProfile from '../src/individual/EditProfile';
 import ChangePass from '../src/individual/ChangePass';
+import BottomTabNavigations from '../Navigation/bottomTabNavigation';
 const Stack = createStackNavigator();
 
 function StackIndividual() {

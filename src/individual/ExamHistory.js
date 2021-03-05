@@ -69,6 +69,9 @@ const ExamHistory = () => {
           Đã làm {route.params.testDone} trên tổng số{' '}
           {route.params.testWait + route.params.testDone} bài
         </Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textBut}>Đăng Nhập</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -87,5 +90,20 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(18),
     textAlign: 'center',
+  },
+  button: {
+    backgroundColor: 'orange',
+    width: scale(290),
+    height: scale(50),
+    alignSelf: 'center',
+    borderRadius: scale(25),
+    marginTop: scale(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+  },
+  textBut: {
+    fontSize: scale(18),
+    color: 'white',
   },
 });

@@ -7,6 +7,8 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  Modal,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {scale} from 'react-native-size-matters';
@@ -29,6 +31,8 @@ const MainCourse = () => {
   const [token, setToken] = useState('');
   const [count, setCount] = useState(0);
   const [searchValue, setSearchValue] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [CateId, setCateId] = useState('');
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyToken');
@@ -48,7 +52,7 @@ const MainCourse = () => {
     await axios
       .post(
         'http://elearning-uat.vnpost.vn/api/course',
-        {name: searchValue, categoryId: null},
+        {name: searchValue, categoryId: CateId},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -68,6 +72,7 @@ const MainCourse = () => {
       })
       .finally(() => {
         setGetting(false);
+        setCateId('');
       });
   };
   useEffect(() => {
@@ -111,11 +116,27 @@ const MainCourse = () => {
       </TouchableOpacity>
     );
   };
+  const renderItem1 = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemCategory}
+        onPress={() => {
+          setCateId(item.categoryId);
+          setCount(count + 1);
+          setModalVisible(false);
+        }}>
+        <Text style={styles.smallModalText}>{item.categoryName}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={styles.searchBar}>
-        <TouchableOpacity>
-          <MenuIcon />
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(true);
+          }}>
+          <MenuIcon height={30} width={30} color="#ffffff" />
         </TouchableOpacity>
         <View style={styles.SearchArea}>
           <View style={styles.SearchIconArea}>
@@ -157,6 +178,31 @@ const MainCourse = () => {
         refreshing={getting}
         onRefresh={() => getCourse()}
       />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.smallCenteredView}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalIcon}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                }}>
+                <CancelIcon />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={dataCourse}
+              renderItem={renderItem1}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -250,5 +296,35 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontSize: scale(15),
+  },
+  smallCenteredView: {
+    flex: 1,
+  },
+  smallModalView: {
+    height: scale(280),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(8),
+    marginTop: scale(58),
+    marginLeft: scale(20),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+  },
+  modalIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: scale(30),
+    alignItems: 'center',
+  },
+  itemCategory: {
+    backgroundColor: '#f0f0f0',
+    marginBottom: scale(10),
+    paddingLeft: scale(5),
   },
 });

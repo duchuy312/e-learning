@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -12,6 +13,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
 import {RadioButton} from 'react-native-paper';
+import CountDown from 'react-native-countdown-component';
+import {TimeIcon} from '../../svg/icon';
 
 const DoingExam = () => {
   const route = useRoute();
@@ -22,6 +25,17 @@ const DoingExam = () => {
   const [dataSubmit, setDataSubmit] = useState([]);
   const [yourAnswer, setYourAnswer] = useState([]);
   const [yourAnswerID] = useState([]);
+  const [minute, setMinute] = useState(15);
+  const [counter, setCounter] = useState(0);
+  // useEffect(() => {
+  //   const timer =
+  //     counter > 0 && setInterval(() => setCounter(counter - 1), 800);
+  //   if (counter === 0) {
+  //     setCounter(59);
+  //     setMinute(minute - 1);
+  //   }
+  //   return () => clearInterval(timer);
+  // }, [counter]);
   const submitAnswer = async () => {
     await axios
       .post(
@@ -197,6 +211,25 @@ const DoingExam = () => {
   return (
     <View style={styles.container}>
       <Backbar title={'Trở lại'} />
+      <View style={styles.time}>
+        <View style={styles.iconAndText}>
+          <TimeIcon />
+          <CountDown
+            size={scale(18)}
+            until={route.params.timeRound * 60}
+            onFinish={() => alert('Finished')}
+            digitStyle={{
+              backgroundColor: '#FFF',
+            }}
+            digitTxtStyle={{color: '#000000'}}
+            timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
+            separatorStyle={{color: '#000000'}}
+            timeToShow={['M', 'S']}
+            timeLabels={{m: null, s: null}}
+            showSeparator
+          />
+        </View>
+      </View>
       {answer.length !== 0 ? (
         <FlatList
           data={data}
@@ -222,7 +255,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ffffff',
+    height: '100%',
+    backgroundColor: '#f0f0f0',
   },
   Text: {
     color: 'black',
@@ -243,6 +277,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: scale(5),
+    marginBottom: scale(10),
   },
   buttontext: {
     fontSize: scale(18),
@@ -259,5 +294,21 @@ const styles = StyleSheet.create({
   answerText: {
     flex: 1,
     flexWrap: 'wrap',
+  },
+  time: {
+    backgroundColor: 'white',
+    width: '100%',
+    height: scale(50),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  iconAndText: {
+    marginLeft: scale(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeCountdown: {
+    fontSize: scale(20),
+    marginLeft: scale(5),
   },
 });

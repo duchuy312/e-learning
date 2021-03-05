@@ -6,12 +6,19 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  Modal,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {scale} from 'react-native-size-matters';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthorIcon, DateAndTimeIcon} from '../../svg/icon';
+import {
+  AuthorIcon,
+  DateAndTimeIcon,
+  MenuIcon,
+  CancelIcon,
+} from '../../svg/icon';
 
 const MainNews = () => {
   const navigation = useNavigation();
@@ -21,6 +28,9 @@ const MainNews = () => {
   const [token, setToken] = useState('');
   const [ImageURL, setImageURL] = useState([]);
   const [countNew, setCountNew] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [CategoryNew, setCategoryNew] = useState([]);
+  const [CateId, setCateId] = useState('');
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyToken');
@@ -35,12 +45,32 @@ const MainNews = () => {
     }
     console.log('Done.');
   };
+  const GetCategoryNew = () => {
+    axios
+      .get('http://elearning-uat.vnpost.vn/api/news/categories/list', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setCategoryNew(response.data.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        console.log('cate');
+        setCateId('');
+      });
+  };
   const getNews = async () => {
     await getToken();
     await axios
       .post(
         'http://elearning-uat.vnpost.vn/api/v2/news/all?size=8',
-        {title: null, categoryId: null},
+        {title: null, categoryId: CateId},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,10 +126,33 @@ const MainNews = () => {
       </TouchableOpacity>
     );
   };
+  const renderItem1 = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemCategory}
+        onPress={() => {
+          setCateId(item.id);
+          setCountNew(countNew + 1);
+          setModalVisible(false);
+        }}>
+        <Text style={styles.smallModalText}>{item.nameDetail}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.container}>
+      <View style={styles.MenuIconContainer}>
+        <TouchableOpacity
+          style={styles.MenuIconArea}
+          onPress={() => {
+            setModalVisible(true);
+            GetCategoryNew();
+          }}>
+          <MenuIcon height={40} width={40} color="#000000" />
+        </TouchableOpacity>
+      </View>
       <FlatList
-        style={{marginTop: scale(20)}}
+        style={{marginTop: scale(5)}}
         data={dataNew}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
@@ -107,6 +160,31 @@ const MainNews = () => {
         refreshing={getting}
         onRefresh={() => getNews()}
       />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.smallCenteredView}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalIcon}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                }}>
+                <CancelIcon />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={CategoryNew}
+              renderItem={renderItem1}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -156,5 +234,48 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  MenuIconContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  MenuIconArea: {
+    height: scale(40),
+    width: scale(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: scale(10),
+    marginTop: scale(10),
+  },
+  itemCategory: {
+    backgroundColor: '#f0f0f0',
+    marginBottom: scale(10),
+    paddingLeft: scale(5),
+  },
+  smallCenteredView: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  smallModalView: {
+    height: scale(280),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(8),
+    marginTop: scale(110),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+  },
+  modalIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: scale(30),
+    alignItems: 'center',
   },
 });

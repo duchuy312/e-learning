@@ -122,6 +122,7 @@ const ExamResult = () => {
                 navigation.navigate('DoingExam', {
                   idRound: route.params.idRound,
                   token: route.params.token,
+                  timeRound: route.params.timeExam,
                 })
               }>
               <Text>Làm bài</Text>

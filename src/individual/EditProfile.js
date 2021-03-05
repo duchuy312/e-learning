@@ -8,6 +8,9 @@ import {
   ImageBackground,
   ScrollView,
   Platform,
+  Alert,
+  ImageEditor,
+  Modal,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
@@ -16,7 +19,8 @@ import {TextInput} from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
-import {CameraIcon} from '../../svg/icon';
+import {CameraIcon, CheckIcon} from '../../svg/icon';
+import * as ImagePicker from 'react-native-image-picker';
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -31,7 +35,34 @@ const EditProfile = () => {
   const [name, setName] = useState(route.params.name);
   const [avatar, setAvatar] = useState(route.params.avatar);
   const [place, setPlace] = useState(route.params.place);
-  console.log(gender);
+  const [imageSource, setImageSource] = useState(null);
+  const [image64, setImage64] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  console.log(imageSource);
+  const UploadAvatar = async () => {
+    await axios
+      .post(
+        'http://elearning-uat.vnpost.vn/api/user/font/image/base64',
+        {
+          base64: image64,
+          name: 'avatar.png',
+          extension: 'png',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.UserToken}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+        setAvatar(response.data.data.src);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  };
   const sendUpdateData = async () => {
     await axios
       .post(
@@ -77,6 +108,35 @@ const EditProfile = () => {
   const showDatepicker = () => {
     showMode('date');
   };
+  function selectImage() {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      noData: true,
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+      },
+      includeBase64: true,
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+        Alert.alert('You did not select any image');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let source = {uri: response.uri};
+        setImage64(response.base64);
+        // ADD THIS
+        setImageSource(source.uri);
+      }
+    });
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -95,7 +155,11 @@ const EditProfile = () => {
                   source={{
                     uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
                   }}>
-                  <TouchableOpacity style={styles.changeAvatarBut}>
+                  <TouchableOpacity
+                    style={styles.changeAvatarBut}
+                    onPress={() => {
+                      selectImage();
+                    }}>
                     <CameraIcon />
                   </TouchableOpacity>
                 </ImageBackground>
@@ -185,10 +249,38 @@ const EditProfile = () => {
         )}
         <TouchableOpacity
           style={styles.button1}
-          onPress={() => sendUpdateData()}>
+          onPress={() => {
+            sendUpdateData();
+            setModalVisible(true);
+          }}>
           <Text style={styles.Button1Text}>Cập nhật thông tin</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button1} onPress={() => UploadAvatar()}>
+          <Text style={styles.Button1Text}>Thay ảnh đại diện</Text>
+        </TouchableOpacity>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <TouchableOpacity
+          style={styles.smallCenteredView}
+          onPress={() => {
+            navigation.navigate('LoginScreen'), setModalVisible(false);
+          }}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalCenter}>
+              <CheckIcon />
+              <Text style={styles.smallModalText}>
+                Cập nhật thông tin thành công
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </ScrollView>
   );
 };
@@ -339,5 +431,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(100, 54, 54, 0.3)',
     justifyContent: 'center',
+  },
+  smallCenteredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100,100,100, 0.9)',
+  },
+  smallModalView: {
+    height: scale(300),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'center',
+    padding: scale(8),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+    textAlign: 'center',
+  },
+  modalCenter: {
+    justifyContent: 'space-between',
+    height: scale(150),
+    alignItems: 'center',
   },
 });

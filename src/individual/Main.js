@@ -11,11 +11,12 @@ import {
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
 import TitleBar from '../components/TitleBar';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const MainIndividual = () => {
+  const route = useRoute();
   const [dataHistory, setDataHistory] = useState([]);
   const [dataUser, setDataUser] = useState([]);
   const [token, setToken] = useState('');
