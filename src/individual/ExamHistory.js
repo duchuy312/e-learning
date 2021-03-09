@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
@@ -25,9 +26,7 @@ const ExamHistory = () => {
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
-          <Text style={{fontSize: 18}}>
-            {route.params.percentPoint.toFixed(2)} %
-          </Text>
+          <Text style={{fontSize: 18}}>{route.params.percentPoint} %</Text>
         </ProgressCircle>
         <Text style={styles.text}>
           Tỉ lệ điểm trung bình trên mỗi đề thi đã làm
@@ -39,9 +38,7 @@ const ExamHistory = () => {
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
-          <Text style={{fontSize: 18}}>
-            {route.params.percentTrue.toFixed(3) * 100} %
-          </Text>
+          <Text style={{fontSize: 18}}>{route.params.percentTrue * 100} %</Text>
         </ProgressCircle>
         <Text style={styles.text}>
           Trung bình số câu trả lời đúng trên mỗi đề thi đã làm
@@ -61,7 +58,7 @@ const ExamHistory = () => {
             {(
               route.params.testDone /
               (route.params.testWait + route.params.testDone)
-            ).toFixed(4) * 100}{' '}
+            ).toFixed(3) * 100}{' '}
             %
           </Text>
         </ProgressCircle>
@@ -69,9 +66,6 @@ const ExamHistory = () => {
           Đã làm {route.params.testDone} trên tổng số{' '}
           {route.params.testWait + route.params.testDone} bài
         </Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.textBut}>Đăng Nhập</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

@@ -39,7 +39,7 @@ const MainIndividual = () => {
     await getToken();
     await axios
       .get(
-        'http://elearning-uat.vnpost.vn/api/competition/my-competition/statistical',
+        'http://elearning-uat.tmgs.vn/api/competition/my-competition/statistical',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ const MainIndividual = () => {
         dataHistory.length === 0 ? setCount(count + 1) : null;
       });
     await axios
-      .get('http://elearning-uat.vnpost.vn/api/profile/detail', {
+      .get('http://elearning-uat.tmgs.vn/api/profile/detail', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,7 +90,7 @@ const MainIndividual = () => {
             <Image
               style={styles.logo}
               source={{
-                uri: 'http://elearning-uat.vnpost.vn' + dataUser.imageUsers,
+                uri: 'http://elearning-uat.tmgs.vn' + dataUser.imageUsers,
               }}
             />
           ) : (

@@ -25,7 +25,7 @@ const WareCourse = () => {
     try {
       await axios
         .get(
-          `http://elearning-uat.vnpost.vn/api/course-ware/course/${route.params.CourseID}`,
+          `http://elearning-uat.tmgs.vn/api/course-ware/course/${route.params.CourseID}`,
           {
             headers: {
               Authorization: `Bearer ${route.params.CourseTK}`,
@@ -95,7 +95,7 @@ const WareCourse = () => {
           style={styles.imageNew}
           source={{
             uri:
-              'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+              'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
           }}
         />
       </View>

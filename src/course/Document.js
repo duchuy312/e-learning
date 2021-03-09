@@ -25,7 +25,7 @@ const Documents = () => {
   const getDoc = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/document/course/${route.params.CourseID}`,
+        `http://elearning-uat.tmgs.vn/api/document/course/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,
@@ -34,13 +34,11 @@ const Documents = () => {
       )
       .then((response) => {
         setDataDoc(response.data.data);
+        console.log(response);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
-      })
-      .finally(() => {
-        console.log(dataDoc);
       });
   };
   useEffect(() => {
@@ -68,12 +66,18 @@ const Documents = () => {
   };
   return (
     <View style={styles.container}>
-      <FlatList
-        data={dataDoc}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        extraData={DocID}
-      />
+      {dataDoc.length === 0 ? (
+        <View>
+          <Text>Chưa có tài liệu cho khóa học</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={dataDoc}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          extraData={DocID}
+        />
+      )}
     </View>
   );
 };

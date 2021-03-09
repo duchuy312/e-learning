@@ -51,7 +51,7 @@ const MainCourse = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/course',
+        'http://elearning-uat.tmgs.vn/api/course',
         {name: searchValue, categoryId: CateId},
         {
           headers: {
@@ -97,7 +97,7 @@ const MainCourse = () => {
           style={styles.imageNew}
           source={{
             uri:
-              'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+              'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
           }}
         />
         <View style={styles.viewNew}>

@@ -39,7 +39,7 @@ const DoingExam = () => {
   const submitAnswer = async () => {
     await axios
       .post(
-        `http://elearning-uat.vnpost.vn/api/roundtest/submit/${route.params.idRound}`,
+        `http://elearning-uat.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
         dataSubmit,
         {
           headers: {
@@ -61,7 +61,7 @@ const DoingExam = () => {
   const getExams = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/competition/contentTest/${route.params.idRound}`,
+        `http://elearning-uat.tmgs.vn/api/competition/contentTest/${route.params.idRound}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.token}`,

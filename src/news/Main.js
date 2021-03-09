@@ -47,7 +47,7 @@ const MainNews = () => {
   };
   const GetCategoryNew = () => {
     axios
-      .get('http://elearning-uat.vnpost.vn/api/news/categories/list', {
+      .get('http://elearning-uat.tmgs.vn/api/news/categories/list', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -69,7 +69,7 @@ const MainNews = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/news/all?size=8',
+        'http://elearning-uat.tmgs.vn/api/v2/news/all?size=8',
         {title: null, categoryId: CateId},
         {
           headers: {
@@ -105,7 +105,7 @@ const MainNews = () => {
         }>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + item.images}}
+          source={{uri: 'http://elearning-uat.tmgs.vn' + item.images}}
         />
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={2}>

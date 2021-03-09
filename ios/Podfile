@@ -8,6 +8,8 @@ target 'eLearning' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNReactNativeDocViewer', :path => '../node_modules/react-native-doc-viewer'
+
   target 'eLearningTests' do
     inherit! :complete
     # Pods for testing

@@ -36,7 +36,7 @@ const ExamDetail = () => {
   const JoinWithCode = async (id) => {
     await axios
       .post(
-        `http://elearning-uat.vnpost.vn/api/roundtest/${id}/inputCode/${code}`,
+        `http://elearning-uat.tmgs.vn/api/roundtest/${id}/inputCode/${code}`,
         {},
         {
           headers: {
@@ -58,7 +58,7 @@ const ExamDetail = () => {
   const sendRequest = async (id) => {
     await axios
       .post(
-        `http://elearning-uat.vnpost.vn/api/roundtest/${id}/request`,
+        `http://elearning-uat.tmgs.vn/api/roundtest/${id}/request`,
         {},
         {
           headers: {
@@ -80,7 +80,7 @@ const ExamDetail = () => {
   const getExams = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/competition/${route.params.idExam}/roundTest/list`,
+        `http://elearning-uat.tmgs.vn/api/competition/${route.params.idExam}/roundTest/list`,
         {
           headers: {
             Authorization: `Bearer ${route.params.examTK}`,
@@ -113,7 +113,7 @@ const ExamDetail = () => {
             style={styles.smallImage}
             source={{
               uri:
-                'http://elearning-uat.vnpost.vn/static/images/default_thumb_exam.png',
+                'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
             }}
           />
         </View>
@@ -180,7 +180,7 @@ const ExamDetail = () => {
           style={styles.imageNew}
           source={{
             uri:
-              'http://elearning-uat.vnpost.vn/static/images/default_thumb_exam.png',
+              'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
           }}
         />
       </View>
@@ -261,6 +261,7 @@ const ExamDetail = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible2(!modalVisible2);
+                setModalVisible(false);
               }}>
               <View style={styles.blueButton}>
                 <Text style={{color: 'white'}}>OK</Text>

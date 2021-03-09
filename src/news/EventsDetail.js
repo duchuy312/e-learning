@@ -25,7 +25,7 @@ const EventsDetail = () => {
   const getEvents = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/event/detail/${route.params.eventid}`,
+        `http://elearning-uat.tmgs.vn/api/event/detail/${route.params.eventid}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.eventtoken}`,
@@ -59,7 +59,7 @@ const EventsDetail = () => {
         <Text>Author: {dataEvent.createdBy}</Text>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + dataEvent.image}}
+          source={{uri: 'http://elearning-uat.tmgs.vn' + dataEvent.image}}
         />
         <View style={styles.contentContainer}>
           <HTML

@@ -32,7 +32,7 @@ const CourseDetail = () => {
   const JoinWithCode = async () => {
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/course/request-code',
+        'http://elearning-uat.tmgs.vn/api/course/request-code',
         {
           courseId: route.params.CourseID,
           courseCode: code,
@@ -57,7 +57,7 @@ const CourseDetail = () => {
   const sendRequest = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/course/request/${route.params.CourseID}`,
+        `http://elearning-uat.tmgs.vn/api/course/request/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.examTK}`,
@@ -76,7 +76,7 @@ const CourseDetail = () => {
       });
   };
   const requestOne = axios.get(
-    `http://elearning-uat.vnpost.vn/api/course/${route.params.CourseID}`,
+    `http://elearning-uat.tmgs.vn/api/course/${route.params.CourseID}`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -84,7 +84,7 @@ const CourseDetail = () => {
     },
   );
   const requestTwo = axios.get(
-    `http://elearning-uat.vnpost.vn/api/v2/course/rating/${route.params.CourseID}`,
+    `http://elearning-uat.tmgs.vn/api/v2/course/rating/${route.params.CourseID}`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -92,7 +92,7 @@ const CourseDetail = () => {
     },
   );
   const requestThree = axios.get(
-    `http://elearning-uat.vnpost.vn/api/course/courseJoin/${route.params.CourseID}/currentUser`,
+    `http://elearning-uat.tmgs.vn/api/course/courseJoin/${route.params.CourseID}/currentUser`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -135,7 +135,7 @@ const CourseDetail = () => {
             style={styles.imageNew}
             source={{
               uri:
-                'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
+                'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
             }}
           />
           {loading ? (
@@ -149,7 +149,7 @@ const CourseDetail = () => {
                 <View>
                   <Text style={styles.textTitle}>Đánh Giá: </Text>
                   <View style={styles.iconAndText}>
-                    <Text>{dataRate.avarageRate}/5 </Text>
+                    <Text>{dataRate.avarageRate.toFixed(1)}/5 </Text>
                     <StarIcon color={'#007bff'} />
                   </View>
                 </View>

@@ -74,7 +74,7 @@ const VideoPlayer = () => {
           ref={(ref) => (videoPlayer.current = ref)}
           resizeMode={'cover'}
           source={{
-            uri: `http://elearning-uat.vnpost.vn/${route.params.urlFile}`,
+            uri: `http://elearning-uat.tmgs.vn/${route.params.urlFile}`,
           }}
           style={styles.backgroundVideo}
         />

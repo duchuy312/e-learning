@@ -36,15 +36,17 @@ const EditProfile = () => {
   const [avatar, setAvatar] = useState(route.params.avatar);
   const [place, setPlace] = useState(route.params.place);
   const [imageSource, setImageSource] = useState(null);
-  const [image64, setImage64] = useState(null);
+  const [UrlAvatar, setUrlAvatar] = useState(
+    'http://elearning-uat.tmgs.vn' + route.params.avatar,
+  );
   const [modalVisible, setModalVisible] = useState(false);
   console.log(imageSource);
-  const UploadAvatar = async () => {
+  const UploadAvatar = async (data) => {
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/user/font/image/base64',
+        'http://elearning-uat.tmgs.vn/api/user/font/image/base64',
         {
-          base64: image64,
+          base64: data,
           name: 'avatar.png',
           extension: 'png',
         },
@@ -66,7 +68,7 @@ const EditProfile = () => {
   const sendUpdateData = async () => {
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/profile/update',
+        'http://elearning-uat.tmgs.vn/api/profile/update',
         {
           email: email,
           place: place,
@@ -131,9 +133,9 @@ const EditProfile = () => {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         let source = {uri: response.uri};
-        setImage64(response.base64);
+        UploadAvatar(response.base64);
         // ADD THIS
-        setImageSource(source.uri);
+        setUrlAvatar(source.uri);
       }
     });
   }
@@ -146,14 +148,14 @@ const EditProfile = () => {
             blurRadius={2}
             style={styles.bigAvatar}
             source={{
-              uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
+              uri: UrlAvatar,
             }}>
             <View style={styles.avatarContainer}>
               <View style={styles.circle}>
                 <ImageBackground
                   style={styles.logo}
                   source={{
-                    uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
+                    uri: UrlAvatar,
                   }}>
                   <TouchableOpacity
                     style={styles.changeAvatarBut}
@@ -254,9 +256,6 @@ const EditProfile = () => {
             setModalVisible(true);
           }}>
           <Text style={styles.Button1Text}>Cập nhật thông tin</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button1} onPress={() => UploadAvatar()}>
-          <Text style={styles.Button1Text}>Thay ảnh đại diện</Text>
         </TouchableOpacity>
       </View>
       <Modal

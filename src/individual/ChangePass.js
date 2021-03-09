@@ -36,7 +36,7 @@ const ChangePass = () => {
   const ChangePassword = () => {
     axios
       .put(
-        'http://elearning-uat.vnpost.vn/api/profile/password',
+        'http://elearning-uat.tmgs.vn/api/profile/password',
         {
           id: route.params.id,
           password: pass1,

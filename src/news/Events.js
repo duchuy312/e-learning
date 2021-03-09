@@ -47,13 +47,12 @@ const MainEvents = () => {
   };
   const GetCategoryEvent = () => {
     axios
-      .get('http://elearning-uat.vnpost.vn/api/event/category/list', {
+      .get('http://elearning-uat.tmgs.vn/api/event/category/list', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        console.log(response);
         setCategoryEvent(response.data.data);
       })
       .catch(function (error) {
@@ -69,7 +68,7 @@ const MainEvents = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/event/all?size=10',
+        'http://elearning-uat.tmgs.vn/api/v2/event/all?size=10',
         {title: null, categoryId: null},
         {
           headers: {
@@ -79,6 +78,7 @@ const MainEvents = () => {
       )
       .then((response) => {
         setGetting(true);
+        console.log(response);
         setDataEvent(response.data.data);
         response.data.data.length === null
           ? setCountEvent(countEvent + 1)
@@ -110,7 +110,7 @@ const MainEvents = () => {
         }>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + item.image}}
+          source={{uri: 'http://elearning-uat.tmgs.vn' + item.image}}
         />
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={2}>
@@ -156,15 +156,21 @@ const MainEvents = () => {
           <MenuIcon height={40} width={40} color="#000000" />
         </TouchableOpacity>
       </View>
-      <FlatList
-        style={{marginTop: scale(20)}}
-        data={dataEvent}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        extraData={newsID}
-        refreshing={getting}
-        onRefresh={() => getEvents()}
-      />
+      {dataEvent.length === 0 ? (
+        <View>
+          <Text>Chưa có sự kiện</Text>
+        </View>
+      ) : (
+        <FlatList
+          style={{marginTop: scale(20)}}
+          data={dataEvent}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          extraData={newsID}
+          refreshing={getting}
+          onRefresh={() => getEvents()}
+        />
+      )}
       <Modal
         animationType="fade"
         transparent={true}

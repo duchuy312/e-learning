@@ -24,7 +24,7 @@ const NewsDetail = () => {
   const getNews = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/news/${route.params.newid}`,
+        `http://elearning-uat.tmgs.vn/api/news/${route.params.newid}`,
         {title: null, categoryId: null},
         {
           headers: {
@@ -59,7 +59,7 @@ const NewsDetail = () => {
         <Text>Author: {dataNew.createdBy}</Text>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + dataNew.images}}
+          source={{uri: 'http://elearning-uat.tmgs.vn' + dataNew.images}}
         />
         <View style={styles.contentContainer}>
           <HTML

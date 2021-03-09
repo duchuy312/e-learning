@@ -51,7 +51,7 @@ const MainNews = () => {
   const GetExamData = () => {
     axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/competition/list/all',
+        'http://elearning-uat.tmgs.vn/api/v2/competition/list/all',
         {searchValue: searchValue, categoryId: CateId, typeMyCompetition: null},
         {
           headers: {
@@ -76,7 +76,7 @@ const MainNews = () => {
   };
   const GetCategoryExam = () => {
     axios
-      .get('http://elearning-uat.vnpost.vn/api/v2/competition/categories/all', {
+      .get('http://elearning-uat.tmgs.vn/api/v2/competition/categories/all', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -116,14 +116,14 @@ const MainNews = () => {
             examTK: token,
             idExam: item.id,
             examName: item.nameCompetition,
-            examPS: item.poscodeVnpost.name,
+            examPS: 'Bộ Giáo dục và Đào tạo',
           })
         }>
         <Image
           style={styles.imageNew}
           source={{
             uri:
-              'http://elearning-uat.vnpost.vn/static/images/default_thumb_exam.png',
+              'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
           }}
         />
         <View style={styles.viewNew}>
@@ -132,7 +132,7 @@ const MainNews = () => {
           </Text>
           <View style={styles.iconAndText}>
             <BuildingIcon color="#17a2b8" />
-            <Text style={styles.authorText}>{item.poscodeVnpost.name}</Text>
+            <Text style={styles.authorText}>Bộ Giáo dục và Đào tạo</Text>
           </View>
           <View style={styles.iconAndText}>
             <ClockIcon clockheight={scale(18)} clockwidth={scale(16)} />

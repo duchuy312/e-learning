@@ -18,7 +18,7 @@ const ForgotPassScreen = () => {
   const SendEmail = () => {
     axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/profile/password',
+        'http://elearning-uat.tmgs.vn/api/profile/password',
         {
           username: name,
           email: email,

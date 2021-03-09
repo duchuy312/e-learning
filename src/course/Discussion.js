@@ -34,7 +34,7 @@ const Discussion = () => {
   const sendRate = async () => {
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/course/rating',
+        'http://elearning-uat.tmgs.vn/api/course/rating',
         {
           valuess: rate,
           courseId: route.params.CourseID,
@@ -56,7 +56,7 @@ const Discussion = () => {
   const sendComment = async () => {
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/comment/course',
+        'http://elearning-uat.tmgs.vn/api/comment/course',
         {
           courseId: route.params.CourseID,
           contents: comment,
@@ -81,7 +81,7 @@ const Discussion = () => {
   const getComment = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/comment/course/${route.params.CourseID}`,
+        `http://elearning-uat.tmgs.vn/api/comment/course/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,
@@ -117,7 +117,7 @@ const Discussion = () => {
             <Image
               style={styles.AvatarUser}
               source={{
-                uri: 'http://elearning-uat.vnpost.vn' + item.urlImage,
+                uri: 'http://elearning-uat.tmgs.vn' + item.urlImage,
               }}
             />
           </View>
@@ -225,6 +225,8 @@ const styles = StyleSheet.create({
   circle: {
     height: scale(80),
     width: scale(80),
+    overflow: 'hidden',
+    borderRadius: scale(40),
   },
   AvatarUser: {
     flex: 1,
