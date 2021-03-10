@@ -21,14 +21,14 @@ const ExamHistory = () => {
       <Backbar title={'Bài thi số 1'} />
       <View style={styles.avatarContainer}>
         <ProgressCircle
-          percent={50}
+          percent={route.params.percentPoint}
           radius={60}
           borderWidth={7}
           color="#FCB71E"
           shadowColor="#999"
           bgColor="#fff">
           <Text style={{fontSize: 18}}>{'CHƯA ĐẠT'}</Text>
-          <Text style={{fontSize: 18}}>{'50/100'}</Text>
+          <Text style={{fontSize: 18}}>{route.params.percentPoint}</Text>
         </ProgressCircle>
       </View>
       <View style={styles.exam}>

@@ -24,32 +24,29 @@ const History = ({navigation, item}) => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('ExamHistory', {
-            percent: route.params.percentPoint,
-            nameCompetition: route.nameCompetition,
-            imageCompetition: route.imageCompetition,
-            percentPoint: route.percentMediumPoint,
-            percentTrue: route.percentMediumQuestion,
-            pass: route.qualified,
+            percent: route.params.percent,
+            nameCompetition: route.params.nameCompetition,
+            imageCompetition: route.params.imageCompetition,
+            percentPoint: route.params.percentPoint,
+            percentTrue: route.params.percentTrue,
+            pass: route.params.qualified,
             image: route.params.avatar,
           })
         }>
         <View style={styles.view}>
-          <View style={{alignItems: 'center'}}>
+          <View>
             <Image
-              source={{
-                uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
-              }}
+              source={require('../../img/image11.png')}
               style={styles.stretch}
-              resizeMode="contain"
             />
           </View>
-          <View style={{flex: 6}}>
+          <View style={{flex: 6, marginLeft: 8}}>
             <Text style={{fontSize: 16, fontWeight: 'bold'}}>
               <Text>{route.params.name}</Text>
             </Text>
             <View style={{marginTop: 5}}>
-              <Text>Kết quả: 90/100{route.params.percentMediumPoint}</Text>
-              <Text>Xếp loại: Đạt</Text>
+              <Text>Kết quả:{route.params.percentPoint}</Text>
+              <Text>Xếp loại: Đạt{route.params.idUser}</Text>
               <Text>27/9/2020</Text>
             </View>
           </View>
@@ -70,12 +67,16 @@ const styles = StyleSheet.create({
   container: {flex: 1},
   view: {
     borderRadius: 20,
-    justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: '#FFFFFF',
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     marginTop: 10,
+    width: '90%',
+    height: 120,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   stretch: {
     flex: 1,
@@ -84,11 +85,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginLeft: 10,
-    resizeMode: 'stretch',
+    alignItems: 'center',
+    resizeMode: 'contain',
   },
   image: {
-    marginTop: '40%',
-    marginRight: 30,
+    marginRight: 10,
     height: 30,
     width: 20,
   },

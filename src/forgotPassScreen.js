@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,39 @@ import {
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const ForgotPassScreen = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const navigation = useNavigation();
+  const SendEmail = () => {
+    axios
+      .post(
+        'http://elearning-uat.tmgs.vn/api/profile/password',
+        {
+          username: name,
+          email: email,
+        },
+        {
+          headers: {},
+        },
+      )
+      .then(function (response) {
+        console.log(response.data.message);
+        if (response.status === 200) {
+          console.log('Success');
+        } else {
+          console.log('Failer');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {
+        navigation.navigate('LoginScreen');
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.logocontainer}>
@@ -22,10 +52,23 @@ const ForgotPassScreen = () => {
       </View>
       <View style={styles.textInputContainer}>
         <View style={styles.textInputArea}>
-          <TextInput style={styles.textInput} placeholder={'   Email'} />
+          <TextInput
+            value={name}
+            onChangeText={(nameinput) => setName(nameinput)}
+            style={styles.textInput}
+            placeholder={' Username'}
+          />
+        </View>
+        <View style={styles.textInputArea}>
+          <TextInput
+            value={email}
+            onChangeText={(emailinput) => setEmail(emailinput)}
+            style={styles.textInput}
+            placeholder={' Email'}
+          />
         </View>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => SendEmail()}>
         <Text style={styles.text}>Send Email</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
@@ -60,7 +103,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textInputContainer: {
-    height: scale(80),
+    height: scale(140),
     width: '100%',
   },
   textInputArea: {

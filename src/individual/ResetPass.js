@@ -14,14 +14,10 @@ import {
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
-import {
-  TextField,
-  FilledTextField,
-  OutlinedTextField,
-} from 'rn-material-ui-textfield';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import Backbar from '../components/BackBar';
+// import {EyeIcon} from '../../svg/icon';
 
 const ResetPass = () => {
   const [idenUser] = useState('route.params.id');
@@ -37,7 +33,7 @@ const ResetPass = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const ChangeConfirm = () => {
-    if (pass === null || pass1 === null || pass2 === null) {
+    if (pass === '' || pass1 === null || pass2 === null) {
       Alert.alert('Không được để trống!');
     } else if (pass === pass1) {
       Alert.alert('Mật khẩu mới trùng với mật khẩu cũ');
@@ -50,7 +46,7 @@ const ResetPass = () => {
   const ResetPassword = () => {
     axios
       .put(
-        'http://elearning-uat.vnpost.vn/api/profile/password',
+        'http://elearning-uat.tmgs.vn/api/profile/password',
         {
           id: route.params.id,
           password: pass1,
@@ -77,7 +73,9 @@ const ResetPass = () => {
         navigation.navigate('LoginScreen');
       });
   };
-
+  const ShowPass = () => {
+    Alert.alert('ok');
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -88,8 +86,10 @@ const ResetPass = () => {
               value={pass}
               onChangeText={(passinput) => setPass(passinput)}
               style={styles.textInput1}
-              placeholder={'Mật khẩu hiện tại'}
-            />
+              placeholder={'Mật khẩu hiện tại'}></TextInput>
+            <TouchableOpacity onPress={() => ShowPass()}>
+              {/* <EyeIcon></EyeIcon> */}
+            </TouchableOpacity>
           </View>
           <View style={styles.textInputArea}>
             <TextInput
@@ -141,8 +141,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#FFFFFF',
     justifyContent: 'center',
-    alignItems: 'center',
     elevation: 5,
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
   },
   textInput1: {
     width: scale(290),

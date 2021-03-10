@@ -27,7 +27,7 @@ const UserInfor = () => {
             <Image
               style={styles.logo}
               source={{
-                uri: 'http://elearning-uat.vnpost.vn' + route.params.avatar,
+                uri: 'http://elearning-uat.tmgs.vn' + route.params.avatar,
               }}
             />
           </View>
