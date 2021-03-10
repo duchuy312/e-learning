@@ -93,13 +93,22 @@ const MainCourse = () => {
             CourseTK: token,
           })
         }>
-        <Image
-          style={styles.imageNew}
-          source={{
-            uri:
-              'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
-          }}
-        />
+        {item.avatar === '' ? (
+          <Image
+            style={styles.imageNew}
+            source={{
+              uri:
+                'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
+            }}
+          />
+        ) : (
+          <Image
+            style={styles.imageNew}
+            source={{
+              uri: 'http://elearning-uat.tmgs.vn' + item.avatar,
+            }}
+          />
+        )}
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={1}>
             {item.name}

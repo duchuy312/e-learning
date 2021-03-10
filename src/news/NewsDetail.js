@@ -19,7 +19,7 @@ const NewsDetail = () => {
   const [newID, setNewID] = useState();
   const [dataNew, setDataNew] = useState([]);
   const [getting, setGetting] = useState(false);
-  const [newsID, setNewsID] = useState('');
+  const [urlImage, setUrlImage] = useState('');
   const route = useRoute();
   const getNews = async () => {
     await axios
@@ -37,6 +37,7 @@ const NewsDetail = () => {
         console.log(response);
         console.log(response.data.data);
         setDataNew(response.data.data);
+        setUrlImage(response.data.data.content);
       })
       .catch(function (error) {
         // handle error
@@ -64,7 +65,12 @@ const NewsDetail = () => {
         <View style={styles.contentContainer}>
           <HTML
             defaultTextProps={styles.text}
-            source={{html: dataNew.content}}
+            source={{
+              html: urlImage.replace(
+                /src="/g,
+                'src="http://elearning-uat.tmgs.vn',
+              ),
+            }}
             contentWidth={contentWidth}
             baseFontStyle={styles.text}
           />

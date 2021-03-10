@@ -133,6 +133,11 @@ const ExamDetail = () => {
               <FlagTickIcon /> Trạng thái : Đã Thi
             </Text>
           ) : null}
+          {item.message === 'MY_COMPETITION_NOT_DONE' ? (
+            <Text style={styles.content}>
+              <FlagTickIcon /> Trạng thái : Chưa thi
+            </Text>
+          ) : null}
           {item.message === 'MY_COMPETITION_WAIT_CONFIRM' ? (
             <Text style={styles.content}>
               <FlagTickIcon /> Trạng thái : Chờ Duyệt
@@ -158,7 +163,8 @@ const ExamDetail = () => {
               }>
               <Text style={styles.text}>Xem kết quả thi</Text>
             </TouchableOpacity>
-          ) : (
+          ) : null}
+          {item.message === 'MY_COMPETITION_NOT_JOIN' ? (
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
@@ -167,7 +173,20 @@ const ExamDetail = () => {
               }}>
               <Text style={styles.text}>Tham Gia Thi</Text>
             </TouchableOpacity>
-          )}
+          ) : null}
+          {item.message === 'MY_COMPETITION_NOT_DONE' ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate('DoingExam', {
+                  idRound: item.id,
+                  token: route.params.examTK,
+                  timeRound: item.timeRound / 60,
+                })
+              }>
+              <Text style={styles.text}>Vào thi</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
     );
