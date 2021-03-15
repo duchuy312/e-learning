@@ -27,8 +27,8 @@ const MainCourse = ({ navigation }) => {
   const [token, setToken] = useState('');
   const [dataModal, setDataModal] = useState([]);
   const [valueSearch, setValueSearch] = useState(null);
-  const [rating, setRating] = useState(0);
   const [getting, setGetting] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   const getValueSearch = (value) => {
     setValueSearch(value);
@@ -46,7 +46,7 @@ const MainCourse = ({ navigation }) => {
   };
 
   const getCourse = async () => {
-    await axios.post('http://elearning-uat.vnpost.vn/api/course',
+    await axios.post('http://elearning-uat.tmgs.vn/api/course',
       { categoryId: null, name: valueSearch },
       {
         headers: {
@@ -56,6 +56,7 @@ const MainCourse = ({ navigation }) => {
       .then((res) => {
         setGetting(true);
         setData(res.data.data);
+        // console.log(res.data.data);
       }).catch(function (err) {
         console.log('err main', err);
       })
@@ -83,14 +84,12 @@ const MainCourse = ({ navigation }) => {
         <TouchableOpacity
           style={styles.inline}
           onPress={() => {
+            setSelectedId(item.id);
             navigation.navigate('Chi tiết khóa học', { courseID: item.id, token: token });
           }}>
           <Image
             style={styles.image}
-            source={{
-              uri:
-                'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
-            }}
+            source={require('../../img/image11.png')}
             resizeMode="contain"
           />
           <View style={styles.content}>
@@ -126,6 +125,7 @@ const MainCourse = ({ navigation }) => {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          extraData={selectedId}
           refreshing={getting}
           onRefresh={() => getCourse()}
         />

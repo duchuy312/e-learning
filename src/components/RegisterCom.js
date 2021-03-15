@@ -78,7 +78,6 @@ export default function RegisterCourse({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <Backbar title={courseName} />
       <View style={styles.body}>
         <Text style={styles.bold}>{'Chọn phương thức đăng kí học'}</Text>
         <View style={styles.inline}>

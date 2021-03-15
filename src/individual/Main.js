@@ -1,20 +1,28 @@
-/* eslint-disable no-unused-vars */
-
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
-  FlatList,
   StyleSheet,
   ImageBackground,
-  TextInput,
 } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {scale} from 'react-native-size-matters';
 
 const MainIndividual = ({navigation}) => {
+  const [token, setToken] = useState('');
+
+  const getToken = async () => {
+    const value = await AsyncStorage.getItem('@MyToken');
+    if (value !== null) {
+      setToken(value);
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.logocontainer}>
@@ -23,24 +31,19 @@ const MainIndividual = ({navigation}) => {
           source={require('../../img/logo.png')}
         />
       </View>
-      <View>
-        <Text style={styles.user}>Người dùng</Text>
-      </View>
-      <View style={styles.view}>
+      <View style={styles.body}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('UserInfor')}>
-          <Text style={styles.text}>Thông tin cá nhân</Text>
+          onPress={() => navigation.navigate('UserInfor', {token: token})}>
+          <Text style={styles.text}>{'Thông tin cá nhân'}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.text}>Xem lịch sử thi</Text>
+          onPress={() => navigation.navigate('ChangePass', {token: token})}>
+          <Text style={styles.text}>{'Mật khẩu'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button2}
-          onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.text2}>Đăng Xuất</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.text}>{'Đăng xuất'}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -50,64 +53,32 @@ const MainIndividual = ({navigation}) => {
 export default MainIndividual;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, backgroundColor: '#fff'},
   logocontainer: {
-    flex: 2,
-    marginTop: scale(80),
-    height: scale(80),
-    width: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  user: {
-    fontSize: 20,
-    fontStyle: 'italic',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  view: {
-    flex: 5,
-    marginTop: 30,
   },
   logo: {
+    width: scale(200),
+    height: scale(120),
+    borderRadius: scale(50),
+    marginVertical: scale(20),
+  },
+  //-----------------body-----------------------
+  body: {
     flex: 1,
-    height: scale(80),
-    width: scale(120),
-    alignSelf: 'center',
-    borderRadius: scale(80),
-    backgroundColor: 'orange',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   button: {
+    width: scale(250),
+    height: scale(40),
     backgroundColor: 'orange',
-    width: scale(290),
-    height: scale(50),
-    alignSelf: 'center',
-    borderRadius: scale(25),
-    marginBottom: scale(20),
+    marginVertical: scale(10),
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 5,
+    borderRadius: scale(20),
   },
-  text: {
-    fontSize: scale(18),
-    color: 'white',
-  },
-  button2: {
-    backgroundColor: '#E5E5E5',
-    marginTop: 30,
-    width: scale(290),
-    height: scale(50),
-    alignSelf: 'center',
-    borderRadius: scale(25),
-    borderWidth: 1,
-    borderColor: '#FCB71E',
-    marginBottom: scale(20),
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5,
-  },
-  text2: {
-    fontSize: scale(18),
-    color: 'orange',
-  },
+  text: {fontSize: scale(20), color: '#fff'},
 });

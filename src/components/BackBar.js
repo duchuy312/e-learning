@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     color: 'white',
     width: scale(300),
     position: 'absolute',
-    right: scale(0),
+    right: 0,
   },
 });

@@ -21,8 +21,10 @@ const Chat = ({route}) => {
   const [date, setDate] = useState('');
   const [valueStar, setValueStar] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   const {courseID, token} = route.params;
+  // console.log(courseID);
   axiosRetry(axios, {retries: 15});
   function postComment() {
     axios
@@ -42,31 +44,32 @@ const Chat = ({route}) => {
       });
   }
 
-  function postCourseEvaluate() {
-    axios
-      .post(
-        'http://elearning-uat.vnpost.vn/api/course/rating',
-        {
-          headers: {Authorization: `Bearer ${token}`},
-        },
-        {
-          body: {valuess: valueStar, courseId: courseID},
-        },
-      )
-      .then((res) => {})
-      .catch((err) => {
-        console.log('chat', err);
-      });
-  }
+  // function postCourseEvaluate() {
+  //   axios
+  //     .post(
+  //       'http://elearning-uat.tmgs.vn/api/course/rating',
+  //       {
+  //         headers: {Authorization: `Bearer ${token}`},
+  //       },
+  //       {
+  //         body: {valuess: valueStar, courseId: courseID},
+  //       },
+  //     )
+  //     .then((res) => {
+  //       // console.log(res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log('chat', err);
+  //     });
+  // }
 
   function getComment() {
     axios
-      .get(`http://elearning-uat.vnpost.vn/api/comment/course/${courseID}`, {
+      .get(`http://elearning-uat.tmgs.vn/api/comment/course/${courseID}`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then((res) => {
-        //console.log(res);
-        //console.log(res.data.data);
+        // console.log(res.data.data);
         setData(res.data.data);
         //console.log(linkImg);
       })
@@ -86,7 +89,7 @@ const Chat = ({route}) => {
 
   function getDate(createdDate) {
     let date = new Date(createdDate);
-    setDate(date.toLocaleDateString('en-US').split('/').join('/'));
+    setDate(date.toLocaleDateString().split('/').join('/'));
   }
 
   const renderItem = ({item}) => {
@@ -97,7 +100,7 @@ const Chat = ({route}) => {
         <View style={styles.viewInput}>
           <View style={styles.viewAvata}>
             <Image
-              source={{uri: `http://elearning-uat.vnpost.vn${item.urlImage}`}}
+              source={{uri: `http://elearning-uat.tmgs.vn${item.urlImage}`}}
               style={styles.imgAva}
             />
           </View>
@@ -135,9 +138,6 @@ const Chat = ({route}) => {
           </TouchableOpacity>
         </View>
       </View>
-      {
-        //console.log(data)
-      }
       {data[0] === null ? (
         <View style={styles.contaiNonComment}>
           <Text style={styles.txtNonComment}>{'Chưa có đánh giá nào'}</Text>
@@ -147,6 +147,7 @@ const Chat = ({route}) => {
           renderItem={renderItem}
           data={data}
           keyExtractor={(item) => item.id.toString()}
+          extraData={selectedId}
         />
       )}
       <TouchableOpacity
@@ -176,7 +177,7 @@ const Chat = ({route}) => {
               style={styles.btnSend}
               onPress={() => {
                 setModalVisible(false);
-                postCourseEvaluate();
+                // postCourseEvaluate();
               }}>
               <Text style={styles.sendText}>Send</Text>
             </TouchableOpacity>

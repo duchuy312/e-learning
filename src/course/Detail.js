@@ -21,12 +21,13 @@ function DetailCourse({ route, navigation }) {
   const [appear, setAppear] = useState(false);
   const [courseName, setCourseName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [gender, setGender] = useState(false);
   const [count, setCount] = useState(0);
 
   const { courseID, token } = route.params;
 
   const getDetail = () => {
-    axios.get(`http://elearning-uat.vnpost.vn/api/course/${courseID}`,
+    axios.get(`http://elearning-uat.tmgs.vn/api/course/${courseID}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ function DetailCourse({ route, navigation }) {
   function checkCourseIsPublicOrNot() {
     axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/course/courseJoin/${courseID}/currentUser`,
+        `http://elearning-uat.tmgs.vn/api/course/courseJoin/${courseID}/currentUser`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,12 +53,7 @@ function DetailCourse({ route, navigation }) {
         },
       )
       .then((res) => {
-        // navigation.navigate('RegisterCourse', {
-        //   courseID: courseID,
-        //   token: token,
-        //   courseName: courseName,
-        // });
-
+        // console.log(res);
         //if course is public
         if (res.data.message === 'true') {
           setModalVisible(true);
@@ -71,7 +67,7 @@ function DetailCourse({ route, navigation }) {
   }
 
   function postRequestJoinCourse() {
-    axios.post('http://elearning-uat.vnpost.vn/api/course/join',
+    axios.post('http://elearning-uat.tmgs.vn/api/course/join',
       {
         body: { id: 3 },
       },
@@ -94,10 +90,7 @@ function DetailCourse({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={{
-          uri:
-            'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
-        }}
+        source={require('../../img/image11.png')}
         style={styles.img}
       />
       <View style={styles.content}>
@@ -186,7 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: scale(20),
-    backgroundColor: '#aaa',
+    backgroundColor: 'rgba(100,100,100,0.5)',
   },
   modalView: {
     margin: scale(10),

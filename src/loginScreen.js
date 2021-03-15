@@ -8,11 +8,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
+import axiosRetry from 'axios-retry';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
+  axiosRetry(axios, {retries: 3});
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
   const navigation = useNavigation();
@@ -26,9 +28,9 @@ const LoginScreen = () => {
       }
     };
     axios
-      .post('http://elearning-uat.vnpost.vn/api/authentication', {
+      .post('http://elearning-uat.tmgs.vn/api/authentication', {
         username: 'admin',
-        password: 'Abc12345',
+        password: 'Abc@123456789',
       })
       .then(function (response) {
         // console.log(response);

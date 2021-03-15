@@ -43,7 +43,7 @@ export default function RegisterCourse({navigation, route}) {
   function postCode() {
     axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/course/request-code',
+        'http://elearning-uat.tmgs.vn/api/course/request-code',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export default function RegisterCourse({navigation, route}) {
 
   function postRequestAccept() {
     axios
-      .get(`http://elearning-uat.vnpost.vn/api/course/request/${courseID}`, {
+      .get(`http://elearning-uat.tmgs.vn/api/course/request/${courseID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -141,13 +141,19 @@ export default function RegisterCourse({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#fff'},
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(100,100,100, 0.2)',
+    alignItems: 'center',
+  },
   /**---------------Body------------------ */
   body: {
-    flex: 9,
+    padding: scale(20),
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginTop: scale(200),
   },
   bold: {fontWeight: 'bold', fontSize: 20},
   inline: {flexDirection: 'row', marginVertical: 10},
