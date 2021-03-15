@@ -181,7 +181,7 @@ const ExamDetail = () => {
                 navigation.navigate('DoingExam', {
                   idRound: item.id,
                   token: route.params.examTK,
-                  timeRound: item.timeRound / 60,
+                  timeRound: item.timeRound,
                 })
               }>
               <Text style={styles.text}>Vào thi</Text>

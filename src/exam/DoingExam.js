@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -15,7 +16,11 @@ import axios from 'axios';
 import {RadioButton} from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import {TimeIcon} from '../../svg/icon';
+import HTML from 'react-native-render-html';
+import {WebView} from 'react-native-webview';
+import {enableScreens} from 'react-native-screens';
 
+enableScreens();
 const DoingExam = () => {
   const route = useRoute();
   const [countEx, setCountEx] = useState(0);
@@ -25,17 +30,6 @@ const DoingExam = () => {
   const [dataSubmit, setDataSubmit] = useState([]);
   const [yourAnswer, setYourAnswer] = useState([]);
   const [yourAnswerID] = useState([]);
-  const [minute, setMinute] = useState(15);
-  const [counter, setCounter] = useState(0);
-  // useEffect(() => {
-  //   const timer =
-  //     counter > 0 && setInterval(() => setCounter(counter - 1), 800);
-  //   if (counter === 0) {
-  //     setCounter(59);
-  //     setMinute(minute - 1);
-  //   }
-  //   return () => clearInterval(timer);
-  // }, [counter]);
   const submitAnswer = async () => {
     await axios
       .post(
@@ -117,12 +111,33 @@ const DoingExam = () => {
     setChoice(ID);
     console.log(yourAnswer);
   }
+  const contentWidth = (useWindowDimensions().width * 90) / 100;
   const renderItem = ({item, index}) => {
     return (
       <View style={styles.FlatListView}>
-        <Text style={styles.Text}>
-          Câu {index + 1}. {item.question.question} ?
-        </Text>
+        <Text style={styles.Text}>Câu {index + 1}.</Text>
+        <View style={styles.QuestionView}>
+          <HTML
+            defaultTextProps={styles.QuestionText}
+            source={{
+              html: item.question.question.replace(
+                /src="/g,
+                'src="http://elearning-uat.tmgs.vn',
+              ),
+            }}
+            contentWidth={contentWidth}
+            baseFontStyle={styles.QuestionText}
+          />
+        </View>
+        {item.question.url !== null && item.question.url !== '' ? (
+          <View style={styles.imageContainer}>
+            <WebView
+              source={{
+                uri: 'http://elearning-uat.tmgs.vn' + item.question.url,
+              }}
+            />
+          </View>
+        ) : null}
         <View style={styles.answerView}>
           {answer[index].length > 0 ? (
             <View style={styles.ButtonAndText}>
@@ -224,7 +239,7 @@ const DoingExam = () => {
             digitTxtStyle={{color: '#000000'}}
             timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
             separatorStyle={{color: '#000000'}}
-            timeToShow={['M', 'S']}
+            timeToShow={['H', 'M', 'S']}
             timeLabels={{m: null, s: null}}
             showSeparator
           />
@@ -285,7 +300,8 @@ const styles = StyleSheet.create({
   },
   FlatListView: {
     marginBottom: scale(5),
-    width: '98%',
+    width: '100%',
+    flex: 1,
   },
   answerView: {
     width: '96%',
@@ -310,5 +326,19 @@ const styles = StyleSheet.create({
   timeCountdown: {
     fontSize: scale(20),
     marginLeft: scale(5),
+  },
+  QuestionText: {
+    fontSize: scale(18),
+    lineHeight: scale(20),
+    marginLeft: scale(10),
+    fontWeight: '400',
+  },
+  QuestionView: {
+    marginLeft: scale(10),
+  },
+  imageContainer: {
+    width: '98%',
+    height: scale(180),
+    alignSelf: 'center',
   },
 });

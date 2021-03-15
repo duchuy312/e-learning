@@ -29,6 +29,7 @@ const CourseDetail = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const [code, setCode] = useState('');
+  console.log(route.params.CourseImage);
   const JoinWithCode = async () => {
     await axios
       .post(
@@ -131,13 +132,22 @@ const CourseDetail = () => {
     <View style={styles.container}>
       <ScrollView style={styles.ScrollContainer}>
         <View style={styles.scrollArea}>
-          <Image
-            style={styles.imageNew}
-            source={{
-              uri:
-                'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
-            }}
-          />
+          {route.params.CourseImage === '' ? (
+            <Image
+              style={styles.imageNew}
+              source={{
+                uri:
+                  'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
+              }}
+            />
+          ) : (
+            <Image
+              style={styles.imageNew}
+              source={{
+                uri: 'http://elearning-uat.tmgs.vn' + route.params.CourseImage,
+              }}
+            />
+          )}
           {loading ? (
             <View>
               <View style={styles.bar}>

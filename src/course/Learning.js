@@ -37,6 +37,7 @@ const WareCourse = () => {
           for (var i = 0; i < response.data.data.length; i++) {
             Detail[i] = response.data.data[i].chapterCourseWares;
           }
+          // console.log(response.data.data);
           setWareDetail(Detail);
           setDataWare(response.data.data);
         });
@@ -45,10 +46,12 @@ const WareCourse = () => {
       setCount(count + 1);
     }
   };
+
   useEffect(() => {
     getWare();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count]);
+
   var ArrView = [];
   var ArrViewWithKey = [];
   for (let i = 0; i < wareDetail.length; i++) {

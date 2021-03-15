@@ -3,13 +3,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   StyleSheet,
   ImageBackground,
   ScrollView,
   Platform,
   Alert,
-  ImageEditor,
   Modal,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';

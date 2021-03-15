@@ -10,7 +10,7 @@ import {useRoute} from '@react-navigation/native';
 const Tab = createMaterialTopTabNavigator();
 function TopCourse() {
   const route = useRoute();
-  const {CourseID, CourseTK} = route.params;
+  const {CourseID, CourseTK, CourseImage} = route.params;
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -26,17 +26,29 @@ function TopCourse() {
       <Tab.Screen
         name="Nội Dung"
         component={CourseDetail}
-        initialParams={{CourseID: CourseID, CourseTK: CourseTK}}
+        initialParams={{
+          CourseID: CourseID,
+          CourseTK: CourseTK,
+          CourseImage: CourseImage,
+        }}
       />
       <Tab.Screen
         name="Tài Liệu"
         component={Documents}
-        initialParams={{CourseID: CourseID, CourseTK: CourseTK}}
+        initialParams={{
+          CourseID: CourseID,
+          CourseTK: CourseTK,
+          CourseImage: CourseImage,
+        }}
       />
       <Tab.Screen
         name="Thảo Luận"
         component={Discussion}
-        initialParams={{CourseID: CourseID, CourseTK: CourseTK}}
+        initialParams={{
+          CourseID: CourseID,
+          CourseTK: CourseTK,
+          CourseImage: CourseImage,
+        }}
       />
     </Tab.Navigator>
   );

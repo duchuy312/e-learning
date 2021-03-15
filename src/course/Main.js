@@ -91,6 +91,7 @@ const MainCourse = () => {
           navigation.navigate('TopCourse', {
             CourseID: item.id,
             CourseTK: token,
+            CourseImage: item.avatar,
           })
         }>
         {item.avatar === '' ? (
