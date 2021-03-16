@@ -118,7 +118,9 @@ const ExamDetail = () => {
           />
         </View>
         <View style={styles.viewExam}>
-          <Text style={styles.text}>{item.nameRound}</Text>
+          <Text style={styles.text} numberOfLines={1}>
+            {item.nameRound}
+          </Text>
           <Text style={styles.content}>
             <CalendarIcon /> Thời gian bắt đầu : Bạn được phép thi trong thời
             gian của cuộc thi
@@ -172,6 +174,11 @@ const ExamDetail = () => {
                 setSendID(item.id);
               }}>
               <Text style={styles.text}>Tham Gia Thi</Text>
+            </TouchableOpacity>
+          ) : null}
+          {item.message === 'MY_COMPETITION_WAIT_CONFIRM' ? (
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.text}>Chờ phê duyệt</Text>
             </TouchableOpacity>
           ) : null}
           {item.message === 'MY_COMPETITION_NOT_DONE' ? (

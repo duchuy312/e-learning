@@ -8,21 +8,23 @@ import {
   FlatList,
   Platform,
   Alert,
+  useWindowDimensions,
+  ScrollView,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-import Video from 'react-native-video';
 import {WebView} from 'react-native-webview';
+import HTML from 'react-native-render-html';
 
 const VideoPlayer = () => {
   const route = useRoute();
-  const {urlFile} = route.params;
+  const [urlFile] = useState(route.params.urlFile);
+  const [Content] = useState(route.params.content);
   //state
   const [link, setLink] = useState('');
   const [type, setType] = useState('');
 
-  console.log('abc', urlFile);
+  console.log('url', urlFile);
 
   const checkSwitch = (url) => {
     console.log('anni');
@@ -63,9 +65,9 @@ const VideoPlayer = () => {
   };
 
   useEffect(() => {
-    checkSwitch(urlFile);
+    urlFile !== undefined ? checkSwitch(urlFile) : null;
   }, []);
-
+  const contentWidth = (useWindowDimensions().width * 90) / 100;
   return (
     <View style={styles.container}>
       {type === 'video' ? (
@@ -99,9 +101,24 @@ const VideoPlayer = () => {
           style={styles.webView}
         />
       ) : null}
-      {/* <View style={styles.TitleContainer}>
-        <Text style={styles.title}>{route.params.name}</Text>
-      </View> */}
+      {Content !== undefined ? (
+        <ScrollView style={styles.scrollArea}>
+          <View style={styles.contentContainer}>
+            <Text style={styles.contentText}>{route.params.name}</Text>
+            <HTML
+              defaultTextProps={styles.text}
+              source={{
+                html: Content.replace(
+                  /src="/g,
+                  'src="http://elearning-uat.tmgs.vn',
+                ),
+              }}
+              contentWidth={contentWidth}
+              baseFontStyle={styles.text}
+            />
+          </View>
+        </ScrollView>
+      ) : null}
     </View>
   );
 };
@@ -110,12 +127,6 @@ export default VideoPlayer;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  logocontainer: {
-    height: scale(200),
-    width: scale(350),
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   imageNew: {
     flex: 1,
@@ -147,5 +158,25 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(20),
     fontWeight: 'bold',
+  },
+  contentContainer: {
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    alignContent: 'center',
+  },
+  text: {
+    fontSize: scale(14),
+    marginLeft: scale(8),
+    marginRight: scale(8),
+    lineHeight: scale(20),
+    textAlign: 'justify',
+  },
+  contentText: {
+    fontSize: scale(18),
+    fontWeight: 'bold',
+  },
+  scrollArea: {
+    flex: 1,
+    alignContent: 'center',
   },
 });

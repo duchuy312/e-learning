@@ -21,7 +21,7 @@ const ChangePass = () => {
   const [token, setToken] = useState('');
   const navigation = useNavigation();
   const route = useRoute();
-  console.log(token);
+  console.log(route.params.id);
   useEffect(() => {
     setToken(route.params.UserToken);
     // eslint-disable-next-line react-hooks/exhaustive-deps

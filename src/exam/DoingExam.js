@@ -119,6 +119,7 @@ const DoingExam = () => {
         <View style={styles.QuestionView}>
           <HTML
             defaultTextProps={styles.QuestionText}
+            mediaPlaybackRequiresUserAction={true}
             source={{
               html: item.question.question.replace(
                 /src="/g,

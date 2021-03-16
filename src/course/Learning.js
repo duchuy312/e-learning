@@ -63,6 +63,7 @@ const WareCourse = () => {
               navigation.navigate('VideoPlayer', {
                 urlFile: wareDetail[i][j].courseWare.files,
                 name: wareDetail[i][j].courseWare.name,
+                content: wareDetail[i][j].courseWare.content,
               })
             }>
             <Text style={styles.linkText}>
