@@ -31,8 +31,8 @@ const LoginScreen = () => {
   const LoginConfirm = async () => {
     await axios
       .post('http://elearning-uat.tmgs.vn/api/authentication', {
-        username: 'Admin',
-        password: 'Abc@123456789',
+        username: name,
+        password: pass,
       })
       .then(function (response) {
         // console.log(response);

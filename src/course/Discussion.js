@@ -17,12 +17,13 @@ import Backbar from '../components/BackBar';
 import axios from 'axios';
 import CourseBar from '../components/CourseBar';
 import {TextInput} from 'react-native-gesture-handler';
-import {SendIcon} from '../../svg/icon';
+import {SendIcon, XIcon} from '../../svg/icon';
 import Draggable from 'react-native-draggable';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 
 const Discussion = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
   const route = useRoute();
   const CommenID = useState('');
   const navigation = useNavigation();
@@ -93,6 +94,7 @@ const Discussion = () => {
       })
       .catch(function (error) {
         // handle error
+        setModalVisible2(true);
         console.log(error);
       })
       .finally(() => {
@@ -193,6 +195,30 @@ const Discussion = () => {
             </TouchableOpacity>
           </View>
         </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible2}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <TouchableOpacity
+          style={styles.smallCenteredView}
+          onPress={() => {
+            setModalVisible2(false);
+          }}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalCenter}>
+              <View style={styles.circleX}>
+                <XIcon />
+              </View>
+              <Text style={styles.smallModalText}>
+                Bạn chưa đăng ký khóa học !
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </Modal>
     </View>
   );
@@ -303,5 +329,40 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     textAlign: 'center',
     marginBottom: scale(10),
+  },
+  smallCenteredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100,100,100, 0.9)',
+  },
+  smallModalView: {
+    height: scale(300),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'center',
+    padding: scale(8),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+    textAlign: 'center',
+  },
+  modalCenter: {
+    justifyContent: 'space-between',
+    height: scale(150),
+    alignItems: 'center',
+  },
+  circleX: {
+    height: scale(140),
+    width: scale(140),
+    borderRadius: scale(70),
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

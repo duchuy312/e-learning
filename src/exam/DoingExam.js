@@ -231,7 +231,7 @@ const DoingExam = () => {
           <TimeIcon />
           <CountDown
             size={scale(18)}
-            until={route.params.timeRound * 60}
+            until={route.params.timeRound}
             onFinish={() => alert('Finished')}
             digitStyle={{
               backgroundColor: '#FFF',
@@ -239,7 +239,7 @@ const DoingExam = () => {
             digitTxtStyle={{color: '#000000'}}
             timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
             separatorStyle={{color: '#000000'}}
-            timeToShow={['H', 'M', 'S']}
+            timeToShow={['M', 'S']}
             timeLabels={{m: null, s: null}}
             showSeparator
           />
