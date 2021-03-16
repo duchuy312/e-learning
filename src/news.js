@@ -37,7 +37,7 @@ const News = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/news/all?size=8',
+        'http://elearning-uat.tmgs.vn/api/v2/news/all?size=8',
         {title: null, categoryId: null},
         {
           headers: {

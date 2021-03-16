@@ -8,7 +8,6 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-
 import {scale} from 'react-native-size-matters';
 import ViewBar from './ViewBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,7 +40,7 @@ const MainExam = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/competition/list/all',
+        'http://elearning-uat.tmgs.vn/api/v2/competition/list/all',
         {searchValue: null, categoryId: null},
         {
           headers: {
@@ -52,6 +51,7 @@ const MainExam = () => {
       .then((response) => {
         setGetting(true);
         setDataExam(response.data.data);
+        // console.log(response);
       })
       .catch(function (error) {
         setCount(count + 1);
@@ -73,15 +73,15 @@ const MainExam = () => {
             navigation.navigate('TestDetail', {
               examTK: token,
               idExam: item.id,
-              examName: item.nameCompetition,
-              examPS: item.poscodeVnpost.name,
+              examName: item.competitionCategory.nameCompetition,
+              // examPS: item.poscodeVnpost.name,
             })
           }>
           <Image
             style={styles.imageNew}
             source={{
               uri:
-                'http://elearning-uat.vnpost.vn/static/images/default_thumb_exam.png',
+                'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
             }}
           />
           <View style={styles.viewNew}>
@@ -90,7 +90,8 @@ const MainExam = () => {
             </Text>
             <View style={styles.iconAndText}>
               <BuildingIcon color="#17a2b8" />
-              <Text style={styles.authorText}>{item.poscodeVnpost.name}</Text>
+              {/* <Text style={styles.authorText}>{item.poscodeVnpost.name}</Text> */}
+              <Text style={styles.authorText}>Tổng công ty</Text>
             </View>
             <View style={styles.iconAndText}>
               <ClockIcon clockheight={scale(18)} clockwidth={scale(16)} />
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
   },
   itemNew: {
     overflow: 'scroll',
-    borderRadius: scale(15),
+    borderRadius: scale(10),
     backgroundColor: '#FFF',
     height: scale(350),
     marginTop: scale(10),
@@ -148,8 +149,8 @@ const styles = StyleSheet.create({
     height: scale(210),
     width: '100%',
     resizeMode: 'stretch',
-    borderTopLeftRadius: scale(15),
-    borderTopRightRadius: scale(15),
+    borderTopLeftRadius: scale(5),
+    borderTopRightRadius: scale(5),
   },
   viewNew: {
     width: '100%',

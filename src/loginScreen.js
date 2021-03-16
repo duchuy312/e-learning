@@ -26,7 +26,7 @@ const LoginScreen = () => {
       }
     };
     axios
-      .post('http://elearning-uat.vnpost.vn/api/authentication', {
+      .post('http://elearning-uat.tmgs.vn/api/authentication', {
         username: name,
         password: pass,
       })

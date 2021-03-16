@@ -14,7 +14,7 @@ export default function TestDetail({route}) {
   const getExamsDetail = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/competition/${idExam}/roundTest/list`,
+        `http://elearning-uat.tmgs.vn/api/competition/${idExam}/roundTest/list`,
         {
           headers: {
             Authorization: `Bearer ${examTK}`,
@@ -113,6 +113,18 @@ export default function TestDetail({route}) {
                 color: 'green',
               }}>
               {' Đã thi'}
+            </Text>
+          ) : null}
+          {dataExam.message === 'MY_COMPETITION_NOT_JOIN' ? (
+            <Text
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                paddingTop: scale(15),
+                fontWeight: '400',
+                fontSize: scale(14),
+                color: 'green',
+              }}>
+              {' Chưa tham gia'}
             </Text>
           ) : null}
         </View>

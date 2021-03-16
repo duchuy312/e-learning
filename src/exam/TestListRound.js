@@ -1,16 +1,25 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 export default function TestList({route}) {
+  const navigation = useNavigation();
   const [getting, setGetting] = useState(false);
   const {idRoundR, tokenR} = route.params;
   const [dataRound, setDataRound] = useState([]);
   const getExamsRound = async () => {
     await axios
       .get(
-        `http://elearning-uat.vnpost.vn/api/competition/${idRoundR}/roundTest/list`,
+        `http://elearning-uat.tmgs.vn/api/competition/${idRoundR}/roundTest/list`,
         {
           headers: {
             Authorization: `Bearer ${tokenR}`,
@@ -40,14 +49,46 @@ export default function TestList({route}) {
   const renderItem = ({item}) => {
     return (
       <View style={styles.viewExamRound}>
-        <Text style={styles.textTittle}>{item.nameRound}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('TestBegin', {
+              timeRoundB: item.timeRound,
+              tokenB: tokenR,
+              idRoundB: item.id,
+            })
+          }>
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style={styles.imageRound}
+              source={{
+                uri:
+                  'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
+              }}
+            />
+            <View style={styles.viewContent}>
+              <Text style={styles.textTittle}>Tên: {item.nameRound}</Text>
+              <View style={{flexDirection: 'row', paddingTop: scale(10)}}>
+                <Image
+                  style={{
+                    width: scale(16),
+                    height: scale(16),
+                    marginLeft: scale(10),
+                  }}
+                  source={require('../../img/time.png')}
+                />
+                <Text style={{paddingLeft: scale(8)}}>
+                  Thời gian làm bài: {item.timeRound / 60} phút
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };
   return (
     <View style={styles.container}>
       <Backbar title={'Tên cuộc thi'} />
-      {/* <Text>{data.nameRound}</Text> */}
       <FlatList
         data={dataRound}
         renderItem={renderItem}
@@ -71,13 +112,20 @@ const styles = StyleSheet.create({
     marginRight: scale(10),
     marginBottom: scale(5),
     height: scale(100),
-    // width: '100%',
     borderRadius: scale(5),
-    // paddingLeft: scale(15),
-    // paddingRight: scale(15),
+    // flexDirection: 'row',
   },
   textTittle: {
-    color: 'blue',
+    color: 'black',
     fontSize: scale(15),
+    marginLeft: scale(10),
+  },
+  imageRound: {
+    borderRadius: scale(5),
+    height: scale(100),
+    width: scale(100),
+  },
+  viewContent: {
+    alignSelf: 'center',
   },
 });

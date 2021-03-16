@@ -29,7 +29,7 @@ const TestChoice = ({route}) => {
   const requestByCode = async () => {
     await axios
       .post(
-        `http://elearning-uat.vnpost.vn/api/roundtest/${idChoice}/inputCode/GoDOIYzHAiqN8l`,
+        `http://elearning-uat.tmgs.vn/api/roundtest/${idChoice}/inputCode/GoDOIYzHAiqN8l`,
         {},
         {
           headers: {
@@ -135,7 +135,7 @@ const TestChoice = ({route}) => {
               </Text>
             </TouchableOpacity>
             <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <Text>Bạn không có mã phòng thi ?{nameRoundC}</Text>
+              <Text>Bạn không có mã phòng thi ?</Text>
             </View>
           </View>
         ) : (
