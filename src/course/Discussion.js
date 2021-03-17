@@ -73,6 +73,7 @@ const Discussion = () => {
       })
       .catch(function (error) {
         // handle error
+        setModalVisible2(true);
         console.log(error);
       })
       .finally(() => {
@@ -94,7 +95,6 @@ const Discussion = () => {
       })
       .catch(function (error) {
         // handle error
-        setModalVisible2(true);
         console.log(error);
       })
       .finally(() => {

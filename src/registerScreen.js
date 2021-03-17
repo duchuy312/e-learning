@@ -14,25 +14,25 @@ import axios from 'axios';
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [FullName, setFullName] = useState('');
+  const [Gender, setGender] = useState('');
   const [pass, setPass] = useState('');
   const [pass1, setPass1] = useState('');
   const RegisterConfirm = () => {
     axios
-      .post('https://600685103698a80017de189e.mockapi.io/api/demo/UsersData', {
+      .post('http://elearning-uat.tmgs.vn/api/v2/user', {
         username: name,
-        email: email,
-        phone: phone,
-        pass: pass,
+        password: pass,
+        fullName: FullName,
+        gender: Gender,
       })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
   const ClearInput = () => {
     setName('');
-    setEmail('');
-    setPhone('');
+    setFullName('');
+    setGender('');
     setPass('');
     setPass1('');
   };
@@ -56,18 +56,18 @@ const RegisterScreen = () => {
         </View>
         <View style={styles.textInputArea}>
           <TextInput
-            value={email}
-            onChangeText={(emailinput) => setEmail(emailinput)}
+            value={FullName}
+            onChangeText={(input) => setFullName(input)}
             style={styles.textInput}
-            placeholder={'   Email'}
+            placeholder={'   Full Name'}
           />
         </View>
         <View style={styles.textInputArea}>
           <TextInput
-            value={phone}
-            onChangeText={(phoneinput) => setPhone(phoneinput)}
+            value={Gender}
+            onChangeText={(phoneinput) => setGender(phoneinput)}
             style={styles.textInput}
-            placeholder={'   Số Điện Thoại'}
+            placeholder={'   Giới tính'}
           />
         </View>
         <View style={styles.textInputArea}>

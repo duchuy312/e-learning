@@ -8,6 +8,8 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
+  Modal,
+  Alert,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -15,7 +17,7 @@ import Backbar from '../components/BackBar';
 import axios from 'axios';
 import {RadioButton} from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
-import {TimeIcon} from '../../svg/icon';
+import {TimeIcon, CheckIcon} from '../../svg/icon';
 import HTML from 'react-native-render-html';
 import {WebView} from 'react-native-webview';
 import {enableScreens} from 'react-native-screens';
@@ -23,6 +25,7 @@ import {enableScreens} from 'react-native-screens';
 enableScreens();
 const DoingExam = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const [countEx, setCountEx] = useState(0);
   const [data, setData] = useState([]);
   const [answer, setAnswer] = useState([]);
@@ -30,11 +33,14 @@ const DoingExam = () => {
   const [dataSubmit, setDataSubmit] = useState([]);
   const [yourAnswer, setYourAnswer] = useState([]);
   const [yourAnswerID] = useState([]);
-  const submitAnswer = async () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
+  const submitAnswer = async (body) => {
+    var arr = JSON.stringify({body});
     await axios
       .post(
         `http://elearning-uat.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
-        dataSubmit,
+        arr,
         {
           headers: {
             Authorization: `Bearer ${route.params.examTK}`,
@@ -49,7 +55,9 @@ const DoingExam = () => {
         console.log(error);
       })
       .finally(() => {
-        console.log(dataSubmit);
+        console.log(JSON.stringify({body}));
+        navigation.navigate('ExamDetail');
+        setModalVisible1(false);
       });
   };
   const getExams = async () => {
@@ -233,7 +241,9 @@ const DoingExam = () => {
           <CountDown
             size={scale(18)}
             until={route.params.timeRound}
-            onFinish={() => alert('Finished')}
+            onFinish={() => {
+              setModalVisible(true);
+            }}
             digitStyle={{
               backgroundColor: '#FFF',
             }}
@@ -258,10 +268,67 @@ const DoingExam = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          submitAnswer();
+          setModalVisible1(true);
         }}>
         <Text style={styles.buttontext}>Nộp Bài</Text>
       </TouchableOpacity>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <TouchableOpacity
+          style={styles.smallCenteredView}
+          onPress={() => {
+            navigation.navigate('ExamDetail');
+            setModalVisible(false);
+          }}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalCenter}>
+              <CheckIcon />
+
+              <Text style={styles.smallModalText}>
+                Đã hết giờ làm bài, hệ thống sẽ tự động nộp bài
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <TouchableOpacity style={styles.smallCenteredView}>
+          <View style={styles.smallModalView}>
+            <View style={styles.modalCenter}>
+              <CheckIcon />
+
+              <Text style={styles.smallModalText}>Bạn muốn nộp bài ?</Text>
+              <View style={styles.submitButon}>
+                <TouchableOpacity
+                  style={styles.openButton}
+                  onPress={() => {
+                    setModalVisible1(false);
+                  }}>
+                  <Text>Hủy</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.openButton}
+                  onPress={() => {
+                    submitAnswer(dataSubmit);
+                  }}>
+                  <Text>Nộp Bài</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -341,5 +408,48 @@ const styles = StyleSheet.create({
     width: '98%',
     height: scale(180),
     alignSelf: 'center',
+  },
+  smallCenteredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100,100,100, 0.9)',
+  },
+  smallModalView: {
+    height: scale(300),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'center',
+    padding: scale(8),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+    textAlign: 'center',
+  },
+  modalCenter: {
+    justifyContent: 'space-between',
+    height: scale(150),
+    alignItems: 'center',
+  },
+  submitButon: {
+    flexDirection: 'row',
+    marginTop: scale(10),
+    width: '80%',
+    justifyContent: 'space-around',
+    alignSelf: 'center',
+  },
+  openButton: {
+    width: scale(60),
+    height: scale(30),
+    borderRadius: scale(10),
+    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'orange',
   },
 });

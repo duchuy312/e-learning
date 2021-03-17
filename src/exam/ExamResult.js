@@ -61,7 +61,7 @@ const ExamResult = () => {
             shadowColor="#f7ecdb"
             bgColor="#fff">
             <Text style={{fontSize: 18}}>
-              {(item.point / item.sumPoint).toFixed(3) * 100} %
+              {(item.point / item.sumPoint).toFixed(2) * 100} %
             </Text>
           </ProgressCircle>
         </View>
@@ -90,15 +90,6 @@ const ExamResult = () => {
   return (
     <View style={styles.container}>
       <Backbar title={'ExamDetail'} />
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.imageNew}
-          source={{
-            uri:
-              'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
-          }}
-        />
-      </View>
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.textTitle}>{route.params.name}</Text>
@@ -110,7 +101,7 @@ const ExamResult = () => {
         </View>
         <View style={styles.iconAndText}>
           <ClockIcon clockheight={scale(15)} clockwidth={scale(14)} />
-          <Text style={styles.text}>{route.params.timeExam} phút</Text>
+          <Text style={styles.text}>{route.params.timeExam / 60} phút</Text>
         </View>
         <Text>Bạn đã làm bài thi này {dataExam.length} lần</Text>
         {route.params.doAgain === 0 ? (

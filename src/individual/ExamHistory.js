@@ -26,7 +26,9 @@ const ExamHistory = () => {
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
-          <Text style={{fontSize: 18}}>{route.params.percentPoint} %</Text>
+          <Text style={{fontSize: 18}}>
+            {route.params.percentPoint.toFixed(1)} %
+          </Text>
         </ProgressCircle>
         <Text style={styles.text}>
           Tỉ lệ điểm trung bình trên mỗi đề thi đã làm
@@ -38,7 +40,9 @@ const ExamHistory = () => {
           color="#FCB71E"
           shadowColor="#f7ecdb"
           bgColor="#fff">
-          <Text style={{fontSize: 18}}>{route.params.percentTrue * 100} %</Text>
+          <Text style={{fontSize: 18}}>
+            {(route.params.percentTrue * 100).toFixed(1)} %
+          </Text>
         </ProgressCircle>
         <Text style={styles.text}>
           Trung bình số câu trả lời đúng trên mỗi đề thi đã làm
@@ -55,10 +59,9 @@ const ExamHistory = () => {
           shadowColor="#f7ecdb"
           bgColor="#fff">
           <Text style={{fontSize: 18}}>
-            {(
-              route.params.testDone /
-              (route.params.testWait + route.params.testDone)
-            ).toFixed(3) * 100}{' '}
+            {(route.params.testDone /
+              (route.params.testWait + route.params.testDone)) *
+              100}{' '}
             %
           </Text>
         </ProgressCircle>

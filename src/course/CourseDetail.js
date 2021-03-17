@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  useWindowDimensions,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -17,6 +18,7 @@ import axios from 'axios';
 import {StarIcon} from '../../svg/icon';
 import CourseBar from '../components/CourseBar';
 import {CircleCheckIcon} from '../../svg/icon';
+import HTML from 'react-native-render-html';
 
 const CourseDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -57,8 +59,9 @@ const CourseDetail = () => {
   };
   const sendRequest = async () => {
     await axios
-      .get(
-        `http://elearning-uat.tmgs.vn/api/course/request/${route.params.CourseID}`,
+      .post(
+        `http://elearning-uat.tmgs.vn/api/course/join/${route.params.CourseID}`,
+        {id: 23},
         {
           headers: {
             Authorization: `Bearer ${route.params.examTK}`,
@@ -128,6 +131,7 @@ const CourseDetail = () => {
     getCourse();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count]);
+  const contentWidth = (useWindowDimensions().width * 90) / 100;
   return (
     <View style={styles.container}>
       <ScrollView style={styles.ScrollContainer}>
@@ -209,7 +213,14 @@ const CourseDetail = () => {
                     </Text>
                   </View>
                 </View>
-                <Text style={styles.contentText}>{dataCourse.description}</Text>
+                <HTML
+                  defaultTextProps={styles.text}
+                  source={{
+                    html: dataCourse.description,
+                  }}
+                  contentWidth={contentWidth}
+                  baseFontStyle={styles.text}
+                />
                 {register ? (
                   <TouchableOpacity
                     style={styles.button}
@@ -404,10 +415,9 @@ const styles = StyleSheet.create({
   scrollArea: {
     flex: 1,
     alignContent: 'center',
-    height: '300%',
   },
   whiteSpace: {
-    height: scale(450),
+    height: scale(1800),
   },
   TopContent: {
     alignItems: 'center',

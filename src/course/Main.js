@@ -120,7 +120,7 @@ const MainCourse = () => {
           </View>
           <View style={styles.iconAndText}>
             <FlagTickIcon />
-            <Text style={styles.timeText}>Không yêu cầu đăng ký</Text>
+            <Text style={styles.timeText}>{item.poscodeName}</Text>
           </View>
         </View>
       </TouchableOpacity>

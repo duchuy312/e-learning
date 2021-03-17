@@ -41,6 +41,7 @@ const VideoPlayer = () => {
     console.log(str);
 
     switch (str) {
+      case 'html':
       case '.mp4':
       case '.mp3': {
         setLink('http://elearning-uat.tmgs.vn' + urlFile);

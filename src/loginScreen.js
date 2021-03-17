@@ -35,7 +35,7 @@ const LoginScreen = () => {
         password: pass,
       })
       .then(function (response) {
-        // console.log(response);
+        console.log(response);
         if (response.status === 200) {
           storeToken(response.data.data.token);
           console.log('Login Success');

@@ -158,7 +158,7 @@ const ExamDetail = () => {
                   token: route.params.examTK,
                   name: item.nameRound,
                   namePS: route.params.examPS,
-                  timeExam: item.timeRound / 60,
+                  timeExam: item.timeRound,
                   doAgain: item.maxWork,
                   idRound: item.id,
                 })
