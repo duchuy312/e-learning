@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -8,10 +9,30 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {scale} from 'react-native-size-matters';
+import axios from 'axios';
 
 const MainIndividual = ({navigation}) => {
   const [token, setToken] = useState('');
-
+  const [dataUser, setDataUser] = useState([]);
+  const [count, setCount] = useState(0);
+  const getUserInfor = async () => {
+    await getToken();
+    await axios
+      .get('http://elearning-uat.tmgs.vn/api/profile/detail', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setDataUser(res.data.data);
+      })
+      .catch(function (error) {
+        // handle error
+        setCount(count + 1);
+        console.log(error);
+      });
+  };
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@MyToken');
     if (value !== null) {
@@ -20,8 +41,8 @@ const MainIndividual = ({navigation}) => {
   };
 
   useEffect(() => {
-    getToken();
-  });
+    getUserInfor();
+  }, [count]);
 
   return (
     <View style={styles.container}>
@@ -34,7 +55,23 @@ const MainIndividual = ({navigation}) => {
       <View style={styles.body}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('UserInfor', {token: token})}>
+          onPress={() =>
+            navigation.navigate('UserInfor', {
+              name: dataUser.fullName,
+              email: dataUser.email,
+              gender: dataUser.gender,
+              place: dataUser.place,
+              company: dataUser.poscodeName,
+              phone: dataUser.phoneNumber,
+              birth: dataUser.birthday,
+              avatar: dataUser.imageUsers,
+              token: token,
+              idUser: dataUser.id,
+              username: dataUser.username,
+              birthday: dataUser.birthDateFomatted,
+              url: `http://elearning-uat.tmgs.vn${dataUser.imageUsers}`,
+            })
+          }>
           <Text style={styles.text}>{'Thông tin cá nhân'}</Text>
         </TouchableOpacity>
         <TouchableOpacity

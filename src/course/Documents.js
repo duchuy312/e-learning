@@ -27,7 +27,7 @@ export default function Documents({route, navigation}) {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then((res) => {
-        console.log('getdoc', res.data.data);
+        // console.log('getdoc', res.data.data);
         setData(res.data.data);
         setGetting(true);
       })
@@ -44,35 +44,28 @@ export default function Documents({route, navigation}) {
     // console.log(url);
     const fileExtension = url.slice(-4);
     switch (fileExtension) {
-      case 'pptx': {
-        navigation.navigate('WebViewComponent', {url: url, type: 'doc'});
-        break;
-      }
       case '.pdf': {
         navigation.navigate('ReadPDF', {url: url});
         break;
       }
+      case 'pptx':
       case 'docx':
-      case '.doc': {
-        navigation.navigate('WebViewComponent', {url: url, type: 'doc'});
-        break;
-      }
+      case '.doc':
       case 'xlsx': {
         navigation.navigate('WebViewComponent', {url: url, type: 'doc'});
         break;
       }
+
       case '.rar': {
         navigation.navigate('');
         break;
       }
-      case '.mp3': {
-        navigation.navigate('RenderSound', {url: url});
-        break;
-      }
+      case '.mp3':
       case '.mp4': {
         navigation.navigate('RenderSound', {url: url});
         break;
       }
+
       case '.png':
       case '.jpg': {
         navigation.navigate('WebViewComponent', {url: url, type: 'img'});

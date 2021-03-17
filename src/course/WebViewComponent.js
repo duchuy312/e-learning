@@ -15,36 +15,38 @@ const WebViewComponent = ({route, navigation}) => {
           source={{
             html:
               `<div style="height:95vh">
-          <iframe width="100%" height="100%" src="https://view.officeapps.live.com/op/embed.aspx?src=` +
+            <iframe 
+            src='https://view.officeapps.live.com/op/embed.aspx?src=` +
               url +
-              ` "
-          </iframe>
-          </div>`,
+              `'
+            width='100%' 
+            height='100%' 
+            frameborder='0'>
+            </iframe>
+            </div>`,
           }}
+          pullToRefreshEnabled={true}
           originWhitelist={'http: // *'}
           allowsBackForwardNavigationGestures={true}
           incognito={true}
           allowFileAccessFromFileURLs={true}
           allowFileAccess={true}
-          pullToRefreshEnabled={true}
           setSupportMultipleWindows={true}
           style={styles.webView}
-        /> ? (
-          type === 'youtube'
-        ) : (
-          <View style={{flex: 1}}>
-            <WebView
-              style={{marginTop: Platform.OS == 'ios' ? 20 : 0}}
-              javaScriptEnabled={true}
-              domStorageEnabled={true}
-              source={{
-                uri: url,
-              }}
-            />
-          </View>
-        )
+        />
+      ) : type === 'youtube' ? (
+        <View style={{flex: 1}}>
+          <WebView
+            style={{marginTop: Platform.OS == 'ios' ? 20 : 0}}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            source={{
+              uri: url,
+            }}
+          />
+        </View>
       ) : (
-        <WebView style={styles.webView} source={{uri: url}} />
+        <WebView source={{uri: url}} />
       )}
     </View>
   );
@@ -52,5 +54,11 @@ const WebViewComponent = ({route, navigation}) => {
 
 export default WebViewComponent;
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#ddd'},
+  container: {
+    flex: 1,
+    backgroundColor: 'orange',
+    width: '100%',
+    height: '100%',
+  },
+  webView: {flex: 1, width: '100%', height: '100%'},
 });

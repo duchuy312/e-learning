@@ -13,112 +13,121 @@ export default function Course({navigation, route}) {
   const [DATA, setData] = useState([]);
   //url of video,...
   const [url, setUrl] = useState('');
-  const [viewChild, setViewChild] = useState(false);
-  const [active, setActive] = useState(false);
+  //check see element or not
+  const [viewChild, setViewChild] = useState('');
+  //store chapterID
+  const [chapterID, setChapterID] = useState('');
+  //store all element in each item
+  const [dataElement, setDataElement] = useState([]);
+
+  function renderItemElement({item}) {
+    // console.log('elemt', item);
+    const ReadFile = () => {
+      return chooseOpenEditor(changeURL());
+    };
+    function changeURL() {
+      if (item.courseWare.files.startsWith('/e-learning')) {
+        setUrl(`http://elearning-uat.tmgs.vn${item.courseWare.files}`);
+      } else if (item.courseWare.files.startsWith('https://www.youtube.com')) {
+        setUrl(item.courseWare.files);
+      }
+      return url;
+    }
+    function chooseOpenEditor(newURL) {
+      // changeURL();
+      // console.log(newURL);
+      const fileExtension = newURL.slice(-4);
+      if (newURL.startsWith('https://www.youtube.com')) {
+        navigation.navigate('WebViewComponent', {
+          url: newURL,
+          type: 'youtube',
+        });
+      }
+      switch (fileExtension) {
+        case 'pptx': {
+          navigation.navigate('WebViewComponent', {
+            url: newURL,
+            type: 'doc',
+          });
+          break;
+        }
+        case '.pdf': {
+          navigation.navigate('ReadPDF', {url: newURL});
+          break;
+        }
+        case 'docx':
+        case '.doc': {
+          navigation.navigate('WebViewComponent', {
+            url: newURL,
+            type: 'doc',
+          });
+          break;
+        }
+        case 'xlsx': {
+          navigation.navigate('WebViewComponent', {
+            url: newURL,
+            type: 'doc',
+          });
+          break;
+        }
+        case '.rar': {
+          navigation.navigate('');
+          break;
+        }
+        case '.mp3': {
+          navigation.navigate('RenderSound', {url: newURL});
+          break;
+        }
+        case '.mp4': {
+          navigation.navigate('RenderSound', {url: newURL});
+          break;
+        }
+        case '.png':
+        case '.jpg': {
+          navigation.navigate('WebViewComponent', {
+            url: newURL,
+            type: 'img',
+          });
+          break;
+        }
+      }
+    }
+    return (
+      <TouchableOpacity
+        style={styles.btnChild}
+        onPress={() => {
+          ReadFile();
+        }}>
+        <Text style={styles.txt}>
+          {item.courseWare.name ? item.courseWare.name : 'Chưa có tài liệu'}
+        </Text>
+      </TouchableOpacity>
+    );
+  }
 
   const renderItem = ({item}) => {
-    // console.log(item);
+    // console.log('item', item);
+
     return (
       <View style={styles.titleChapter}>
         <TouchableOpacity
           onPress={() => {
-            setViewChild(!viewChild);
+            setViewChild(item.id);
+            setDataElement(item.chapterCourseWares);
+            // console.log('aloha', item.chapterCourseWares);
           }}>
           <Text style={styles.txt}>{`${item.name}`}</Text>
         </TouchableOpacity>
-        {viewChild &&
-          item.chapterCourseWares.map((element) => {
-            const ReadFile = () => {
-              return chooseOpenEditor(changeURL());
-            };
-
-            function changeURL() {
-              if (element.courseWare.files.startsWith('/e-learning')) {
-                setUrl(
-                  `http://elearning-uat.tmgs.vn${element.courseWare.files}`,
-                );
-              } else if (
-                element.courseWare.files.startsWith('https://www.youtube.com')
-              ) {
-                setUrl(element.courseWare.files);
-              }
-              return url;
-            }
-
-            function chooseOpenEditor(newURL) {
-              // changeURL();
-              console.log(newURL);
-              const fileExtension = newURL.slice(-4);
-              if (newURL.startsWith('https://www.youtube.com')) {
-                navigation.navigate('WebViewComponent', {
-                  url: newURL,
-                  type: 'youtube',
-                });
-              }
-              switch (fileExtension) {
-                case 'pptx': {
-                  navigation.navigate('WebViewComponent', {
-                    url: newURL,
-                    type: 'doc',
-                  });
-                  break;
-                }
-                case '.pdf': {
-                  navigation.navigate('ReadPDF', {url: newURL});
-                  break;
-                }
-                case 'docx':
-                case '.doc': {
-                  navigation.navigate('WebViewComponent', {
-                    url: newURL,
-                    type: 'doc',
-                  });
-                  break;
-                }
-                case 'xlsx': {
-                  navigation.navigate('WebViewComponent', {
-                    url: newURL,
-                    type: 'doc',
-                  });
-                  break;
-                }
-                case '.rar': {
-                  navigation.navigate('');
-                  break;
-                }
-                case '.mp3': {
-                  navigation.navigate('RenderSound', {url: newURL});
-                  break;
-                }
-                case '.mp4': {
-                  navigation.navigate('RenderSound', {url: newURL});
-                  break;
-                }
-                case '.png':
-                case '.jpg': {
-                  navigation.navigate('WebViewComponent', {
-                    url: newURL,
-                    type: 'img',
-                  });
-                  break;
-                }
-              }
-            }
-            return (
-              <TouchableOpacity
-                style={styles.btnChild}
-                onPress={() => {
-                  setActive(element.id);
-                  ReadFile();
-                }}>
-                <Text style={styles.txt}>
-                  {element.courseWare.name
-                    ? element.courseWare.name
-                    : 'Chưa có tài liệu'}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+        {viewChild === item.id && dataElement !== [] && (
+          <FlatList
+            style={styles.FlatList}
+            data={dataElement}
+            keyExtractor={(item) => {
+              item.id.toString();
+            }}
+            renderItem={renderItemElement}
+          />
+        )}
       </View>
     );
   };
@@ -131,9 +140,10 @@ export default function Course({navigation, route}) {
         },
       })
       .then((res) => {
-        // console.log(res.data.data);
         setData(res.data.data);
-        // console.log(DATA);
+      })
+      .catch((err) => {
+        console.log('get chap lesson has been err', err);
       });
   }
 
@@ -156,7 +166,9 @@ export default function Course({navigation, route}) {
               renderItem={renderItem}
             />
             <View style={styles.btn}>
-              <TouchableOpacity style={styles.btnExamination}>
+              <TouchableOpacity
+                style={styles.btnExamination}
+                onPress={() => {}}>
                 <Text>{'Thi cuối khóa'}</Text>
               </TouchableOpacity>
             </View>

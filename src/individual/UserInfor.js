@@ -16,37 +16,44 @@ import {
 import {scale} from 'react-native-size-matters';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import {Backbar} from '../components/BackBar';
 import {CalendarIcon} from '../../svg/icon';
+import {useNavigation, useRoute} from '@react-navigation/core';
 
-const UserInfor = ({navigation, route}) => {
-  const {token} = route.params;
-
-  const [data, setData] = useState([]);
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [date, setDate] = useState('');
-  const [address, setAddress] = useState('');
-  const [phoneN, setPhoneN] = useState(0);
-  const [sw, setSW] = useState('');
-  const [userName, setUserName] = useState('');
-  const [gender, setGender] = useState(0);
+const UserInfor = () => {
+  const route = useRoute();
+  const [token] = useState(route.params.token);
+  const [url, setUrl] = useState(route.params.url);
+  const [fullName, setFullName] = useState(route.params.name);
+  const [email, setEmail] = useState(route.params.email);
+  const [address, setAddress] = useState(route.params.place);
+  const [phoneN, setPhoneN] = useState(route.params.phone);
+  const [sw, setSW] = useState(route.params.poscodeName);
+  const [userName] = useState(route.params.username);
+  const [userID] = useState(route.params.idUser);
+  const [avatar, setAvatar] = useState(route.params.avatar);
+  //date
+  const [date, setDate] = useState(new Date(route.params.birth));
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
-  const [userID, setUserID] = useState('');
+  const [birthday, setBirthday] = useState(route.params.birth);
   //check gender register by code or by accept
   const [male, setMale] = useState(false);
   const [female, setFemale] = useState(false);
+  const [gender, setGender] = useState(route.params.gender);
 
   const pressMale = () => {
     setMale(true);
     setFemale(false);
+    setGender(1);
   };
 
   const pressFemale = () => {
     setMale(false);
     setFemale(true);
+    setGender(0);
   };
 
   const storeData = async (value) => {
@@ -58,46 +65,41 @@ const UserInfor = ({navigation, route}) => {
   };
 
   function postInfor() {
-    axios.post('http://elearning-uat.tmgs.vn/api/profile/update', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
-
-  function getUserInfor() {
     axios
-      .get('http://elearning-uat.tmgs.vn/api/profile/detail', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      .post(
+        'http://elearning-uat.tmgs.vn/api/profile/update',
+        {
+          email: email,
+          place: sw,
+          phoneNumber: phoneN,
+          fullName: fullName,
+          gender: gender,
+          imageUsers: avatar,
+          birthday: birthday,
         },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
       })
-      .then((res) => {
-        // console.log(res.data.data);
-        setData(res.data.data);
-        setUserID(res.data.data.id);
-        setFullName(res.data.data.fullName);
-        setEmail(res.data.data.email);
-        setDate(
-          new Date(res.data.data.birthDateFomatted)
-            .toLocaleString()
-            .slice(0, 8),
-        );
-        setAddress(res.data.data.place);
-        setPhoneN(res.data.data.phoneNumber);
-        setUserName(res.data.data.username);
-        setSW(res.data.data.poscodeName);
-        setGender(res.data.data.gender);
+      .catch(function (error) {
+        // handle error
+        console.log(error);
       });
   }
 
   useEffect(() => {
     if (token.length > 0) {
-      getUserInfor();
+      gender === 1 ? setMale(true) : setFemale(true);
       storeData();
+      setBirthday(date.getTime());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [date]);
   //-------------set event for date picker--------------------------------
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -110,13 +112,17 @@ const UserInfor = ({navigation, route}) => {
     setMode(currentMode);
   };
 
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
   return (
     <View style={styles.container}>
       <Backbar title={'Thông tin cá nhân'} />
 
       <ScrollView style={styles.body}>
         <View style={{alignItems: 'center', marginVertical: scale(15)}}>
-          <Image source={require('../../img/image28.png')} style={styles.img} />
+          <Image source={{uri: url}} style={styles.img} />
         </View>
 
         <View style={styles.inline}>
@@ -155,11 +161,13 @@ const UserInfor = ({navigation, route}) => {
         </View>
         <View style={styles.inline}>
           <Text style={styles.txt}>Ngày sinh</Text>
-          <View style={styles.txtInput}>
-            <Text>{date !== '' ? date : ''}</Text>
+          <View style={[styles.inline, styles.txtDate]}>
+            <Text>
+              {new Date(birthday).toLocaleString('en-GB').substring(0, 10)}
+            </Text>
             <TouchableOpacity
               style={styles.calendarIcon}
-              onPress={() => setShow(true)}>
+              onPress={() => showDatepicker()}>
               <CalendarIcon />
             </TouchableOpacity>
           </View>
@@ -168,8 +176,7 @@ const UserInfor = ({navigation, route}) => {
               testID="dateTimePicker"
               value={date}
               mode={mode}
-              is24Hour={true}
-              display="default"
+              display="calendar"
               onChange={onChange}
             />
           )}
@@ -177,7 +184,6 @@ const UserInfor = ({navigation, route}) => {
 
         <View style={styles.inline}>
           <Text style={styles.txt}>Giới tính</Text>
-          {gender === 1 ? setMale(true) : setFemale(true)}
           <View
             style={{
               flexDirection: 'row',
@@ -296,5 +302,14 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 8,
+  },
+  txtDate: {
+    borderWidth: scale(1),
+    width: scale(200),
+    height: scale(40),
+    marginLeft: scale(10),
+    borderRadius: scale(8),
+    alignItems: 'center',
+    paddingHorizontal: scale(5),
   },
 });
