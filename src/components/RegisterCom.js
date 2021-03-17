@@ -43,7 +43,7 @@ export default function RegisterCourse({navigation, route}) {
   function postCode() {
     axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/course/request-code',
+        'http://elearning-uat.vnpost.vn/api/course/request-code',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export default function RegisterCourse({navigation, route}) {
 
   function postRequestAccept() {
     axios
-      .get(`http://elearning-uat.tmgs.vn/api/course/request/${courseID}`, {
+      .get(`http://elearning-uat.vnpost.vn/api/course/request/${courseID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -78,7 +78,6 @@ export default function RegisterCourse({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <Backbar title={courseName} />
       <View style={styles.body}>
         <Text style={styles.bold}>{'Chọn phương thức đăng kí học'}</Text>
         <View style={styles.inline}>
@@ -141,19 +140,13 @@ export default function RegisterCourse({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(100,100,100, 0.2)',
-    alignItems: 'center',
-  },
+  container: {flex: 1, backgroundColor: '#fff'},
   /**---------------Body------------------ */
   body: {
-    padding: scale(20),
+    flex: 9,
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    marginTop: scale(200),
   },
   bold: {fontWeight: 'bold', fontSize: 20},
   inline: {flexDirection: 'row', marginVertical: 10},

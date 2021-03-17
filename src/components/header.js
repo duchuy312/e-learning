@@ -1,11 +1,9 @@
-
 import React, {useState} from 'react';
 import {View, TouchableOpacity, TextInput, StyleSheet} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {MenuIcon, SearchIcon, CloseIcon, BellIcon} from '../../svg/icon';
+
 export function Header(props) {
-
-
   const [valueTextInput, setValueTextInput] = useState('');
   const {doST, iconSearch, textInputHolder} = props;
   return (

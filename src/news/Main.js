@@ -45,7 +45,7 @@ const MainNews = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.vnpost.vn/api/v2/news/all?size=8',
+        'http://elearning-uat.tmgs.vn/api/v2/news/all?size=8',
         {title: null, categoryId: null},
         {
           headers: {
@@ -80,7 +80,7 @@ const MainNews = () => {
         }>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.vnpost.vn' + item.images}}
+          source={{uri: 'http://elearning-uat.tmgs.vn' + item.images}}
         />
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={2}>

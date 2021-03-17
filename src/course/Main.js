@@ -1,4 +1,3 @@
-
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import {
@@ -28,8 +27,8 @@ const MainCourse = ({ navigation }) => {
   const [token, setToken] = useState('');
   const [dataModal, setDataModal] = useState([]);
   const [valueSearch, setValueSearch] = useState(null);
-  const [rating, setRating] = useState(0);
   const [getting, setGetting] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   const getValueSearch = (value) => {
     setValueSearch(value);
@@ -46,9 +45,8 @@ const MainCourse = ({ navigation }) => {
     setModalVisible(true);
   };
 
-
   const getCourse = async () => {
-    await axios.post('http://elearning-uat.vnpost.vn/api/course',
+    await axios.post('http://elearning-uat.tmgs.vn/api/course',
       { categoryId: null, name: valueSearch },
       {
         headers: {
@@ -58,7 +56,10 @@ const MainCourse = ({ navigation }) => {
       .then((res) => {
         setGetting(true);
         setData(res.data.data);
-      }).catch(function (err) {})
+        // console.log(res.data.data);
+      }).catch(function (err) {
+        console.log('err main', err);
+      })
       .finally(() => {
         setGetting(false);
       });
@@ -83,14 +84,12 @@ const MainCourse = ({ navigation }) => {
         <TouchableOpacity
           style={styles.inline}
           onPress={() => {
+            setSelectedId(item.id);
             navigation.navigate('Chi tiết khóa học', { courseID: item.id, token: token });
           }}>
           <Image
             style={styles.image}
-            source={{
-              uri:
-                'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
-            }}
+            source={require('../../img/image11.png')}
             resizeMode="contain"
           />
           <View style={styles.content}>
@@ -105,7 +104,7 @@ const MainCourse = ({ navigation }) => {
             <View style={styles.linesq} />
             {
               (item.price === null || item.price === 0) ? <Text style={styles.priceText}>Miễn Phí</Text>
-                : <Text style={styles.priceText}>{`Giá: ${item.price}`}</Text>
+                : <Text style={styles.priceText}>{item.price}</Text>
             }
           </View>
         </TouchableOpacity>
@@ -116,10 +115,8 @@ const MainCourse = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header
-
         getValueSearch={getValueSearch}
         doST={doST}
-
         textInputHolder="Tìm kiếm"
       />
       <View style={styles.body}>
@@ -128,17 +125,10 @@ const MainCourse = ({ navigation }) => {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          extraData={selectedId}
           refreshing={getting}
           onRefresh={() => getCourse()}
         />
-        {
-          // (loading > 15) ?
-          //   <View style={styles.viewErr}>
-          //     <Text style={styles.txtErr}>{'Đã xảy ra lỗi, vui lòng tải lại'}</Text>
-          //   </View>
-          //   :
-        }
-
       </View>
     </View>
   );
@@ -147,7 +137,6 @@ const MainCourse = ({ navigation }) => {
 export default MainCourse;
 
 const styles = StyleSheet.create({
-
   container: { flex: 1, backgroundColor: '#ddd' },
   /*------------------- */
   body: { flex: 9 },
@@ -185,5 +174,4 @@ const styles = StyleSheet.create({
   txtErr: { fontSize: scale(20), color: 'red' },
   /*------------------- */
   modalStyles: {},
-
 });

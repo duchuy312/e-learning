@@ -1,7 +1,5 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Header} from '../src/components/header';
-import {StyleSheet, View} from 'react-native';
 import {scale} from 'react-native-size-matters';
 
 import DetailCourse from '../src/course/Detail';
@@ -16,6 +14,7 @@ export default function TopTabCourse({route}) {
     <Tab.Navigator
       options={{
         title: 'Chi tiết khóa học',
+        color: '#fff',
         labelStyle: {fontSize: scale(20)},
         tabBarColor: '#FF6347',
         tabBarIcon: {color: '#fff'},

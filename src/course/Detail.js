@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Modal,
 } from 'react-native';
 
 import { scale } from 'react-native-size-matters';
@@ -18,44 +19,78 @@ function DetailCourse({ route, navigation }) {
   const [data, setData] = useState([]);
   const [rating, setRating] = useState(0);
   const [appear, setAppear] = useState(false);
+  const [courseName, setCourseName] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [gender, setGender] = useState(false);
+  const [count, setCount] = useState(0);
 
   const { courseID, token } = route.params;
- // console.log(courseID, token);
+
   const getDetail = () => {
-    axios.get(`http://elearning-uat.vnpost.vn/api/course/${courseID}`,
+    axios.get(`http://elearning-uat.tmgs.vn/api/course/${courseID}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setAppear(true);
         setData(res.data.data);
-        //console.log('star', data.rates[0].valuess);
-        if (data.rates[0].valuess === null && data.rates[0].valuess === 0 && data.rates[0].valuess === undefined) {
-          setRating(0);
-        }
-        else {
-          setRating(data.rates[0].valuess);
-        }
-        //console.log(data.courseConfig.start.slice(0, 10));
+        setCourseName(res.data.data.name);
+        setRating(data.rates[0].valuess);
+        setAppear(true);
+        setCount(count + 1);
       });
   };
+
+  function checkCourseIsPublicOrNot() {
+    axios
+      .get(
+        `http://elearning-uat.tmgs.vn/api/course/courseJoin/${courseID}/currentUser`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        // console.log(res);
+        //if course is public
+        if (res.data.message === 'true') {
+          setModalVisible(true);
+        } else {
+          navigation.navigate('RegisterCourse', {
+            courseID: courseID,
+            token: token,
+          });
+        }
+      });
+  }
+
+  function postRequestJoinCourse() {
+    axios.post('http://elearning-uat.tmgs.vn/api/course/join',
+      {
+        body: { id: 3 },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
+        navigation.navigate('Course', { courseID: courseID, token: token, courseName: courseName });
+      });
+  }
 
   useEffect(() => {
     if (token.length > 0) {
       getDetail();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, data]);
 
   return (
     <View style={styles.container}>
       <Image
-        source={{
-          uri:
-            'http://elearning-uat.vnpost.vn/static/images/default_thumb_course.png',
-        }}
+        source={require('../../img/image11.png')}
         style={styles.img}
       />
       <View style={styles.content}>
@@ -64,22 +99,34 @@ function DetailCourse({ route, navigation }) {
         {
           (appear === true) && <StarRating ratings={rating} />
         }
-        {
-          //   <View style={styles.inLine}>
-          //   <Text style={styles.blurText}>{`Bắt đầu: ${data.courseConfig.start.slice(0, 10)}`}</Text>
-          //   <Text style={styles.blurText}>{`Kết thúc: ${data.courseConfig.end.slice(0, 10)}`}</Text>
-          // </View>
-        }
         <View style={styles.overBtn}>
           <TouchableOpacity
             style={styles.buttonDK}
             onPress={() => {
-              navigation.navigate('RegisterCourse');
+              checkCourseIsPublicOrNot();
             }}>
             <Text style={styles.txtBtnDK}>{'Đăng kí học'}</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <TouchableOpacity
+            style={styles.modalView}
+            onPress={() => {
+              setModalVisible(false);
+              postRequestJoinCourse();
+            }}>
+            <View style={styles.modalView}>
+              <Text style={styles.titleModal}>{'Khoá học public'}</Text>
+              <Text>{'Nhấn để tham gia khóa học'}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -126,5 +173,36 @@ const styles = StyleSheet.create({
   txtBtnDK: { color: '#fff' },
   text: { marginTop: 20 },
   normalText: { fontSize: 15 },
+  //modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: scale(20),
+    backgroundColor: 'rgba(100,100,100,0.5)',
+  },
+  modalView: {
+    margin: scale(10),
+    backgroundColor: '#fff',
+    borderRadius: scale(10),
+    padding: scale(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scale(200),
+    height: scale(200),
+  },
+  btnClose: {
+    width: scale(15),
+    height: scale(15),
+    borderRadius: scale(8),
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+  imgClose: { width: scale(10), height: scale(10) },
+  titleModal: { fontWeight: 'bold', fontSize: scale(15), marginTop: scale(5) },
 });
-h
+
