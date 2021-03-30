@@ -9,6 +9,7 @@ import {
   TextInput,
   Modal,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {scale} from 'react-native-size-matters';
@@ -33,6 +34,9 @@ const MainCourse = () => {
   const [searchValue, setSearchValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [CateId, setCateId] = useState('');
+  const [stopFetchMore, setStopFetchMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [param, setParam] = useState(6);
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyToken');
@@ -51,7 +55,7 @@ const MainCourse = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/course',
+        'https://elearning.tmgs.vn/api/course?size=' + param,
         {name: searchValue, categoryId: CateId},
         {
           headers: {
@@ -99,14 +103,14 @@ const MainCourse = () => {
             style={styles.imageNew}
             source={{
               uri:
-                'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
+                'https://elearning.tmgs.vn/static/images/default_thumb_course.png',
             }}
           />
         ) : (
           <Image
             style={styles.imageNew}
             source={{
-              uri: 'http://elearning-uat.tmgs.vn' + item.avatar,
+              uri: 'http://elearning.tmgs.vn' + item.avatar,
             }}
           />
         )}
@@ -138,6 +142,17 @@ const MainCourse = () => {
         <Text style={styles.smallModalText}>{item.categoryName}</Text>
       </TouchableOpacity>
     );
+  };
+  const renderFooter = () => {
+    return getting ? (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" />
+      </View>
+    ) : null;
+  };
+  const handleOnEndReached = async () => {
+    setParam(param + 6);
+    setCount(count + 1);
   };
   return (
     <View style={styles.container}>
@@ -187,6 +202,9 @@ const MainCourse = () => {
         extraData={newsID}
         refreshing={getting}
         onRefresh={() => getCourse()}
+        ListFooterComponent={renderFooter}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
       />
       <Modal
         animationType="fade"

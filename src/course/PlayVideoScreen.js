@@ -44,7 +44,7 @@ const VideoPlayer = () => {
       case 'html':
       case '.mp4':
       case '.mp3': {
-        setLink('http://elearning-uat.tmgs.vn' + urlFile);
+        setLink('http://elearning.tmgs.vn' + urlFile);
         console.log('stt', link);
         setType('video');
         break;
@@ -54,7 +54,7 @@ const VideoPlayer = () => {
       case '.doc':
       case 'docx':
       case 'xlsx': {
-        setLink('http://elearning-uat.tmgs.vn' + urlFile);
+        setLink('http://elearning.tmgs.vn' + urlFile);
         console.log('belo');
         setType('office');
         break;
@@ -111,7 +111,7 @@ const VideoPlayer = () => {
               source={{
                 html: Content.replace(
                   /src="/g,
-                  'src="http://elearning-uat.tmgs.vn',
+                  'src="http://elearning.tmgs.vn',
                 ),
               }}
               contentWidth={contentWidth}
@@ -179,5 +179,10 @@ const styles = StyleSheet.create({
   scrollArea: {
     flex: 1,
     alignContent: 'center',
+  },
+  imageContainer: {
+    width: '98%',
+    height: scale(180),
+    alignSelf: 'center',
   },
 });

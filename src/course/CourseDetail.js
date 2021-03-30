@@ -35,7 +35,7 @@ const CourseDetail = () => {
   const JoinWithCode = async () => {
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/course/request-code',
+        'https://elearning.tmgs.vn/api/course/request-code',
         {
           courseId: route.params.CourseID,
           courseCode: code,
@@ -60,7 +60,7 @@ const CourseDetail = () => {
   const sendRequest = async () => {
     await axios
       .post(
-        `http://elearning-uat.tmgs.vn/api/course/join/${route.params.CourseID}`,
+        `https://elearning.tmgs.vn/api/course/join/${route.params.CourseID}`,
         {id: 23},
         {
           headers: {
@@ -80,7 +80,7 @@ const CourseDetail = () => {
       });
   };
   const requestOne = axios.get(
-    `http://elearning-uat.tmgs.vn/api/course/${route.params.CourseID}`,
+    `https://elearning.tmgs.vn/api/course/${route.params.CourseID}`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -88,7 +88,7 @@ const CourseDetail = () => {
     },
   );
   const requestTwo = axios.get(
-    `http://elearning-uat.tmgs.vn/api/v2/course/rating/${route.params.CourseID}`,
+    `https://elearning.tmgs.vn/api/v2/course/rating/${route.params.CourseID}`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -96,7 +96,7 @@ const CourseDetail = () => {
     },
   );
   const requestThree = axios.get(
-    `http://elearning-uat.tmgs.vn/api/course/courseJoin/${route.params.CourseID}/currentUser`,
+    `https://elearning.tmgs.vn/api/course/courseJoin/${route.params.CourseID}/currentUser`,
     {
       headers: {
         Authorization: `Bearer ${route.params.CourseTK}`,
@@ -141,7 +141,7 @@ const CourseDetail = () => {
               style={styles.imageNew}
               source={{
                 uri:
-                  'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
+                  'https://elearning.tmgs.vn/static/images/default_thumb_course.png',
               }}
             />
           ) : (

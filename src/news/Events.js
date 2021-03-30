@@ -47,7 +47,7 @@ const MainEvents = () => {
   };
   const GetCategoryEvent = () => {
     axios
-      .get('http://elearning-uat.tmgs.vn/api/event/category/list', {
+      .get('https://elearning.tmgs.vn/api/event/category/list', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ const MainEvents = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/v2/event/all?size=10',
+        'https://elearning.tmgs.vn/api/v2/event/all?size=10',
         {title: null, categoryId: null},
         {
           headers: {
@@ -110,7 +110,7 @@ const MainEvents = () => {
         }>
         <Image
           style={styles.imageNew}
-          source={{uri: 'http://elearning-uat.tmgs.vn' + item.image}}
+          source={{uri: 'http://elearning.tmgs.vn' + item.image}}
         />
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={2}>

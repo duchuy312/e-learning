@@ -35,12 +35,28 @@ const DoingExam = () => {
   const [yourAnswerID] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
+  const submitWithFetch = async (body) => {
+    console.log(JSON.stringify(body));
+    axios({
+      method: 'post',
+      url: `https://elearning.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
+      data: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${route.params.examTK}`,
+      },
+    })
+      .then((response) => response.json())
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const submitAnswer = async (body) => {
-    var arr = JSON.stringify({body});
+    var arr = JSON.stringify(body);
+    console.log(body);
     await axios
       .post(
-        `http://elearning-uat.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
-        arr,
+        `https://elearning.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
+        body,
         {
           headers: {
             Authorization: `Bearer ${route.params.examTK}`,
@@ -55,7 +71,6 @@ const DoingExam = () => {
         console.log(error);
       })
       .finally(() => {
-        console.log(JSON.stringify({body}));
         navigation.navigate('ExamDetail');
         setModalVisible1(false);
       });
@@ -63,7 +78,7 @@ const DoingExam = () => {
   const getExams = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/competition/contentTest/${route.params.idRound}`,
+        `https://elearning.tmgs.vn/api/competition/contentTest/${route.params.idRound}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.token}`,
@@ -86,13 +101,30 @@ const DoingExam = () => {
           setCountEx(countEx + 1);
         } else {
           for (let i = 0; i < data.length; i++) {
+            console.log(response.data.data.questionRT[i].answers.length);
             arr[i] = response.data.data.questionRT[i].answers;
-            submitArr[i] = {
-              idQuestion: response.data.data.questionRT[i].question.id,
-              answerChecked: [''],
-              answerNotChecked: [''],
-              typeQuestion: response.data.data.questionRT[i].typeQuestion,
-            };
+            if (response.data.data.questionRT[i].answers.length === 2) {
+              submitArr[i] = {
+                idQuestion: response.data.data.questionRT[i].question.id,
+                answerChecked: [''],
+                answerNotChecked: ['A', 'B'],
+                typeQuestion: response.data.data.questionRT[i].typeQuestion,
+              };
+            } else if (response.data.data.questionRT[i].answers.length === 3) {
+              submitArr[i] = {
+                idQuestion: response.data.data.questionRT[i].question.id,
+                answerChecked: [''],
+                answerNotChecked: ['A', 'B', 'C'],
+                typeQuestion: response.data.data.questionRT[i].typeQuestion,
+              };
+            } else if (response.data.data.questionRT[i].answers.length === 4) {
+              submitArr[i] = {
+                idQuestion: response.data.data.questionRT[i].question.id,
+                answerChecked: [''],
+                answerNotChecked: ['A', 'B', 'C', 'D'],
+                typeQuestion: response.data.data.questionRT[i].typeQuestion,
+              };
+            }
           }
         }
         setDataSubmit(submitArr);
@@ -113,6 +145,7 @@ const DoingExam = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countEx]);
   function addAnswer(stt, ID, answer) {
+    var index = dataSubmit[stt].answerNotChecked.indexOf(answer);
     yourAnswerID[stt] = ID;
     yourAnswer[stt] = answer;
     dataSubmit[stt].answerChecked = [answer];
@@ -131,7 +164,7 @@ const DoingExam = () => {
             source={{
               html: item.question.question.replace(
                 /src="/g,
-                'src="http://elearning-uat.tmgs.vn',
+                'src="http://elearning.tmgs.vn',
               ),
             }}
             contentWidth={contentWidth}
@@ -142,7 +175,7 @@ const DoingExam = () => {
           <View style={styles.imageContainer}>
             <WebView
               source={{
-                uri: 'http://elearning-uat.tmgs.vn' + item.question.url,
+                uri: 'http://elearning.tmgs.vn' + item.question.url,
               }}
             />
           </View>
@@ -243,6 +276,7 @@ const DoingExam = () => {
             until={route.params.timeRound}
             onFinish={() => {
               setModalVisible(true);
+              submitAnswer(dataSubmit);
             }}
             digitStyle={{
               backgroundColor: '#FFF',
@@ -320,7 +354,7 @@ const DoingExam = () => {
                 <TouchableOpacity
                   style={styles.openButton}
                   onPress={() => {
-                    submitAnswer(dataSubmit);
+                    submitWithFetch(dataSubmit);
                   }}>
                   <Text>Nộp Bài</Text>
                 </TouchableOpacity>

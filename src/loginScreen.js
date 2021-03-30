@@ -30,7 +30,7 @@ const LoginScreen = () => {
   };
   const LoginConfirm = async () => {
     await axios
-      .post('http://elearning-uat.tmgs.vn/api/authentication', {
+      .post('https://elearning.tmgs.vn/api/authentication', {
         username: name,
         password: pass,
       })

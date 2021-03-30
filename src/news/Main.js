@@ -47,7 +47,7 @@ const MainNews = () => {
   };
   const GetCategoryNew = () => {
     axios
-      .get('http://elearning-uat.tmgs.vn/api/news/categories/list', {
+      .get('https://elearning.tmgs.vn/api/news/categories/list', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -69,7 +69,7 @@ const MainNews = () => {
     await getToken();
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/v2/news/all?size=8',
+        'https://elearning.tmgs.vn/api/v2/news/all?size=8',
         {title: null, categoryId: CateId},
         {
           headers: {

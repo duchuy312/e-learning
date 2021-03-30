@@ -24,7 +24,7 @@ const NewsDetail = () => {
   const getNews = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/news/${route.params.newid}`,
+        `https://elearning.tmgs.vn/api/news/${route.params.newid}`,
         {title: null, categoryId: null},
         {
           headers: {

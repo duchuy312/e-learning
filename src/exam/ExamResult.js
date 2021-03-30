@@ -24,7 +24,7 @@ const ExamResult = () => {
   const getExams = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/competition/roundtest/history/list/${route.params.idRound}`,
+        `https://elearning.tmgs.vn/api/competition/roundtest/history/list/${route.params.idRound}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.token}`,

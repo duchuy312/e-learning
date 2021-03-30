@@ -15,7 +15,7 @@ const UserInfo = () => {
           <Image
             style={styles.logo}
             source={{
-              uri: 'http://elearning-uat.tmgs.vn' + route.params.avatar,
+              uri: 'http://elearning.tmgs.vn' + route.params.avatar,
             }}
           />
         </View>

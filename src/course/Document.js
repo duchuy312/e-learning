@@ -27,7 +27,7 @@ const Documents = () => {
   const getDoc = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/document/course/${route.params.CourseID}`,
+        `https://elearning.tmgs.vn/api/document/course/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,

@@ -51,7 +51,7 @@ const MainNews = () => {
   const GetExamData = () => {
     axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/v2/competition/list/all',
+        'https://elearning.tmgs.vn/api/v2/competition/list/all',
         {searchValue: searchValue, categoryId: CateId, typeMyCompetition: null},
         {
           headers: {
@@ -76,7 +76,7 @@ const MainNews = () => {
   };
   const GetCategoryExam = () => {
     axios
-      .get('http://elearning-uat.tmgs.vn/api/v2/competition/categories/all', {
+      .get('https://elearning.tmgs.vn/api/v2/competition/categories/all', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -119,13 +119,22 @@ const MainNews = () => {
             examPS: 'Bộ Giáo dục và Đào tạo',
           })
         }>
-        <Image
-          style={styles.imageNew}
-          source={{
-            uri:
-              'http://elearning-uat.tmgs.vn/static/images/default_thumb_exam.png',
-          }}
-        />
+        {item.imageCompetition === null ? (
+          <Image
+            style={styles.imageNew}
+            source={{
+              uri:
+                'https://elearning.tmgs.vn/static/images/default_thumb_exam.png',
+            }}
+          />
+        ) : (
+          <Image
+            style={styles.imageNew}
+            source={{
+              uri: 'http://elearning.tmgs.vn' + item.imageCompetition,
+            }}
+          />
+        )}
         <View style={styles.viewNew}>
           <Text style={styles.titleNew} numberOfLines={1}>
             {item.nameCompetition}

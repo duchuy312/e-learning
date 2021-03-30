@@ -9,11 +9,11 @@ import {
   Platform,
   Alert,
   Modal,
+  TextInput,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {TextInput} from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
@@ -35,14 +35,14 @@ const EditProfile = () => {
   const [place, setPlace] = useState(route.params.place);
   const [imageSource, setImageSource] = useState(null);
   const [UrlAvatar, setUrlAvatar] = useState(
-    'http://elearning-uat.tmgs.vn' + route.params.avatar,
+    'http://elearning.tmgs.vn' + route.params.avatar,
   );
   const [modalVisible, setModalVisible] = useState(false);
   console.log(imageSource);
   const UploadAvatar = async (data) => {
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/user/font/image/base64',
+        'https://elearning.tmgs.vn/api/user/font/image/base64',
         {
           base64: data,
           name: 'avatar.png',
@@ -66,7 +66,7 @@ const EditProfile = () => {
   const sendUpdateData = async () => {
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/profile/update',
+        'https://elearning.tmgs.vn/api/profile/update',
         {
           email: email,
           place: place,

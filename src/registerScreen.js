@@ -20,7 +20,7 @@ const RegisterScreen = () => {
   const [pass1, setPass1] = useState('');
   const RegisterConfirm = () => {
     axios
-      .post('http://elearning-uat.tmgs.vn/api/v2/user', {
+      .post('https://elearning.tmgs.vn/api/v2/user', {
         username: name,
         password: pass,
         fullName: FullName,

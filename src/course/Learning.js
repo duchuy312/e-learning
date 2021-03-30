@@ -8,24 +8,27 @@ import {
   StyleSheet,
   Image,
   FlatList,
+  LogBox,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
-
+LogBox.ignoreAllLogs();
 const WareCourse = () => {
   const navigation = useNavigation();
   const [dataWare, setDataWare] = useState([]);
+  const [dataDone, setDataDone] = useState([]);
   const [wareDetail, setWareDetail] = useState([]);
   const WareID = useState('');
   const route = useRoute('');
   const [count, setCount] = useState(0);
-  const [countDone, setCountDone] = useState(0);
+  const [countDone, setCountDone] = useState(null);
   const getWare = async () => {
+    await CheckWare();
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/course-ware/course/${route.params.CourseID}`,
+        `https://elearning.tmgs.vn/api/course-ware/course/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,
@@ -48,7 +51,32 @@ const WareCourse = () => {
   const CheckWare = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/v2/course/final/${route.params.CourseID}`,
+        `https://elearning.tmgs.vn/api/v2/course/final/${route.params.CourseID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${route.params.CourseTK}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response.data.data);
+        let x = 0;
+        for (let i = 0; i < response.data.data.chapterDTOs.length; i++) {
+          if (response.data.data.chapterDTOs[i].status === 1) {
+            dataDone[i] = 1;
+            x = x + 1;
+          }
+          setCountDone(x);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const SendWareProcess = async (courseWareId, chapterId) => {
+    await axios
+      .get(
+        `https://elearning.tmgs.vn/api/course-ware-process/${courseWareId}/${chapterId}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,
@@ -57,14 +85,6 @@ const WareCourse = () => {
       )
       .then((response) => {
         console.log(response);
-        for (let i = 0; i < response.data.data.chapterDTOs.length; i++) {
-          if (
-            response.data.data.chapterDTOs[i].checkCompleteChapter === 'true'
-          ) {
-            setCountDone(countDone + 1);
-          }
-          console.log('Số chương hoàn thành :', countDone);
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -82,13 +102,17 @@ const WareCourse = () => {
       ArrView.push(
         <View key={i}>
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
+              SendWareProcess(
+                wareDetail[i][j].courseWareId,
+                wareDetail[i][j].chapterId,
+              );
               navigation.navigate('VideoPlayer', {
                 urlFile: wareDetail[i][j].courseWare.files,
                 name: wareDetail[i][j].courseWare.name,
                 content: wareDetail[i][j].courseWare.content,
-              })
-            }>
+              });
+            }}>
             <Text style={styles.linkText}>
               {wareDetail[i][j].courseWare.name}
             </Text>
@@ -114,6 +138,9 @@ const WareCourse = () => {
         ) : (
           <View>{ArrViewWithKey[index]}</View>
         )}
+        <Text>
+          {dataDone[index] === 1 ? 'Đã hoàn thành' : 'Chưa hoàn thành'}
+        </Text>
       </View>
     );
   };
@@ -124,7 +151,7 @@ const WareCourse = () => {
           style={styles.imageNew}
           source={{
             uri:
-              'http://elearning-uat.tmgs.vn/static/images/default_thumb_course.png',
+              'https://elearning.tmgs.vn/static/images/default_thumb_course.png',
           }}
         />
       </View>

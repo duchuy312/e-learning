@@ -35,7 +35,7 @@ const Discussion = () => {
   const sendRate = async () => {
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/course/rating',
+        'https://elearning.tmgs.vn/api/course/rating',
         {
           valuess: rate,
           courseId: route.params.CourseID,
@@ -57,7 +57,7 @@ const Discussion = () => {
   const sendComment = async () => {
     await axios
       .post(
-        'http://elearning-uat.tmgs.vn/api/comment/course',
+        'https://elearning.tmgs.vn/api/comment/course',
         {
           courseId: route.params.CourseID,
           contents: comment,
@@ -83,7 +83,7 @@ const Discussion = () => {
   const getComment = async () => {
     await axios
       .get(
-        `http://elearning-uat.tmgs.vn/api/comment/course/${route.params.CourseID}`,
+        `https://elearning.tmgs.vn/api/comment/course/${route.params.CourseID}`,
         {
           headers: {
             Authorization: `Bearer ${route.params.CourseTK}`,
