@@ -6,12 +6,14 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Modal,
+  Alert,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
-import {BuildingIcon, ClockIcon} from '../../svg/icon';
+import {BuildingIcon, ClockIcon, CircleCheckIcon} from '../../svg/icon';
 import ProgressCircle from 'react-native-progress-circle';
 
 const ExamResult = () => {
@@ -20,6 +22,7 @@ const ExamResult = () => {
   const [ExamID] = useState('');
   const [dataExam, setDataExam] = useState([]);
   const [getting, setGetting] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
   // /api/roundtest/{id_round}/request
   const getExams = async () => {
     await axios
@@ -109,13 +112,9 @@ const ExamResult = () => {
             <Text>Vòng thi không giới hạn số lần làm bài</Text>
             <TouchableOpacity
               style={styles.littleButton}
-              onPress={() =>
-                navigation.navigate('DoingExam', {
-                  idRound: route.params.idRound,
-                  token: route.params.token,
-                  timeRound: route.params.timeExam,
-                })
-              }>
+              onPress={() => {
+                setModalVisible2(true);
+              }}>
               <Text>Làm bài</Text>
             </TouchableOpacity>
           </View>
@@ -134,6 +133,42 @@ const ExamResult = () => {
         refreshing={getting}
         onRefresh={() => getExams()}
       />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible2}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.smallCenteredView}>
+          <View style={styles.smallModalView}>
+            <Text style={styles.smallModalText}>Xác nhận làm bài thi</Text>
+            <View style={styles.twoButon}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible2(!modalVisible2);
+                }}>
+                <View style={styles.redButton}>
+                  <Text style={{color: 'white'}}>Hủy</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('DoingExam', {
+                    idRound: route.params.idRound,
+                    token: route.params.token,
+                    timeRound: route.params.timeExam,
+                    name: route.params.name,
+                  });
+                }}>
+                <View style={styles.blueButton}>
+                  <Text style={{color: 'white'}}>Vào thi</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -253,5 +288,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: scale(3),
     marginTop: scale(5),
+  },
+  smallModalText: {
+    color: 'black',
+    fontSize: scale(15),
+    textAlign: 'center',
+  },
+  blueButton: {
+    width: scale(50),
+    height: scale(25),
+    borderRadius: scale(4),
+    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#209cf4',
+  },
+  redButton: {
+    width: scale(50),
+    height: scale(25),
+    borderRadius: scale(4),
+    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ff2f2f',
+  },
+  smallCenteredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(100,100,100, 0.5)',
+  },
+  modalView: {
+    height: scale(220),
+    width: scale(300),
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(10),
+  },
+  smallModalView: {
+    height: scale(120),
+    width: scale(200),
+    backgroundColor: 'white',
+    borderRadius: scale(5),
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: scale(5),
+    justifyContent: 'space-around',
+    padding: scale(8),
+  },
+  twoButon: {
+    flexDirection: 'row',
+    marginTop: scale(10),
+    width: '80%',
+    justifyContent: 'space-around',
+    alignSelf: 'center',
   },
 });

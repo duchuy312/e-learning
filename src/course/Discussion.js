@@ -10,13 +10,13 @@ import {
   FlatList,
   Modal,
   Alert,
+  TextInput,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
 import CourseBar from '../components/CourseBar';
-import {TextInput} from 'react-native-gesture-handler';
 import {SendIcon, XIcon} from '../../svg/icon';
 import Draggable from 'react-native-draggable';
 import {Rating, AirbnbRating} from 'react-native-ratings';
@@ -47,7 +47,9 @@ const Discussion = () => {
         },
       )
       .then((response) => {
-        console.log(response);
+        if (response.data.code === '400') {
+          setModalVisible2(true);
+        }
       })
       .catch(function (error) {
         // handle error
@@ -119,7 +121,7 @@ const Discussion = () => {
             <Image
               style={styles.AvatarUser}
               source={{
-                uri: 'http://elearning-uat.tmgs.vn' + item.urlImage,
+                uri: 'http://elearning.tmgs.vn' + item.urlImage,
               }}
             />
           </View>

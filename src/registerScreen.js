@@ -15,7 +15,6 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [FullName, setFullName] = useState('');
-  const [Gender, setGender] = useState('');
   const [pass, setPass] = useState('');
   const [pass1, setPass1] = useState('');
   const RegisterConfirm = () => {
@@ -24,7 +23,7 @@ const RegisterScreen = () => {
         username: name,
         password: pass,
         fullName: FullName,
-        gender: Gender,
+        gender: '',
       })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
@@ -32,7 +31,6 @@ const RegisterScreen = () => {
   const ClearInput = () => {
     setName('');
     setFullName('');
-    setGender('');
     setPass('');
     setPass1('');
   };
@@ -60,14 +58,6 @@ const RegisterScreen = () => {
             onChangeText={(input) => setFullName(input)}
             style={styles.textInput}
             placeholder={'   Full Name'}
-          />
-        </View>
-        <View style={styles.textInputArea}>
-          <TextInput
-            value={Gender}
-            onChangeText={(phoneinput) => setGender(phoneinput)}
-            style={styles.textInput}
-            placeholder={'   Giới tính'}
           />
         </View>
         <View style={styles.textInputArea}>
@@ -125,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: scale(20),
   },
   textInputContainerRegister: {
-    height: scale(400),
+    height: scale(330),
     width: scale(350),
   },
   logocontainerRegister: {

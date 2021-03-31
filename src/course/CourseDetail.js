@@ -15,7 +15,7 @@ import {scale} from 'react-native-size-matters';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Backbar from '../components/BackBar';
 import axios from 'axios';
-import {StarIcon} from '../../svg/icon';
+import {StarIcon, CheckIcon} from '../../svg/icon';
 import CourseBar from '../components/CourseBar';
 import {CircleCheckIcon} from '../../svg/icon';
 import HTML from 'react-native-render-html';
@@ -30,8 +30,8 @@ const CourseDetail = () => {
   const [register, setRegister] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+  const [text, setText] = useState('');
   const [code, setCode] = useState('');
-  console.log(route.params.CourseImage);
   const JoinWithCode = async () => {
     await axios
       .post(
@@ -42,7 +42,7 @@ const CourseDetail = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${route.params.examTK}`,
+            Authorization: `Bearer ${route.params.CourseTK}`,
           },
         },
       )
@@ -60,16 +60,19 @@ const CourseDetail = () => {
   const sendRequest = async () => {
     await axios
       .post(
-        `https://elearning.tmgs.vn/api/course/join/${route.params.CourseID}`,
-        {id: 23},
+        'https://elearning.tmgs.vn/api/course/join',
+        {id: route.params.CourseID},
         {
           headers: {
-            Authorization: `Bearer ${route.params.examTK}`,
+            Authorization: `Bearer ${route.params.CourseTK}`,
           },
         },
       )
       .then((response) => {
-        console.log(response);
+        response.data.code === '200'
+          ? setText('Đăng ký thành công bạn có thể vào học')
+          : setText('Bạn đã đăng ký khóa học');
+        setModalVisible2(true);
       })
       .catch(function (error) {
         // handle error
@@ -148,7 +151,7 @@ const CourseDetail = () => {
             <Image
               style={styles.imageNew}
               source={{
-                uri: 'http://elearning-uat.tmgs.vn' + route.params.CourseImage,
+                uri: 'http://elearning.tmgs.vn' + route.params.CourseImage,
               }}
             />
           )}
@@ -279,7 +282,6 @@ const CourseDetail = () => {
               <Text>Bạn không có mã khóa học ? </Text>
               <TouchableOpacity
                 onPress={() => {
-                  setModalVisible2(true);
                   sendRequest();
                 }}>
                 <Text style={styles.linkText}>Gửi yêu cầu đăng ký</Text>
@@ -298,9 +300,7 @@ const CourseDetail = () => {
         <View style={styles.smallCenteredView}>
           <View style={styles.smallModalView}>
             <CircleCheckIcon />
-            <Text style={styles.smallModalText}>
-              Xin chờ quản trị viên phê duyệt
-            </Text>
+            <Text style={styles.smallModalText}>{text}</Text>
             <TouchableOpacity
               onPress={() => {
                 setModalVisible2(!modalVisible2);
@@ -507,5 +507,10 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: scale(15),
     textAlign: 'center',
+  },
+  modalCenter: {
+    justifyContent: 'space-between',
+    height: scale(150),
+    alignItems: 'center',
   },
 });

@@ -40,7 +40,7 @@ const DoingExam = () => {
     console.log(body);
     await axios
       .post(
-        `https://elearning.tmgs.vn/api/roundtest/submit/${route.params.idRound}`,
+        `https://elearning.tmgs.vn/api/roundtest/submit/${route.params.idRound}?idCourse=${route.params.idCourse}`,
         body,
         {
           headers: {
@@ -56,7 +56,7 @@ const DoingExam = () => {
         console.log(error);
       })
       .finally(() => {
-        navigation.navigate('ExamDetail');
+        navigation.goBack();
         setModalVisible1(false);
       });
   };
@@ -86,7 +86,6 @@ const DoingExam = () => {
           setCountEx(countEx + 1);
         } else {
           for (let i = 0; i < data.length; i++) {
-            console.log(response.data.data.questionRT[i].answers.length);
             arr[i] = response.data.data.questionRT[i].answers;
             submitArr[i] = {
               idQuestion: response.data.data.questionRT[i].question.id,
